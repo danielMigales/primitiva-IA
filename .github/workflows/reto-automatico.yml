@@ -16,7 +16,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Aprender del historico sin mirar el futuro\n        run: python scripts/aprender_reto.py\n      - name: Generar prediccion antes del sorteo
+      - name: Aprender del historico sin mirar el futuro
+        run: python scripts/aprender_reto.py
+      - name: Generar prediccion antes del sorteo
         run: python scripts/generar_reto.py
       - name: Guardar prediccion en GitHub
         run: |
