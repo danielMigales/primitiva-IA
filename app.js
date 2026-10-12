@@ -93,7 +93,7 @@ window.addEventListener('DOMContentLoaded',refreshHistory);
  const historySection=document.getElementById('load').closest('section');
  const panel=document.createElement('section');
  panel.innerHTML='<h2>Últimos 5 sorteos</h2><p id="last20-info" class="muted">Cargando histórico…</p><div id="last20-list"></div>';
- historySection.insertAdjacentElement('afterend',panel);
+ historySection.insertAdjacentElement('beforebegin',panel);
  const render=()=>{
   const info=document.getElementById('last20-info'),list=document.getElementById('last20-list');
   if(!draws.length){info.textContent='Todavía no hay resultados cargados.';list.replaceChildren();return;}
