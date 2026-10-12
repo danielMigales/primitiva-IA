@@ -16,10 +16,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Instalar y configurar Android SDK
-        uses: android-actions/setup-android@v3
-      - name: Instalar plataformas y herramientas
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Preparar SDK de Android preinstalado
+        run: |
+          echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"
       - name: Preparar Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
