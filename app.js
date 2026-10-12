@@ -115,3 +115,57 @@ window.addEventListener('DOMContentLoaded',refreshHistory);
  setDraws=function(rows,source){previous(rows,source);render();};
  render();
 })();
+
+
+/* Reto Predictor: predicciones prospectivas conservadas en este navegador. */
+(function(){
+ const key='primitiva-reto-predictor-v1';
+ const saveBtn=document.getElementById('reto-save'),message=document.getElementById('reto-message'),history=document.getElementById('reto-history'),exportBtn=document.getElementById('reto-export');
+ if(!saveBtn||!message||!history)return;
+ const localDate=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+ function nextDraw(){
+  const d=new Date();d.setHours(12,0,0,0);
+  do{d.setDate(d.getDate()+1)}while(![1,4,6].includes(d.getDay()));
+  return localDate(d);
+ }
+ function read(){try{const x=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(x)?x.filter(r=>r&&/^\\d{4}-\\d{2}-\\d{2}$/.test(r.target)&&Array.isArray(r.nums)&&r.nums.length===6):[]}catch(e){return []}}
+ function write(items){localStorage.setItem(key,JSON.stringify(items))}
+ function balls(container,nums,actual){
+  const row=document.createElement('div');row.className='balls';
+  for(const n of nums){const b=document.createElement('span');b.className='ball';b.textContent=n;if(actual&&actual.includes(n))b.classList.add('reto-hit');row.appendChild(b)}
+  container.appendChild(row);
+ }
+ function render(){
+  const target=nextDraw(),items=read(),latest=draws.at(-1)?.date||'';
+  saveBtn.disabled=draws.length<30||items.some(r=>r.target===target)||latest>=target;
+  message.textContent=draws.length<30?'Esperando el histórico…':items.some(r=>r.target===target)?'Ya hay una predicción guardada para el '+target+'. No se puede sustituir desde la aplicación.':'Próximo sorteo objetivo: '+target+'. La predicción se guardará en este dispositivo.';
+  history.replaceChildren();
+  if(!items.length){const p=document.createElement('p');p.className='muted';p.textContent='Aún no hay predicciones registradas.';history.appendChild(p);return}
+  for(const r of items.slice().sort((a,b)=>b.target.localeCompare(a.target))){
+   const card=document.createElement('div');card.className='reto-card';
+   const title=document.createElement('strong');title.textContent='Sorteo objetivo: '+r.target;card.appendChild(title);
+   const meta=document.createElement('p');meta.className='reto-meta';meta.textContent='Guardada: '+r.created+' · Ventana: '+r.window+' sorteos · Histórico hasta '+r.historyUntil;card.appendChild(meta);
+   const actual=draws.find(d=>d.date===r.target);
+   balls(card,r.nums,actual?.nums);
+   const status=document.createElement('p');
+   if(actual){const hits=r.nums.filter(n=>actual.nums.includes(n)).length;status.textContent='Resultado disponible: '+hits+' acierto'+(hits===1?'':'s')+' de 6. Los aciertos están en naranja.';const official=document.createElement('p');official.className='reto-meta';official.textContent='Resultado guardado en histórico: '+actual.nums.join(' · ')+'. Contrastar con SELAE.';card.append(status,official)}
+   else{status.className='muted';status.textContent='Pendiente de resultado en el histórico.';card.appendChild(status)}
+   history.appendChild(card);
+  }
+ }
+ saveBtn.onclick=()=>{
+  const target=nextDraw(),items=read();
+  if(draws.length<30||items.some(r=>r.target===target)||draws.at(-1).date>=target)return render();
+  const windowSize=Number(document.getElementById('reto-window').value);
+  const nums=select(draws.slice(-windowSize)).nums;
+  const entry={target,nums,window:windowSize,historyUntil:draws.at(-1).date,created:new Date().toISOString()};
+  try{write([...items,entry]);render()}catch(e){message.textContent='No se pudo guardar en este navegador. Comprueba que permite almacenamiento local.'}
+ };
+ exportBtn.onclick=()=>{
+  const blob=new Blob([JSON.stringify({description:'Registro local del Reto Predictor; no certifica fecha de creación',predictions:read()},null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='reto-predictor.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);
+ };
+ const original=setDraws;
+ setDraws=function(rows,source){original(rows,source);render()};
+ render();
+})();
