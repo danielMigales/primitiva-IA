@@ -61,12 +61,13 @@ async function load(){
   const recent=draws.slice(0,5);
   const counts=new Map();
   for(const draw of recent)for(const n of new Set(draw.nums))counts.set(n,(counts.get(n)||0)+1);
-  const repeated=new Set([...counts].filter(([,times])=>times>=2).map(([n])=>n));
+  const repeated=[...counts].filter(([,times])=>times>=2).map(([n])=>n).sort((a,b)=>a-b);
+  const colorByNumber=new Map(repeated.map((n,i)=>[n,i]));
   for(const r of recent){
    const item=document.createElement('div');item.className='draw';
    const date=document.createElement('time');date.textContent=r.date;item.appendChild(date);
    const balls=combination(r.nums,r.reintegro);
-   for(const b of balls.querySelectorAll('.ball:not(.gold)')){const times=counts.get(Number(b.textContent))||0;if(times>=2){b.classList.add('repeated');b.title='Aparece '+times+' veces en los últimos 5 sorteos';const tag=document.createElement('span');tag.className='repeat-count';tag.textContent='×'+times;b.appendChild(tag)}}
+   for(const b of balls.querySelectorAll('.ball:not(.gold)')){const times=counts.get(Number(b.textContent))||0;if(times>=2){b.classList.add('repeated');b.style.setProperty('--repeat-hue',String((colorByNumber.get(Number(b.textContent))*137.508+25)%360));b.title='Aparece '+times+' veces en los últimos 5 sorteos';const tag=document.createElement('span');tag.className='repeat-count';tag.textContent='×'+times;b.appendChild(tag)}}
    item.appendChild(balls);root.appendChild(item);
   }
   if(!draws.length)root.appendChild(p('No hay sorteos válidos disponibles.'));
