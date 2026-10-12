@@ -165,7 +165,8 @@ window.addEventListener('DOMContentLoaded',refreshHistory);
   if(!response.ok)throw Error('aún no publicado');
   const model=await response.json();
   node.replaceChildren();
-  const title=document.createElement('p');title.textContent='Estrategia seleccionada con pruebas cronológicas: '+model.strategy.mode+' · ventana '+model.strategy.window+' sorteos.';node.appendChild(title);
+  const title=document.createElement('p');title.textContent='Objetivo: 3 o más aciertos. Estrategia seleccionada con pruebas cronológicas: '+model.strategy.mode+' · ventana '+model.strategy.window+' sorteos.';node.appendChild(title);
+  if(model.goal==='at-least-three-hits'){const stat=document.createElement('p');stat.className='muted';stat.textContent='Prueba reservada: '+model.holdoutThreePlus+' sorteos con 3 o más aciertos de '+model.holdoutDraws+' · referencia aleatoria: '+model.holdoutExpectedThreePlus.toFixed(1)+'.';node.appendChild(stat)}
   const row=document.createElement('div');row.className='balls';
   for(const n of model.nextCombination){const ball=document.createElement('span');ball.className='ball';ball.textContent=n;row.appendChild(ball)}node.appendChild(row);
   const note=document.createElement('p');note.className='muted';note.textContent='Combinación experimental calculada con datos hasta '+model.lastHistoricalDate+'. No se ha demostrado una ventaja predictiva frente al azar. La predicción oficial del reto es la que queda registrada antes del sorteo en GitHub.';node.appendChild(note);
