@@ -11,7 +11,6 @@ Estado: migración parcial; existe el repositorio privado `danielMigales/Primiti
 ## Dependencias verificadas
 - `index.html` carga `app.js`; el Laboratorio ejecuta su lógica de selección y backtest en el navegador. Por tanto, publicar `app.js` revela su algoritmo: no basta con ocultar scripts Python.
 - El sitio utiliza `data/sorteos.json` y archivos de `data/reto-*.json` para mostrar resultados.
-- El widget Android fue retirado del repositorio público el 2026-10-12; no debe considerarse una dependencia activa.
 - `.github/workflows/actualizar.yml` y `reto-automatico.yml` generan y escriben archivos en el repositorio actual.
 - GitHub Pages está activado en el repositorio público.
 
