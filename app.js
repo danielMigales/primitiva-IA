@@ -23,3 +23,67 @@ const $=id=>document.getElementById(id);let draws=[];const choose=(n,k)=>{let x=
 }
 $('load').onclick=refreshHistory;
 window.addEventListener('DOMContentLoaded',refreshHistory);
+
+/* Importación local segura: CSV/TXT o JSON; nunca modifica GitHub automáticamente. */
+(function(){
+ const fileInput=$('file');
+ fileInput.accept='.csv,.txt,.json,text/csv,application/json';
+ const section=fileInput.closest('section');
+ const heading=section.querySelector('h2');
+ if(heading)heading.textContent='Importar resultados oficiales (archivo)';
+ const intro=section.querySelector('p');
+ if(intro)intro.textContent='Selecciona un CSV, TXT o JSON descargado de una fuente fiable. Se validarán fechas y números y se detectarán conflictos con el histórico cargado. Los archivos no se envían a ningún servidor.';
+ const report=document.createElement('p');report.id='import-report';report.style.whiteSpace='pre-wrap';
+ const exportBtn=document.createElement('button');exportBtn.textContent='Descargar histórico combinado (JSON)';exportBtn.disabled=true;
+ section.appendChild(report);section.appendChild(exportBtn);
+ let mergedForExport=null;
+ function isValidDate(s){if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const d=new Date(s+'T00:00:00Z');return !isNaN(d)&&d.toISOString().slice(0,10)===s;}
+ function normalize(rows){
+  if(!Array.isArray(rows))throw Error('No se encontró una lista de sorteos.');
+  const out=new Map();
+  for(const r of rows){
+   if(!r||!isValidDate(r.date)||!Array.isArray(r.nums)||r.nums.length!==6)throw Error('Hay filas con fecha o combinación no válida.');
+   const nums=r.nums.map(Number).sort((a,b)=>a-b);
+   if(nums.some(n=>!Number.isInteger(n)||n<1||n>49)||new Set(nums).size!==6)throw Error('Hay números inválidos o repetidos.');
+   if(out.has(r.date)&&JSON.stringify(out.get(r.date).nums)!==JSON.stringify(nums))throw Error('El archivo contiene resultados distintos para '+r.date);
+   out.set(r.date,{date:r.date,nums});
+  }
+  return out;
+ }
+ fileInput.onchange=async function(){
+  exportBtn.disabled=true;mergedForExport=null;
+  const f=fileInput.files&&fileInput.files[0];if(!f)return;
+  try{
+   if(f.size>15*1024*1024)throw Error('Archivo demasiado grande (máximo 15 MB).');
+   const text=await f.text();
+   let imported;
+   if(f.name.toLowerCase().endsWith('.json')){
+    const obj=JSON.parse(text);imported=Array.isArray(obj)?obj:obj.draws;
+   }else imported=parse(text);
+   const fresh=normalize(imported);
+   if(!fresh.size)throw Error('No se han encontrado sorteos válidos. Revisa el formato del archivo.');
+   const current=normalize(draws);
+   const conflicts=[];
+   for(const [date,row] of fresh){
+    if(current.has(date)&&JSON.stringify(current.get(date).nums)!==JSON.stringify(row.nums))conflicts.push(date);
+   }
+   if(conflicts.length){
+    report.textContent='IMPORTACIÓN DETENIDA. Hay '+conflicts.length+' fechas con números diferentes: '+conflicts.slice(0,8).join(', ')+'. Verifica estas fechas en SELAE. No se ha cambiado el histórico.';
+    return;
+   }
+   let added=0;
+   for(const [date,row] of fresh){if(!current.has(date)){current.set(date,row);added++;}}
+   const combined=[...current.values()].sort((a,b)=>a.date.localeCompare(b.date));
+   mergedForExport={updated_at:new Date().toISOString(),sources:['Importación local; verificar procedencia del archivo: '+f.name],draws:combined};
+   exportBtn.disabled=false;
+   report.textContent='Archivo revisado: '+fresh.size+' sorteos válidos. Nuevos: '+added+'. Total combinado: '+combined.length+'. No se ha subido nada a GitHub. Pulsa «Descargar histórico combinado (JSON)» para guardar el resultado.';
+   if(combined.length>=30)setDraws(combined,'histórico combinado local (pendiente de verificación)');
+  }catch(err){report.textContent='No se ha importado el archivo: '+err.message;}
+ };
+ exportBtn.onclick=()=>{
+  if(!mergedForExport)return;
+  const blob=new Blob([JSON.stringify(mergedForExport,null,2)+'\n'],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='sorteos-combinados.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);
+ };
+})();
