@@ -68,7 +68,7 @@ function analyze(){
   for(const row of payload.draws){
    if(!/^\d{4}-\d{2}-\d{2}$/.test(row.date)||!Array.isArray(row.nums)||row.nums.length!==6||new Set(row.nums).size!==6||row.nums.some(n=>!Number.isInteger(n)||n<1||n>49))continue;
    if(unique.has(row.date)&&JSON.stringify(unique.get(row.date).nums)!==JSON.stringify(row.nums))throw Error('Resultados contradictorios para '+row.date);
-   unique.set(row.date,{date:row.date,nums:[...row.nums].sort((a,b)=>a-b)});
+   unique.set(row.date,{date:row.date,nums:[...row.nums].sort((a,b)=>a-b),...(Number.isInteger(row.reintegro)&&row.reintegro>=0&&row.reintegro<=9?{reintegro:row.reintegro}:{})});
   }
   const rows=[...unique.values()].sort((a,b)=>a.date.localeCompare(b.date));
   if(rows.length<30)throw Error('No hay suficientes sorteos válidos');
@@ -188,13 +188,23 @@ window.addEventListener('DOMContentLoaded',refreshHistory);
   for(const r of [...predictions].sort((a,b)=>b.target.localeCompare(a.target))){
    const card=document.createElement('div');card.className='reto-card';
    const title=document.createElement('strong');title.textContent='Sorteo: '+r.target;card.appendChild(title);
-   const meta=document.createElement('p');meta.className='reto-meta';meta.textContent='Registrada: '+r.created+' · Ventana: '+r.window+' sorteos · Datos hasta: '+r.historyUntil;card.appendChild(meta);
+   const meta=document.createElement('p');meta.className='reto-meta';meta.textContent='Registrada: '+(r.created||'registro GitHub')+' · Modelo: '+(r.algorithm||'histórico')+' · Datos hasta: '+r.historyUntil;card.appendChild(meta);
    const actual=draws.find(d=>d.date===r.target);
    const balls=document.createElement('div');balls.className='balls';
    for(const n of r.nums){const ball=document.createElement('span');ball.className='ball';ball.textContent=n;if(actual?.nums.includes(n))ball.classList.add('reto-hit');balls.appendChild(ball)}
+   if(Number.isInteger(r.reintegro)&&r.reintegro>=0&&r.reintegro<=9){
+    const plus=document.createElement('strong');plus.textContent='+';plus.style.alignSelf='center';balls.appendChild(plus);
+    const gold=document.createElement('span');gold.className='ball';gold.style.cssText='background:#ffd965;color:#3b2600;border:2px solid #fff7d6;box-sizing:border-box';gold.textContent=r.reintegro;gold.title='Reintegro predicho';balls.appendChild(gold);
+    const evidence=r.reintegroEvidence;
+    if(evidence){
+     const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Por qué se eligió el reintegro '+r.reintegro;details.appendChild(summary);
+     const p=document.createElement('p');p.textContent='Desviaciones recientes: '+evidence.windows.map(w=>w.days+' días: '+w.hits+'/'+w.draws+' (esperados '+w.expected+')').join(' · ')+'.';details.appendChild(p);
+     const t=document.createElement('p');t.textContent='Prueba retrospectiva: '+evidence.backtest.hits+' aciertos en '+evidence.backtest.tests+' sorteos; azar esperado: '+evidence.backtest.expectedRandom+'. No demuestra que vaya a salir el reintegro elegido.';details.appendChild(t);card.appendChild(details);
+    }
+   }else{const legacy=document.createElement('p');legacy.className='muted';legacy.textContent='Predicción histórica sin reintegro registrado; no se añadirá uno a posteriori.';card.appendChild(legacy)}
    card.appendChild(balls);
    const status=document.createElement('p');
-   if(actual){const hits=r.nums.filter(n=>actual.nums.includes(n)).length;status.textContent='Resultado en histórico: '+hits+' acierto'+(hits===1?'':'s')+' de 6. Coincidencias en naranja. Números oficiales pendientes de contrastar con SELAE.'}
+   if(actual){const hits=r.nums.filter(n=>actual.nums.includes(n)).length;status.textContent='Resultado en histórico: '+hits+' acierto'+(hits===1?'':'s')+' de 6. '+(Number.isInteger(r.reintegro)?(Number.isInteger(actual.reintegro)?'Reintegro: '+(r.reintegro===actual.reintegro?'ACERTADO':'fallado')+' (salió '+actual.reintegro+').':'Reintegro real pendiente de incorporar al histórico.'):'')+' Coincidencias principales en naranja. Resultados pendientes de contrastar con SELAE.'}
    else{status.className='muted';status.textContent='Pendiente de resultado en el histórico.'}
    card.appendChild(status);history.appendChild(card);
   }
