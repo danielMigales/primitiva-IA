@@ -201,7 +201,7 @@ function renderReintegroLaboratorio(){
  const response=await fetch('./data/reintegros-verificados.json?nocache='+Date.now(),{cache:'no-store'});
  if(!response.ok)throw Error('HTTP '+response.status);
  const data=await response.json();if(!Array.isArray(data.draws))throw Error('Formato inválido');
- const seen=new Set();reintegrosVerificados=data.draws.filter(r=>r&&/^\\d{4}-\\d{2}-\\d{2}$/.test(r.date)&&Number.isInteger(r.reintegro)&&r.reintegro>=0&&r.reintegro<=9&&typeof r.url==='string'&&!seen.has(r.date)&&seen.add(r.date)).sort((a,b)=>a.date.localeCompare(b.date));
+ const seen=new Set();reintegrosVerificados=data.draws.filter(r=>r&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&Number.isInteger(r.reintegro)&&r.reintegro>=0&&r.reintegro<=9&&typeof r.url==='string'&&!seen.has(r.date)&&seen.add(r.date)).sort((a,b)=>a.date.localeCompare(b.date));
  }catch(e){console.warn('Reintegros no disponibles:',e.message)}
  renderReintegroLaboratorio();
 })();
