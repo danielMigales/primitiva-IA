@@ -31,7 +31,7 @@
         45
       ],
       "window": 365,
-      "historyUntil": "2026-10-10",
+      "historyUntil": "2026-10-12",
       "algorithm": "unified-recency-z-30-90-365-v1",
       "numberEvidence": [
         {
@@ -84,23 +84,23 @@
         },
         {
           "number": 40,
-          "score": 1.76851,
+          "score": 2.35506,
           "windows": [
             {
               "days": 30,
-              "hits": 4,
+              "hits": 5,
               "draws": 14,
               "expected": 1.71
             },
             {
               "days": 90,
-              "hits": 8,
+              "hits": 9,
               "draws": 39,
               "expected": 4.78
             },
             {
               "days": 365,
-              "hits": 27,
+              "hits": 28,
               "draws": 157,
               "expected": 19.22
             }
@@ -132,7 +132,7 @@
         },
         {
           "number": 10,
-          "score": 1.28164,
+          "score": 1.23294,
           "windows": [
             {
               "days": 30,
@@ -148,7 +148,7 @@
             },
             {
               "days": 365,
-              "hits": 20,
+              "hits": 19,
               "draws": 157,
               "expected": 19.22
             }
@@ -179,12 +179,12 @@
           ]
         }
       ],
-      "recordedBy": "ChatGPT GitHub commit",
+      "recordedBy": "ChatGPT GitHub commit (revisión previa al sorteo)",
       "goal": "maximize-main-and-reintegro-hits",
       "reintegro": 8,
       "reintegroAlgorithm": "recency-z-30-90-365-v1",
       "reintegroEvidence": {
-        "lastHistoricalDate": "2026-10-10",
+        "lastHistoricalDate": "2026-10-12",
         "score": 1.15611,
         "windows": [
           {
@@ -206,9 +206,206 @@
             "expected": 15.7
           }
         ],
-        "interpretation": "Exploratory ranking; no confirmed predictive advantage."
+        "interpretation": "Revisión por incorporación de nuevo sorteo; sin ventaja predictiva demostrada."
       },
-      "note": "Prospective manual registration using the latest historical data available in the repository; historical results may lag actual draws."
+      "note": "Revisión prospectiva antes del sorteo; original conservado en revisions. La fuente del sorteo del 12/10 fue prensa, pendiente de cotejo directo SELAE.",
+      "created": "2026-10-12"
+    }
+  ],
+  "revisions": [
+    {
+      "target": "2026-10-15",
+      "original": {
+        "target": "2026-10-15",
+        "nums": [
+          4,
+          10,
+          20,
+          22,
+          40,
+          45
+        ],
+        "window": 365,
+        "historyUntil": "2026-10-10",
+        "algorithm": "unified-recency-z-30-90-365-v1",
+        "numberEvidence": [
+          {
+            "number": 20,
+            "score": 2.72992,
+            "windows": [
+              {
+                "days": 30,
+                "hits": 6,
+                "draws": 14,
+                "expected": 1.71
+              },
+              {
+                "days": 90,
+                "hits": 11,
+                "draws": 39,
+                "expected": 4.78
+              },
+              {
+                "days": 365,
+                "hits": 26,
+                "draws": 157,
+                "expected": 19.22
+              }
+            ]
+          },
+          {
+            "number": 45,
+            "score": 2.53515,
+            "windows": [
+              {
+                "days": 30,
+                "hits": 6,
+                "draws": 14,
+                "expected": 1.71
+              },
+              {
+                "days": 90,
+                "hits": 11,
+                "draws": 39,
+                "expected": 4.78
+              },
+              {
+                "days": 365,
+                "hits": 22,
+                "draws": 157,
+                "expected": 19.22
+              }
+            ]
+          },
+          {
+            "number": 40,
+            "score": 1.76851,
+            "windows": [
+              {
+                "days": 30,
+                "hits": 4,
+                "draws": 14,
+                "expected": 1.71
+              },
+              {
+                "days": 90,
+                "hits": 8,
+                "draws": 39,
+                "expected": 4.78
+              },
+              {
+                "days": 365,
+                "hits": 27,
+                "draws": 157,
+                "expected": 19.22
+              }
+            ]
+          },
+          {
+            "number": 22,
+            "score": 1.35293,
+            "windows": [
+              {
+                "days": 30,
+                "hits": 3,
+                "draws": 14,
+                "expected": 1.71
+              },
+              {
+                "days": 90,
+                "hits": 8,
+                "draws": 39,
+                "expected": 4.78
+              },
+              {
+                "days": 365,
+                "hits": 26,
+                "draws": 157,
+                "expected": 19.22
+              }
+            ]
+          },
+          {
+            "number": 10,
+            "score": 1.28164,
+            "windows": [
+              {
+                "days": 30,
+                "hits": 5,
+                "draws": 14,
+                "expected": 1.71
+              },
+              {
+                "days": 90,
+                "hits": 5,
+                "draws": 39,
+                "expected": 4.78
+              },
+              {
+                "days": 365,
+                "hits": 20,
+                "draws": 157,
+                "expected": 19.22
+              }
+            ]
+          },
+          {
+            "number": 4,
+            "score": 1.1831,
+            "windows": [
+              {
+                "days": 30,
+                "hits": 4,
+                "draws": 14,
+                "expected": 1.71
+              },
+              {
+                "days": 90,
+                "hits": 6,
+                "draws": 39,
+                "expected": 4.78
+              },
+              {
+                "days": 365,
+                "hits": 22,
+                "draws": 157,
+                "expected": 19.22
+              }
+            ]
+          }
+        ],
+        "recordedBy": "ChatGPT GitHub commit",
+        "goal": "maximize-main-and-reintegro-hits",
+        "reintegro": 8,
+        "reintegroAlgorithm": "recency-z-30-90-365-v1",
+        "reintegroEvidence": {
+          "lastHistoricalDate": "2026-10-10",
+          "score": 1.15611,
+          "windows": [
+            {
+              "days": 30,
+              "hits": 3,
+              "draws": 14,
+              "expected": 1.4
+            },
+            {
+              "days": 90,
+              "hits": 6,
+              "draws": 39,
+              "expected": 3.9
+            },
+            {
+              "days": 365,
+              "hits": 18,
+              "draws": 157,
+              "expected": 15.7
+            }
+          ],
+          "interpretation": "Exploratory ranking; no confirmed predictive advantage."
+        },
+        "note": "Prospective manual registration using the latest historical data available in the repository; historical results may lag actual draws."
+      },
+      "reason": "Conservar propuesta inicial basada en histórico hasta 2026-10-10; sustituida prospectivamente tras incorporar sorteo 2026-10-12."
     }
   ]
 }
