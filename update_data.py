@@ -58,6 +58,12 @@ def official(date):
         except (ValueError, TypeError):
             continue
         row = {"date": date.isoformat(), "nums": nums}
+        # Reintegro: únicamente si SELAE devuelve un campo explícito válido.
+        reintegro = item.get("reintegro")
+        if type(reintegro) is int and 0 <= reintegro <= 9:
+            row["reintegro"] = reintegro
+        elif isinstance(reintegro, str) and re.fullmatch(r"[0-9]", reintegro.strip()):
+            row["reintegro"] = int(reintegro.strip())
         if valid(row):
             return row
     return None
