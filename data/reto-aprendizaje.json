@@ -1,0 +1,24 @@
+{
+  "updatedAt": "2026-10-12T14:59:35.125Z",
+  "historicalDraws": 4200,
+  "strategy": {
+    "window": 1000,
+    "mode": "cold"
+  },
+  "validationDraws": 2240,
+  "holdoutDraws": 960,
+  "holdoutHits": 740,
+  "holdoutExpectedHits": 705.31,
+  "holdoutDifference": 34.69,
+  "hasDemonstratedAdvantage": false,
+  "note": "Exploratory chronological holdout; no predictive advantage demonstrated. Selection does not use holdout results.",
+  "nextCombination": [
+    9,
+    24,
+    25,
+    27,
+    47,
+    49
+  ],
+  "lastHistoricalDate": "2026-10-10"
+}
