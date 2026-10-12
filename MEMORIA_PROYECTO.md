@@ -4,7 +4,7 @@ Actualizado: 2026-10-12. Fuente principal: archivos existentes en este repositor
 
 ## 1. Identidad y propósito
 - Repositorio: https://github.com/danielMigales/primitiva-IA (rama principal: `main`).
-- Aplicación: **LA PRIMITIVA CHATGPT PREDICTOR**, web instalable (PWA) con un widget Android independiente.
+- Aplicación: **LA PRIMITIVA CHATGPT PREDICTOR**, web instalable (PWA), sin widget Android desde 2026-10-12.
 - Objetivo: estudiar resultados históricos de La Primitiva, generar combinaciones experimentales, contrastar estrategias con pruebas cronológicas y registrar predicciones anteriores a los sorteos.
 - Prioridad acordada: **conservar lo que funciona, revisar antes de cambiar y avanzar mediante cambios pequeños y verificables**.
 - Principio científico: un sorteo justo es aleatorio; **no existe ventaja predictiva demostrada** en el proyecto. No presentar patrones ni backtests exploratorios como garantías de acierto.
@@ -54,11 +54,10 @@ Actualizado: 2026-10-12. Fuente principal: archivos existentes en este repositor
 - Los distintos experimentos y períodos pueden solaparse; **no sumar sus resultados como si fueran muestras independientes**. Tampoco comparar solo la mejor estrategia sin considerar la búsqueda entre muchas variantes.
 - Conclusión documentada: resultados interesantes para investigar, **sin evidencia concluyente de ventaja predictiva**.
 
-## 7. Widget Android
-- Proyecto independiente en `android-widget/`, con código Java y configuración Gradle.
-- Muestra la última combinación registrada en `data/reto-predictor.json`; al tocarlo abre la web.
-- `.github/workflows/compilar-widget-android.yml`: compilación de APK de pruebas.
-- Según `android-widget/README.md`, solicita actualización cada 30 minutos sujeta a Android y conexión; el APK de pruebas no está firmado para Play Store.
+## 7. Widget Android retirado
+- El usuario decidió abandonar el widget Android el 2026-10-12 por problemas de funcionamiento y coste de mantenimiento.
+- Se eliminaron los 10 archivos de `android-widget/` y `.github/workflows/compilar-widget-android.yml` de la rama actual.
+- No se debe volver a compilar ni recomendar el APK. Los commits y artefactos antiguos pueden permanecer en el historial de GitHub; no se borran al eliminar archivos.
 
 ## 8. Mapa de archivos principales
 - Interfaz: `index.html`, `app.js`, `manifest.json`.
@@ -66,7 +65,7 @@ Actualizado: 2026-10-12. Fuente principal: archivos existentes en este repositor
 - Predicciones: `data/reto-predictor.json`, `data/reto-estrategia-congelada.json`, `scripts/generar_reto.py`, `scripts/guardar_reto.py`.
 - Aprendizaje: `scripts/aprender_reto.py`, `data/reto-aprendizaje.json`, archivos `data/reto-entrenamientos*.json` y `data/reto-*robustez.json`.
 - Automatización: `.github/workflows/`.
-- Android: `android-widget/`.
+- Android: componente retirado; no existe `android-widget/` en la rama actual.
 
 ## 9. Normas para continuar en futuras conversaciones
 1. Localizar y leer **este archivo** y el código actual del repositorio antes de hacer cambios.
@@ -82,7 +81,7 @@ Actualizado: 2026-10-12. Fuente principal: archivos existentes en este repositor
 - Auditar el origen y exactitud de `data/sorteos.json` frente a datos oficiales.
 - Revisar la inconsistencia del validador de ventanas de `scripts/guardar_reto.py` respecto a 50 sorteos.
 - Comprobar las opciones de 5 y 20 sorteos frente al mínimo de 30 registros requerido por la interfaz.
-- Verificar la ejecución real de workflows y el estado de GitHub Pages/Android; la presencia de archivos **no demuestra** que todas las automatizaciones estén funcionando.
+- Verificar la ejecución real de workflows y el estado de GitHub Pages; la presencia de archivos **no demuestra** que todas las automatizaciones estén funcionando.
 - Esperar la muestra prospectiva mínima prevista antes de evaluar cambios a la estrategia congelada.
 - Las conversaciones borradas no pueden reconstruirse palabra por palabra desde el repositorio; añadir aquí cualquier decisión anterior que el usuario recuerde y que aún no esté documentada.
 
@@ -91,8 +90,12 @@ Actualizado: 2026-10-12. Fuente principal: archivos existentes en este repositor
 
 
 ## 11. Privacidad y migración (2026-10-12)
-El propietario quiere proteger el código de predicción manteniendo la web y el widget funcionales. Se confirmó que el repositorio original sigue público, con GitHub Pages activado; `app.js` ejecuta el algoritmo del Laboratorio en el navegador y el widget usa la URL pública del JSON de predicciones. Se creó `PLAN_PRIVACIDAD.md` (commit `19a4c522ddf6662cf1c129e8dec1db8a6552b99d`) con el orden de migración a un motor privado y un frontend público mínimo. **No se ha creado todavía el repositorio privado ni se ha cambiado la visibilidad**; la conexión disponible no ofrece operaciones de administración para ello. Evitar cambios que rompan Pages o la publicación automática. Las copias públicas anteriores no pueden retirarse retroactivamente.
+El propietario quiere proteger el código de predicción manteniendo la web funcional. Se confirmó que el repositorio original sigue público, con GitHub Pages activado; `app.js` ejecuta el algoritmo del Laboratorio en el navegador y el widget usa la URL pública del JSON de predicciones. Se creó `PLAN_PRIVACIDAD.md` (commit `19a4c522ddf6662cf1c129e8dec1db8a6552b99d`) con el orden de migración a un motor privado y un frontend público mínimo. **No se ha creado todavía el repositorio privado ni se ha cambiado la visibilidad**; la conexión disponible no ofrece operaciones de administración para ello. Evitar cambios que rompan Pages o la publicación automática. Las copias públicas anteriores no pueden retirarse retroactivamente.
 
 
 ## 13. Segunda fase de copia privada (2026-10-12)
 Se copiaron a `danielMigales/Primitiva-IA-motor`: `update_data.py`, `diagnostico_selae.py`, `probar_selae.py`, `data/sorteos.json` y cinco workflows de actualización, reto y diagnóstico. En el repositorio privado, `actualizar.yml` y `reto-automatico.yml` se cambiaron a **solo `workflow_dispatch`** (sin cron) para no duplicar las ejecuciones del repositorio público; no se alteraron los workflows públicos. Comprobado que `app.js` descarga por rutas relativas `data/sorteos.json`, `data/reto-predictor.json` y `data/reto-aprendizaje.json`. Queda pendiente configurar la publicación selectiva y evitar exponer la lógica del Laboratorio ejecutada en el navegador. Las copias privadas no implican retirada de material público.
+
+
+## 14. Retirada definitiva del widget (2026-10-12)
+Por petición expresa del propietario se eliminaron del repositorio público los archivos del widget Android y el workflow de compilación. Se revisó el árbol de `main`: no quedan rutas de archivos que contengan `android`, `widget`, `apk` o `gradle`. La web y los JSON permanecen. Se desactivó el aviso recurrente de disponibilidad del APK. No confundir ausencia en la rama actual con borrado del historial Git, de ejecuciones pasadas o de artefactos antiguos.
