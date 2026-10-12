@@ -88,7 +88,7 @@ window.addEventListener('DOMContentLoaded',refreshHistory);
  };
 })();
 
-/* Panel de los 20 últimos sorteos disponibles en el histórico cargado. */
+/* Panel de los 5 últimos sorteos disponibles en el histórico cargado. */
 (function(){
  const historySection=document.getElementById('load').closest('section');
  const panel=document.createElement('section');
