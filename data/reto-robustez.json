@@ -1,0 +1,118 @@
+{
+  "updatedAt": "2026-10-12T15:11:43.127Z",
+  "type": "rolling-robustness",
+  "purpose": "Repeated chronological re-selection on previous 600 draws, next 200 unseen draws",
+  "historicalDraws": 4200,
+  "strategiesCompared": 24,
+  "folds": [
+    {
+      "testFrom": "2003-10-30",
+      "testUntil": "2005-09-24",
+      "window": 500,
+      "mode": "cold",
+      "three": 1,
+      "four": 1
+    },
+    {
+      "testFrom": "2005-09-29",
+      "testUntil": "2007-08-25",
+      "window": 100,
+      "mode": "cold",
+      "three": 4,
+      "four": 1
+    },
+    {
+      "testFrom": "2007-08-30",
+      "testUntil": "2009-07-25",
+      "window": 200,
+      "mode": "balanced",
+      "three": 6,
+      "four": 1
+    },
+    {
+      "testFrom": "2009-07-30",
+      "testUntil": "2011-06-25",
+      "window": 200,
+      "mode": "balanced",
+      "three": 4,
+      "four": 0
+    },
+    {
+      "testFrom": "2011-06-30",
+      "testUntil": "2013-05-25",
+      "window": 1000,
+      "mode": "cold",
+      "three": 2,
+      "four": 1
+    },
+    {
+      "testFrom": "2013-05-30",
+      "testUntil": "2015-04-25",
+      "window": 100,
+      "mode": "balanced",
+      "three": 2,
+      "four": 0
+    },
+    {
+      "testFrom": "2015-04-30",
+      "testUntil": "2017-03-25",
+      "window": 200,
+      "mode": "hot",
+      "three": 7,
+      "four": 0
+    },
+    {
+      "testFrom": "2017-03-30",
+      "testUntil": "2019-02-23",
+      "window": 200,
+      "mode": "hot",
+      "three": 3,
+      "four": 0
+    },
+    {
+      "testFrom": "2019-02-28",
+      "testUntil": "2021-03-27",
+      "window": 100,
+      "mode": "hot",
+      "three": 3,
+      "four": 0
+    },
+    {
+      "testFrom": "2021-04-01",
+      "testUntil": "2022-12-10",
+      "window": 200,
+      "mode": "cold",
+      "three": 7,
+      "four": 0
+    },
+    {
+      "testFrom": "2022-12-12",
+      "testUntil": "2024-03-21",
+      "window": 200,
+      "mode": "cold",
+      "three": 3,
+      "four": 0
+    },
+    {
+      "testFrom": "2024-03-23",
+      "testUntil": "2025-06-30",
+      "window": 50,
+      "mode": "hot",
+      "three": 7,
+      "four": 0
+    },
+    {
+      "testFrom": "2025-07-03",
+      "testUntil": "2026-10-10",
+      "window": 50,
+      "mode": "hot",
+      "three": 6,
+      "four": 0
+    }
+  ],
+  "totalTestDraws": 2600,
+  "totalThreePlus": 55,
+  "totalFourPlus": 4,
+  "randomExpectedThreePlus": 48.46,
+  "limitations": "No new unseen future draws; historical data not independently verified. Repeated historical experiments cannot prove prediction."
+}
