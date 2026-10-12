@@ -39,8 +39,19 @@ function validateModel(rows,field='nums'){
  const z=variance?(hits-baseline)/Math.sqrt(variance):0;
  return {tests,hits,baseline,z,significant:tests>=60&&z>2.58};
 }
+function periodRank(rows,field='nums'){
+ const observed=periodRows(rows),base=rankModel(rows,field);
+ const p=field==='reintegro'?.1:6/49;
+ const weight=Math.min(.75,Math.max(.3,observed.length/(observed.length+12)));
+ const sorted=base.sorted.map(e=>{
+  const count=observed.filter(r=>field==='reintegro'?r.reintegro===e.n:r.nums.includes(e.n)).length;
+  const z=observed.length?(count-observed.length*p)/Math.sqrt(observed.length*p*(1-p)):0;
+  return {...e,periodCount:count,periodTotal:observed.length,periodZ:z,combinedScore:(1-weight)*e.score+weight*Math.max(-3,Math.min(3,z))};
+ }).sort((a,b)=>b.combinedScore-a.combinedScore||a.n-b.n);
+ return {sorted,model:base.model,observed,weight};
+}
 function analyze(){
- const observed=periodRows(draws),rank=rankModel(draws),model=rank.model;
+ const rank=periodRank(draws),observed=rank.observed,model=rank.model;
  const nums=rank.sorted.slice(0,6).map(x=>x.n).sort((a,b)=>a-b);
  const bt=validateModel(draws);
  const data=rank.sorted.slice(0,6);
@@ -48,11 +59,11 @@ function analyze(){
  const topPairs=[...associations.pairs.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5);
  const explanations=data.map(e=>{
   const period=e.blocks.map(b=>b.days+' días: '+b.k+'/'+b.total+' (esperado '+b.expected.toFixed(1)+')').join(' · ');
-  return '<li class="selection-reason"><span class="chosen-number">'+e.n+'</span><span class="reason-copy">Última aparición: '+e.lastDate+'. '+period+'. En '+model.ytd[0]?.date?.slice(0,4)+': '+e.ycount+'/'+e.yTotal+'. Puntuación descriptiva: '+e.score.toFixed(2)+'.</span></li>'
+  return '<li class="selection-reason"><span class="chosen-number">'+e.n+'</span><span class="reason-copy">Última aparición: '+e.lastDate+'. '+period+'. En '+model.ytd[0]?.date?.slice(0,4)+': '+e.ycount+'/'+e.yTotal+'. Periodo seleccionado: '+e.periodCount+'/'+e.periodTotal+'. Puntuación combinada: '+e.combinedScore.toFixed(2)+'.</span></li>'
  }).join('');
  const status=bt.significant?'Hay una señal exploratoria que requiere confirmación independiente.':'No hay evidencia suficiente de ventaja sobre el azar.';
  $('output').innerHTML='<h3>Combinación experimental</h3><div class="balls">'+nums.map(n=>'<span class="ball">'+n+'</span>').join('')+'</div>'+
- '<p><strong>'+status+'</strong> Probabilidad teórica de seis aciertos: 1 entre 13.983.816. El análisis utiliza todos los sorteos disponibles desde 2000, dando prioridad a 30, 90 y 365 días; el selector solo cambia el periodo observado ('+observed.length+' sorteos).</p>'+
+ '<p><strong>'+status+'</strong> Probabilidad teórica de seis aciertos: 1 entre 13.983.816. El análisis utiliza todos los sorteos disponibles desde 2000, dando prioridad a 30, 90 y 365 días; el periodo seleccionado ('+observed.length+' sorteos) influye en la clasificación con un peso del '+Math.round(rank.weight*100)+' %, y el resto procede de la referencia histórica.</p>'+
  '<details open><summary>Por qué estos números</summary><ul class="selection-reasons">'+explanations+'</ul><p>Se estudian fechas, frecuencias recientes y desviaciones frente a 6/49 por sorteo. Las puntuaciones no indican probabilidades futuras.</p></details>'+
  '<details><summary>Coincidencias, parejas y rachas</summary><p>Parejas más frecuentes en 365 días: '+topPairs.map(([k,v])=>k+' ('+v+')').join(' · ')+'. Una pareja cualquiera tiene '+(100*expPair).toFixed(2)+' % de aparecer en un sorteo justo. Estas coincidencias no se usan como prueba de causalidad.</p><p>Los intervalos entre apariciones se calculan para cada número; una racha no demuestra que vaya a repetirse.</p></details>'+
  '<details open><summary>Validación cronológica</summary><p>'+bt.tests+' sorteos futuros simulados sin utilizar sus resultados para escoger los números: '+bt.hits+' aciertos individuales, frente a '+bt.baseline.toFixed(1)+' esperados por azar. Contraste exploratorio z='+bt.z.toFixed(2)+'. '+status+'</p><p>El método se ha diseñado observando este histórico; hacen falta pruebas prospectivas independientes. Se examinan 49 números y varios periodos, por lo que una frecuencia llamativa puede surgir por comparaciones múltiples.</p></details>';
@@ -251,7 +262,7 @@ function renderReintegroLaboratorio(){
  const output=$('output'),balls=output?.querySelector('.balls');if(!balls)return;
  output.querySelector('#reintegro-details')?.remove();
  balls.querySelector('#reintegro-result')?.remove();
- const rows=reintegrosHistoricos,rank=rankModel(rows,'reintegro'),choice=rank.sorted[0],bt=validateModel(rows,'reintegro');
+ const rows=reintegrosHistoricos,rank=periodRank(rows,'reintegro'),choice=rank.sorted[0],bt=validateModel(rows,'reintegro');
  if(!choice)return;
  const wrapper=document.createElement('span');wrapper.id='reintegro-result';wrapper.style.cssText='display:inline-flex;align-items:center;gap:6px';
  const plus=document.createElement('strong');plus.textContent='+';wrapper.appendChild(plus);
@@ -260,9 +271,9 @@ function renderReintegroLaboratorio(){
  const all=rank.sorted.slice().sort((a,b)=>a.n-b.n);
  const details=document.createElement('details');details.id='reintegro-details';details.open=true;
  const summary=document.createElement('summary');summary.textContent='Investigación del reintegro';details.appendChild(summary);
- const p=document.createElement('p');p.textContent='Candidato exploratorio: '+choice.n+'. Última aparición: '+choice.lastDate+'. Frecuencia del año en curso: '+choice.ycount+' de '+y+' sorteos (esperado '+expected.toFixed(1)+'). Frecuencias recientes: '+choice.blocks.map(b=>b.days+' días '+b.k+'/'+b.total).join(' · ')+'.';details.appendChild(p);
+ const p=document.createElement('p');p.textContent='Candidato exploratorio: '+choice.n+'. Última aparición: '+choice.lastDate+'. Frecuencia del año en curso: '+choice.ycount+' de '+y+' sorteos (esperado '+expected.toFixed(1)+'). Frecuencias recientes: '+choice.blocks.map(b=>b.days+' días '+b.k+'/'+b.total).join(' · ')+'. Periodo elegido: '+choice.periodCount+'/'+choice.periodTotal+'; peso del periodo '+Math.round(rank.weight*100)+' %.';details.appendChild(p);
  const compare=document.createElement('p');compare.textContent='Comparación anual de los 10 dígitos: '+all.map(e=>e.n+': '+e.ycount).join(' · ')+'. Valor p nominal del candidato frente al 10 %: '+choice.nominalP.toFixed(3)+'; no corregido por buscar entre diez dígitos y varios periodos.';details.appendChild(compare);
- const val=document.createElement('p');val.textContent='Prueba cronológica independiente del sorteo evaluado: '+bt.hits+' aciertos en '+bt.tests+' predicciones, frente a '+bt.baseline.toFixed(1)+' esperados al azar. '+(bt.significant?'Señal exploratoria pendiente de confirmación.':'Sin ventaja estadística demostrada.')+' La probabilidad teórica de cada dígito continúa siendo del 10 % en un sorteo justo.';details.appendChild(val);
+ const val=document.createElement('p');val.textContent='Prueba cronológica del modelo de referencia (sin el ajuste del periodo seleccionado): '+bt.hits+' aciertos en '+bt.tests+' predicciones, frente a '+bt.baseline.toFixed(1)+' esperados al azar. '+(bt.significant?'Señal exploratoria pendiente de confirmación.':'Sin ventaja estadística demostrada.')+' La probabilidad teórica de cada dígito continúa siendo del 10 % en un sorteo justo.';details.appendChild(val);
  const disclaimer=document.createElement('p');disclaimer.textContent='Datos de reintegros procedentes del CSV del usuario, no contrastados individualmente con SELAE. Según las normas de SELAE vigentes desde el 25/10/2018, el participante puede marcar opcionalmente su reintegro en el boleto; si no lo marca, se asigna automáticamente. Comprueba las opciones del canal de compra.';details.appendChild(disclaimer);
  const official=document.createElement('a');official.href='https://www.loteriasyapuestas.es/f/loterias/documentos/normativa/normativa%20SELAE/8-ACUERDO_Y_NORMAS_PRIMITIVA_OCT_2018.pdf';official.target='_blank';official.rel='noopener noreferrer';official.textContent='Normas oficiales sobre elección del reintegro (2018)';details.appendChild(official);details.appendChild(document.createTextNode(' · '));const link=document.createElement('a');link.href='./data/sorteos.json';link.target='_blank';link.rel='noopener noreferrer';link.textContent='Consultar histórico y procedencia';details.appendChild(link);output.appendChild(details);
 }
