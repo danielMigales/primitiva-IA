@@ -98,13 +98,16 @@ window.addEventListener('DOMContentLoaded',refreshHistory);
   const info=document.getElementById('last20-info'),list=document.getElementById('last20-list');
   if(!draws.length){info.textContent='Todavía no hay resultados cargados.';list.replaceChildren();return;}
   const latest=[...draws].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+  const counts=new Map();
+  for(const item of latest)for(const n of item.nums)counts.set(n,(counts.get(n)||0)+1);
   info.textContent='Último sorteo disponible: '+latest[0].date+'. Son los últimos resultados guardados, no necesariamente los últimos celebrados. Verifica los datos con SELAE.';
   list.replaceChildren();
+  const legend=document.createElement('p');legend.style.cssText='font-size:14px;color:#fce7bf;margin:12px 0';legend.textContent='🟠 Naranja = número repetido entre estos 5 sorteos · ×2, ×3… = veces que aparece';list.appendChild(legend);
   for(const item of latest){
    const row=document.createElement('div');row.style.cssText='padding:10px 0;border-bottom:1px solid #365066';
    const date=document.createElement('strong');date.textContent=item.date;
    const balls=document.createElement('div');balls.className='balls';balls.style.marginTop='7px';
-   for(const n of item.nums){const ball=document.createElement('span');ball.className='ball';ball.textContent=n;balls.appendChild(ball);}
+   for(const n of item.nums){const ball=document.createElement('span');ball.className='ball';const count=counts.get(n)||1;if(count>1){ball.style.cssText='background:#ffb347;color:#291600;border:3px solid #fff0c9;box-sizing:border-box;position:relative;font-weight:900;box-shadow:0 0 0 2px #a24b00';ball.title=n+' aparece '+count+' veces en los últimos 5 sorteos';const marker=document.createElement('span');marker.textContent='×'+count;marker.style.cssText='position:absolute;top:-9px;right:-10px;background:#6c2600;color:white;border-radius:10px;font-size:11px;line-height:17px;min-width:20px;padding:0 2px';ball.appendChild(document.createTextNode(n));ball.appendChild(marker);}else{ball.textContent=n;}balls.appendChild(ball);}
    row.append(date,balls);list.appendChild(row);
   }
  };
