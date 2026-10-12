@@ -1,0 +1,24 @@
+PRIMITIVA WEB PRO v11 — ACTUALIZACIÓN AUTOMÁTICA SIN API DE PAGO
+
+Esta entrega añade un sistema de actualización programada de CSV público.
+NO incluye un histórico real precargado: no se ha podido descargar/verificar aquí.
+
+CONFIGURACIÓN DESDE ANDROID:
+1. Crea un repositorio GitHub público y sube el contenido de esta carpeta,
+   incluyendo .github/workflows/actualizar.yml.
+2. En GitHub, abre Actions > Actualizar histórico Primitiva > Run workflow.
+3. En Settings > Actions > General, concede a GITHUB_TOKEN permiso de
+   lectura/escritura si el workflow no puede guardar data/sorteos.json.
+4. En Settings > Pages, selecciona Deploy from a branch, rama main, /(root).
+5. Espera a que se publique tu sitio; abre la URL HTTPS de GitHub Pages
+   en Chrome Android y usa Añadir a pantalla de inicio.
+6. Las tareas programadas intentan refrescar el CSV tres días por semana.
+   GitHub puede retrasar u omitir ejecuciones programadas.
+
+El script consulta CSV públicos alojados en GitHub y combina resultados
+válidos, conservando registros previos y bloqueando conflictos.
+No hay garantías de actualización hasta probar las fuentes y su formato.
+No está conectado directamente a SELAE; contrasta el último sorteo allí.
+No hay clave API de pago. No guarda apuestas ni datos personales.
+Una combinación basada en patrones no es más probable que otra en un
+sorteo justo. El motor sigue siendo experimental.
