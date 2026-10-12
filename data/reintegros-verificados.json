@@ -1,0 +1,56 @@
+{
+  "description": "Muestra parcial de reintegros comprobados en resultados publicados por SELAE; no representa el histórico completo ni permite inferir ventaja predictiva.",
+  "source": "SELAE",
+  "draws": [
+    {
+      "date": "2026-05-09",
+      "reintegro": 9,
+      "url": "https://www.loteriasyapuestas.es/es/la-primitiva/resultados/la-primitiva-resultados-del-09-de-mayo-de-2026"
+    },
+    {
+      "date": "2026-05-21",
+      "reintegro": 3,
+      "url": "https://www.loteriasyapuestas.es/es/la-primitiva/resultados/la-primitiva-resultados-del-21-de-mayo-de-2026"
+    },
+    {
+      "date": "2026-06-01",
+      "reintegro": 9,
+      "url": "https://www.loteriasyapuestas.es/es/la-primitiva/resultados/la-primitiva-resultados-del-01-de-junio-de-2026"
+    },
+    {
+      "date": "2026-06-04",
+      "reintegro": 9,
+      "url": "https://www.loteriasyapuestas.es/es/la-primitiva/resultados/la-primitiva-resultados-del-04-de-junio-de-2026"
+    },
+    {
+      "date": "2026-06-11",
+      "reintegro": 8,
+      "url": "https://www.loteriasyapuestas.es/es/la-primitiva/resultados/la-primitiva-resultados-del-11-de-junio-de-2026"
+    },
+    {
+      "date": "2026-06-13",
+      "reintegro": 9,
+      "url": "https://www.loteriasyapuestas.es/es/la-primitiva/resultados/la-primitiva-resultados-del-13-de-junio-de-2026"
+    },
+    {
+      "date": "2026-06-22",
+      "reintegro": 0,
+      "url": "https://www.loteriasyapuestas.es/es/la-primitiva/resultados/la-primitiva-resultados-del-22-de-junio-de-2026"
+    },
+    {
+      "date": "2026-09-07",
+      "reintegro": 4,
+      "url": "https://www.loteriasyapuestas.es/es/resultados"
+    },
+    {
+      "date": "2026-09-14",
+      "reintegro": 8,
+      "url": "https://www.loteriasyapuestas.es/es/resultados?drawId=745801002"
+    },
+    {
+      "date": "2026-09-17",
+      "reintegro": 8,
+      "url": "https://www.loteriasyapuestas.es/es/resultados?drawId=943008024"
+    }
+  ]
+}
