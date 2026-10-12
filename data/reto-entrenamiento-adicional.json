@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-12",
+  "evaluatedDraws": 1200,
+  "periods": 4,
+  "objective": "three or more",
+  "results": [
+    {
+      "type": "pair",
+      "window": 50,
+      "threePlus": 33,
+      "fourPlus": 2
+    },
+    {
+      "type": "triple",
+      "window": 30,
+      "threePlus": 30,
+      "fourPlus": 0
+    },
+    {
+      "type": "pair",
+      "window": 30,
+      "threePlus": 29,
+      "fourPlus": 1
+    },
+    {
+      "type": "triple",
+      "window": 50,
+      "threePlus": 29,
+      "fourPlus": 0
+    },
+    {
+      "type": "triple",
+      "window": 100,
+      "threePlus": 27,
+      "fourPlus": 0
+    },
+    {
+      "type": "triple",
+      "window": 200,
+      "threePlus": 23,
+      "fourPlus": 0
+    },
+    {
+      "type": "pair",
+      "window": 200,
+      "threePlus": 21,
+      "fourPlus": 2
+    },
+    {
+      "type": "pair",
+      "window": 100,
+      "threePlus": 20,
+      "fourPlus": 2
+    }
+  ],
+  "randomExpectedThreePlus": 22.365,
+  "notes": "Four sequential 300-draw historical periods. All methods use only prior draws at prediction time. Exploratory repeated testing; official frozen strategy and predictions unchanged."
+}
