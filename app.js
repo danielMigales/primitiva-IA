@@ -155,3 +155,41 @@ window.addEventListener('DOMContentLoaded',refreshHistory);
  setDraws=function(rows,source){previous(rows,source);render()};
  load();
 })();
+
+
+/* Evaluación retrospectiva independiente del historial prospectivo. */
+(function(){
+ const run=document.getElementById('reto-backtest-run'),out=document.getElementById('reto-backtest-output');
+ if(!run||!out)return;
+ const previous=setDraws;
+ setDraws=function(rows,source){previous(rows,source);run.disabled=rows.length<25};
+ run.onclick=()=>{
+  const requested=Number(document.getElementById('reto-backtest-count').value);
+  const windowSize=Number(document.getElementById('reto-backtest-window').value);
+  const start=Math.max(windowSize,draws.length-requested);
+  const counts=Array(7).fill(0),results=[];
+  for(let i=start;i<draws.length;i++){
+   const past=draws.slice(i-windowSize,i),actual=draws[i];
+   // select() uses random tie-breaking: this is an exploratory simulation, not a reproducible prospective record.
+   const nums=select(past).nums;
+   const hits=nums.filter(n=>actual.nums.includes(n)).length;
+   counts[hits]++;results.push({date:actual.date,nums,actual:actual.nums,hits});
+  }
+  out.replaceChildren();
+  if(!results.length){out.textContent='No hay suficientes sorteos anteriores para esta ventana.';return}
+  const heading=document.createElement('h3');heading.textContent='Resultados de '+results.length+' simulaciones';out.appendChild(heading);
+  const summary=document.createElement('p');
+  summary.textContent='Aciertos por sorteo: '+counts.map((n,i)=>i+' aciertos: '+n).join(' · ')+'. Total: '+results.reduce((s,r)=>s+r.hits,0)+'; esperado por azar: '+(results.length*36/49).toFixed(1)+'.';
+  out.appendChild(summary);
+  const note=document.createElement('p');note.className='muted';note.textContent='Simulación exploratoria, no predicciones hechas en esas fechas. El algoritmo tiene desempates aleatorios y los resultados pueden variar al repetir. No demuestra ventaja frente al azar.';out.appendChild(note);
+  for(const r of results.slice(-20).reverse()){
+   const card=document.createElement('div');card.className='reto-card';
+   const title=document.createElement('strong');title.textContent=r.date+' · '+r.hits+' aciertos';card.appendChild(title);
+   const balls=document.createElement('div');balls.className='balls';
+   for(const n of r.nums){const b=document.createElement('span');b.className='ball';b.textContent=n;if(r.actual.includes(n))b.classList.add('reto-hit');balls.appendChild(b)}
+   card.appendChild(balls);
+   const actual=document.createElement('p');actual.className='reto-meta';actual.textContent='Resultado histórico: '+r.actual.join(' · ');card.appendChild(actual);
+   out.appendChild(card);
+  }
+ };
+})();
