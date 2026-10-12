@@ -1,0 +1,79 @@
+{
+  "updatedAt": "2026-10-12T15:10:44.139Z",
+  "objective": "at-least-three",
+  "draws": 4200,
+  "strategiesCompared": 32,
+  "method": "Five chronological walk-forward folds, each selects strategy on preceding data and evaluates on subsequent unseen draws.",
+  "trials": [
+    {
+      "trial": 1,
+      "trainDraws": 800,
+      "testDraws": 400,
+      "strategy": {
+        "kind": "frequency",
+        "mode": "cold",
+        "w": 20
+      },
+      "three": 8,
+      "four": 0,
+      "total": 284
+    },
+    {
+      "trial": 2,
+      "trainDraws": 1200,
+      "testDraws": 500,
+      "strategy": {
+        "kind": "frequency",
+        "mode": "cold",
+        "w": 20
+      },
+      "three": 7,
+      "four": 0,
+      "total": 376
+    },
+    {
+      "trial": 3,
+      "trainDraws": 1700,
+      "testDraws": 500,
+      "strategy": {
+        "kind": "frequency",
+        "mode": "balanced",
+        "w": 100
+      },
+      "three": 10,
+      "four": 2,
+      "total": 400
+    },
+    {
+      "trial": 4,
+      "trainDraws": 2200,
+      "testDraws": 500,
+      "strategy": {
+        "kind": "triple",
+        "w": 50
+      },
+      "three": 12,
+      "four": 0,
+      "total": 352
+    },
+    {
+      "trial": 5,
+      "trainDraws": 2700,
+      "testDraws": 500,
+      "strategy": {
+        "kind": "triple",
+        "w": 50
+      },
+      "three": 10,
+      "four": 0,
+      "total": 364
+    }
+  ],
+  "totalTestDraws": 2400,
+  "totalThreePlus": 47,
+  "totalFourPlus": 2,
+  "randomExpectedThreePlus": 44.73010800485361,
+  "observedRate": 0.019583333333333335,
+  "randomRate": 0.01863754500202234,
+  "note": "Exploratory, not proof of prediction; original historic source not independently verified."
+}
