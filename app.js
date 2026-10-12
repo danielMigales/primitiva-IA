@@ -4,19 +4,35 @@ function combination(nums,reintegro){const row=document.createElement('div');row
 function p(text,cls=''){const e=document.createElement('p');e.textContent=text;if(cls)e.className=cls;return e}
 function explain(r){
  const root=$('reasoning');root.replaceChildren();
- const d=document.createElement('details');d.open=true;const summary=document.createElement('summary');summary.textContent='Por qué se eligieron estos números';d.appendChild(summary);
- if(Array.isArray(r.numberEvidence)&&r.numberEvidence.length){
-  d.appendChild(p('Los seis números se clasificaron por desviaciones de frecuencia respecto a 6/49, con ventanas de 30, 90 y 365 días (pesos 45 %, 35 % y 20 %).'));
-  for(const item of [...r.numberEvidence].sort((a,b)=>a.number-b.number)){
-   const windows=item.windows.map(w=>w.days+' días: '+w.hits+'/'+w.draws+' (azar '+w.expected+')').join(' · ');
-   const e=p('Número '+item.number+' · '+windows,'reason');d.appendChild(e);
-  }
- }else d.appendChild(p('Esta predicción fue registrada con una estrategia anterior. No se reconstruyen explicaciones a posteriori.'));
- if(r.reintegroEvidence){
-  const ev=r.reintegroEvidence;d.appendChild(p('Reintegro '+r.reintegro+': '+ev.windows.map(w=>w.days+' días '+w.hits+'/'+w.draws+' (azar '+w.expected+')').join(' · ')+'.'));
-  if(ev.backtest)d.appendChild(p('Contraste retrospectivo del reintegro: '+ev.backtest.hits+' aciertos de '+ev.backtest.tests+' predicciones; referencia aleatoria '+ev.backtest.expectedRandom+'. Este resultado no garantiza el siguiente sorteo.'));
+ const d=document.createElement('details');d.open=true;
+ const summary=document.createElement('summary');summary.textContent='Por qué se eligieron estos números';d.appendChild(summary);
+ const list=document.createElement('div');list.className='selection-reasons';
+ function reasonCard(n,description,gold=false){
+  const item=document.createElement('div');item.className='selection-reason';
+  const badge=document.createElement('span');badge.className='chosen-number'+(gold?' chosen-gold':'');badge.textContent=n;
+  const copy=document.createElement('div');copy.className='reason-copy';copy.textContent=description;
+  item.append(badge,copy);list.appendChild(item);
  }
- d.appendChild(p('Las frecuencias y las rachas son descriptivas. La selección no constituye una ventaja predictiva demostrada.','muted'));root.appendChild(d);
+ if(Array.isArray(r.numberEvidence)&&r.numberEvidence.length){
+  d.appendChild(p('Análisis de frecuencia frente al azar: últimos 30, 90 y 365 días, ponderados al 45 %, 35 % y 20 %.'));
+  for(const item of [...r.numberEvidence].sort((a,b)=>a.number-b.number)){
+   const windows=(item.windows||[]).map(w=>w.days+' días: '+w.hits+' apariciones en '+w.draws+' sorteos (esperadas '+w.expected+')').join('. ');
+   reasonCard(item.number,windows+'. Puntuación ponderada: '+Number(item.score).toFixed(2)+'.');
+  }
+ }else{
+  d.appendChild(p('Esta predicción pertenece al método anterior. No se inventarán motivos que no quedaron registrados.'));
+  for(const n of r.nums||[])reasonCard(n,'Número registrado con el método anterior; no se conserva una justificación individual verificable.');
+ }
+ if(Number.isInteger(r.reintegro)&&r.reintegro>=0&&r.reintegro<=9){
+  if(r.reintegroEvidence&&Array.isArray(r.reintegroEvidence.windows)){
+   const ev=r.reintegroEvidence;
+   reasonCard(r.reintegro,'Reintegro: '+ev.windows.map(w=>w.days+' días: '+w.hits+' de '+w.draws+' sorteos (esperadas '+w.expected+')').join('. ')+'.',true);
+  }else reasonCard(r.reintegro,'Reintegro registrado sin explicación estadística individual.',true);
+ }
+ d.appendChild(list);
+ if(r.reintegroEvidence?.backtest){const b=r.reintegroEvidence.backtest;d.appendChild(p('Comprobación retrospectiva del reintegro: '+b.hits+' aciertos en '+b.tests+' pruebas; referencia aleatoria '+b.expectedRandom+'.','muted'));}
+ d.appendChild(p('Las frecuencias son descriptivas; no hay una ventaja predictiva demostrada.','muted'));
+ root.appendChild(d);
 }
 async function fetchJson(path){const r=await fetch(path+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 async function load(){
