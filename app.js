@@ -14,9 +14,9 @@ function explain(r){
   item.append(badge,copy);list.appendChild(item);
  }
  if(Array.isArray(r.numberEvidence)&&r.numberEvidence.length){
-  d.appendChild(p('Análisis de frecuencia frente al azar: últimos 30, 90 y 365 días, ponderados al 45 %, 35 % y 20 %.'));
+  d.appendChild(p('Análisis de frecuencia: últimos 30, 90 y 365 días, ponderados al 45 %, 35 % y 20 %.'));
   for(const item of [...r.numberEvidence].sort((a,b)=>a.number-b.number)){
-   const windows=(item.windows||[]).map(w=>w.days+' días: '+w.hits+' apariciones en '+w.draws+' sorteos (esperadas '+w.expected+')').join('. ');
+   const windows=(item.windows||[]).map(w=>w.days+' días: '+w.hits+' apariciones en '+w.draws+' sorteos').join('. ');
    reasonCard(item.number,windows+'. Puntuación ponderada: '+Number(item.score).toFixed(2)+'.');
   }
  }else{
@@ -26,7 +26,7 @@ function explain(r){
  if(Number.isInteger(r.reintegro)&&r.reintegro>=0&&r.reintegro<=9){
   if(r.reintegroEvidence&&Array.isArray(r.reintegroEvidence.windows)){
    const ev=r.reintegroEvidence;
-   reasonCard(r.reintegro,'Reintegro: '+ev.windows.map(w=>w.days+' días: '+w.hits+' de '+w.draws+' sorteos (esperadas '+w.expected+')').join('. ')+'.',true);
+   reasonCard(r.reintegro,'Reintegro: '+ev.windows.map(w=>w.days+' días: '+w.hits+' de '+w.draws+' sorteos').join('. ')+'.',true);
   }else reasonCard(r.reintegro,'Reintegro registrado sin explicación estadística individual.',true);
  }
  d.appendChild(list);
