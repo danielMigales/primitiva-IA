@@ -9,16 +9,16 @@ function frequencyModel(rows,field='nums'){
  const year=rows.length?rows.at(-1).date.slice(0,4):'';
  const ytd=rows.filter(r=>r.date.startsWith(year));
  const scores=Array(size).fill(0),evidence=[];
+ const counts=windows.map(w=>Array(size).fill(0)),yearCounts=Array(size).fill(0),lastDates=Array(size).fill('sin apariciones');
+ const accumulate=(r,target)=>{if(digits){if(Number.isInteger(r.reintegro)&&r.reintegro>=0&&r.reintegro<=9)target[r.reintegro]++}else for(const n of r.nums)target[n]++};
+ for(let i=0;i<windows.length;i++)for(const r of windows[i].rows)accumulate(r,counts[i]);
+ for(const r of ytd)accumulate(r,yearCounts);
+ for(const r of rows){if(digits){if(Number.isInteger(r.reintegro))lastDates[r.reintegro]=r.date}else for(const n of r.nums)lastDates[n]=r.date}
  for(let n=first;n<=last;n++){
-  const occurrences=rows.filter(r=>digits?r.reintegro===n:r.nums.includes(n));
-  const gaps=occurrences.slice(1).map((r,i)=>(new Date(r.date)-new Date(occurrences[i].date))/86400000);
-  const blocks=windows.map(w=>{const k=w.rows.filter(r=>digits?r.reintegro===n:r.nums.includes(n)).length;const expected=w.rows.length*p;const z=w.rows.length?(k-expected)/Math.sqrt(w.rows.length*p*(1-p)):0;return {days:w.days,k,total:w.rows.length,expected,z}});
-  const ycount=ytd.filter(r=>digits?r.reintegro===n:r.nums.includes(n)).length;
-  const zy=ytd.length?(ycount-ytd.length*p)/Math.sqrt(ytd.length*p*(1-p)):0;
+  const blocks=windows.map((w,i)=>{const k=counts[i][n],expected=w.rows.length*p,z=w.rows.length?(k-expected)/Math.sqrt(w.rows.length*p*(1-p)):0;return {days:w.days,k,total:w.rows.length,expected,z}});
+  const ycount=yearCounts[n],zy=ytd.length?(ycount-ytd.length*p)/Math.sqrt(ytd.length*p*(1-p)):0;
   const score=blocks.reduce((a,b,i)=>a+[.45,.35,.20][i]*Math.max(-3,Math.min(3,b.z)),0);
-  scores[n]=score;
-  const lastDate=occurrences.at(-1)?.date||'sin apariciones';
-  evidence.push({n,blocks,ycount,yTotal:ytd.length,zy,lastDate,gaps,score,nominalP:normTail(zy)});
+  scores[n]=score;evidence.push({n,blocks,ycount,yTotal:ytd.length,zy,lastDate:lastDates[n],score,nominalP:normTail(zy)});
  }
  return {scores,evidence,windows,ytd,field};
 }
@@ -26,8 +26,12 @@ function rankModel(rows,field='nums'){
  const m=frequencyModel(rows,field),sorted=m.evidence.slice().sort((a,b)=>b.score-a.score||a.n-b.n);
  return {model:m,sorted};
 }
+const validationCache=new Map();
 function validateModel(rows,field='nums'){
- const digits=field==='reintegro',start=Math.max(120,Math.floor(rows.length*.55)),step=Math.max(1,Math.floor((rows.length-start)/140));
+ const key=field+'|'+rows.length+'|'+rows.at(-1)?.date;
+ if(validationCache.has(key))return validationCache.get(key);
+ const digits=field==='reintegro',start=Math.max(120,Math.floor(rows.length*.55));
+ const steps=32,step=Math.max(1,Math.ceil((rows.length-start)/steps));
  let tests=0,hits=0,baseline=0;
  for(let i=start;i<rows.length;i+=step){
   const past=rows.slice(0,i),rank=rankModel(past,field).sorted;
@@ -37,12 +41,13 @@ function validateModel(rows,field='nums'){
  }
  const variance=digits?tests*.1*.9:tests*(6*(6/49)*(43/49)*(43/48));
  const z=variance?(hits-baseline)/Math.sqrt(variance):0;
- return {tests,hits,baseline,z,significant:tests>=60&&z>2.58};
+ const result={tests,hits,baseline,z,significant:false};
+ validationCache.set(key,result);return result;
 }
 function periodRank(rows,field='nums'){
  const observed=periodRows(rows),base=rankModel(rows,field);
  const p=field==='reintegro'?.1:6/49;
- const weight=Math.min(.75,Math.max(.3,observed.length/(observed.length+12)));
+ const weight=Math.min(.85,observed.length/(observed.length+20));
  const sorted=base.sorted.map(e=>{
   const count=observed.filter(r=>field==='reintegro'?r.reintegro===e.n:r.nums.includes(e.n)).length;
   const z=observed.length?(count-observed.length*p)/Math.sqrt(observed.length*p*(1-p)):0;
@@ -63,10 +68,10 @@ function analyze(){
  }).join('');
  const status=bt.significant?'Hay una señal exploratoria que requiere confirmación independiente.':'No hay evidencia suficiente de ventaja sobre el azar.';
  $('output').innerHTML='<h3>Combinación experimental</h3><div class="balls">'+nums.map(n=>'<span class="ball">'+n+'</span>').join('')+'</div>'+
- '<p><strong>'+status+'</strong> Probabilidad teórica de seis aciertos: 1 entre 13.983.816. El análisis utiliza todos los sorteos disponibles desde 2000, dando prioridad a 30, 90 y 365 días; el periodo seleccionado ('+observed.length+' sorteos) influye en la clasificación con un peso del '+Math.round(rank.weight*100)+' %, y el resto procede de la referencia histórica.</p>'+
+ '<p><strong>'+status+'</strong> Probabilidad teórica de seis aciertos: 1 entre 13.983.816. El análisis utiliza los sorteos disponibles y compara ventanas de 30, 90 y 365 días; el periodo seleccionado ('+observed.length+' sorteos) influye en la clasificación con un peso del '+Math.round(rank.weight*100)+' %, y el resto procede de la referencia histórica.</p>'+
  '<details open><summary>Por qué estos números</summary><ul class="selection-reasons">'+explanations+'</ul><p>Se estudian fechas, frecuencias recientes y desviaciones frente a 6/49 por sorteo. Las puntuaciones no indican probabilidades futuras.</p></details>'+
  '<details><summary>Coincidencias, parejas y rachas</summary><p>Parejas más frecuentes en 365 días: '+topPairs.map(([k,v])=>k+' ('+v+')').join(' · ')+'. Una pareja cualquiera tiene '+(100*expPair).toFixed(2)+' % de aparecer en un sorteo justo. Estas coincidencias no se usan como prueba de causalidad.</p><p>Los intervalos entre apariciones se calculan para cada número; una racha no demuestra que vaya a repetirse.</p></details>'+
- '<details open><summary>Validación cronológica</summary><p>'+bt.tests+' sorteos futuros simulados sin utilizar sus resultados para escoger los números: '+bt.hits+' aciertos individuales, frente a '+bt.baseline.toFixed(1)+' esperados por azar. Contraste exploratorio z='+bt.z.toFixed(2)+'. '+status+'</p><p>El método se ha diseñado observando este histórico; hacen falta pruebas prospectivas independientes. Se examinan 49 números y varios periodos, por lo que una frecuencia llamativa puede surgir por comparaciones múltiples.</p></details>';
+ '<details open><summary>Validación cronológica</summary><p>'+bt.tests+' sorteos futuros simulados sin utilizar sus resultados para escoger los números: '+bt.hits+' aciertos individuales, frente a '+bt.baseline.toFixed(1)+' esperados por azar. Contraste exploratorio z='+bt.z.toFixed(2)+'. '+status+'</p><p>Validación exploratoria rápida de 32 fechas, del modelo de referencia sin ajuste del periodo. No valida la selección actual; hacen falta pruebas prospectivas independientes. Se examinan 49 números y varios periodos, por lo que una frecuencia llamativa puede surgir por comparaciones múltiples.</p></details>';
 }
  $('analyze').onclick=()=>{analyze();renderReintegroLaboratorio()};$('file').onchange=async e=>{let f=e.target.files[0];if(f)setDraws(parse(await f.text()),f.name)};async function refreshHistory(){
  $('status').textContent='Cargando histórico validado…';
