@@ -1,0 +1,31 @@
+name: Guardar historial Reto Predictor
+on:
+  workflow_dispatch:
+    inputs:
+      registro_json:
+        description: 'JSON exportado del Reto Predictor (objeto completo o array de predicciones)'
+        required: true
+        type: string
+permissions:
+  contents: write
+jobs:
+  guardar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar y añadir predicciones
+        env:
+          REGISTRO_JSON: ${{ inputs.registro_json }}
+        run: |
+          python scripts/guardar_reto.py
+      - name: Publicar historial
+        run: |
+          if git diff --quiet -- data/reto-predictor.json; then
+            echo "Sin predicciones nuevas"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/reto-predictor.json
+          git commit -m "Registrar predicciones del Reto Predictor"
+          git push
