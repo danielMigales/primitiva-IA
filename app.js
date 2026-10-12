@@ -92,12 +92,12 @@ window.addEventListener('DOMContentLoaded',refreshHistory);
 (function(){
  const historySection=document.getElementById('load').closest('section');
  const panel=document.createElement('section');
- panel.innerHTML='<h2>Últimos 20 sorteos</h2><p id="last20-info" class="muted">Cargando histórico…</p><div id="last20-list"></div>';
+ panel.innerHTML='<h2>Últimos 5 sorteos</h2><p id="last20-info" class="muted">Cargando histórico…</p><div id="last20-list"></div>';
  historySection.insertAdjacentElement('afterend',panel);
  const render=()=>{
   const info=document.getElementById('last20-info'),list=document.getElementById('last20-list');
   if(!draws.length){info.textContent='Todavía no hay resultados cargados.';list.replaceChildren();return;}
-  const latest=[...draws].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,20);
+  const latest=[...draws].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
   info.textContent='Último sorteo disponible: '+latest[0].date+'. Son los últimos resultados guardados, no necesariamente los últimos celebrados. Verifica los datos con SELAE.';
   list.replaceChildren();
   for(const item of latest){
