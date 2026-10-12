@@ -1,0 +1,78 @@
+{
+  "updatedAt": "2026-10-12T15:07:22.439Z",
+  "objective": "three-or-more",
+  "historicalDraws": 4200,
+  "folds": [
+    {
+      "trial": 1,
+      "trainDraws": 800,
+      "testDraws": 400,
+      "strategy": {
+        "w": 20,
+        "mode": "cold",
+        "id": "20-cold"
+      },
+      "three": 8,
+      "four": 0,
+      "total": 284
+    },
+    {
+      "trial": 2,
+      "trainDraws": 1200,
+      "testDraws": 500,
+      "strategy": {
+        "w": 20,
+        "mode": "cold",
+        "id": "20-cold"
+      },
+      "three": 7,
+      "four": 0,
+      "total": 376
+    },
+    {
+      "trial": 3,
+      "trainDraws": 1700,
+      "testDraws": 500,
+      "strategy": {
+        "w": 100,
+        "mode": "balanced",
+        "id": "100-balanced"
+      },
+      "three": 10,
+      "four": 2,
+      "total": 400
+    },
+    {
+      "trial": 4,
+      "trainDraws": 2200,
+      "testDraws": 500,
+      "strategy": {
+        "w": 100,
+        "mode": "cold",
+        "id": "100-cold"
+      },
+      "three": 6,
+      "four": 0,
+      "total": 353
+    },
+    {
+      "trial": 5,
+      "trainDraws": 2700,
+      "testDraws": 500,
+      "strategy": {
+        "w": 100,
+        "mode": "balanced",
+        "id": "100-balanced"
+      },
+      "three": 12,
+      "four": 0,
+      "total": 388
+    }
+  ],
+  "totalTestDraws": 2400,
+  "totalThreePlus": 43,
+  "expectedRandomThreePlus": 44.73,
+  "randomRate": 0.01863754500202234,
+  "observedRate": 0.017916666666666668,
+  "note": "Five sequential walk-forward validations. The training sets overlap, but each test is later than its training data. Historical data have not been officially audited; no predictive advantage is established."
+}
