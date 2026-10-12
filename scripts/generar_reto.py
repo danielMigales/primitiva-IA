@@ -21,20 +21,24 @@ entries = record["predictions"]
 if any(r["target"] == target for r in entries):
     print("Prediction already committed for", target)
     raise SystemExit(0)
-window = 500
+learned = json.loads(Path("data/reto-aprendizaje.json").read_text(encoding="utf-8"))
+window = learned["strategy"]["window"]
+mode = learned["strategy"]["mode"]
 past = rows[-window:]
 counts = Counter(n for r in past for n in r["nums"])
-short = Counter(n for r in past[-50:] for n in r["nums"])
-# Deterministic selection; no claim of a predictive edge.
-ranking = sorted(range(1, 50), key=lambda n: (-0.6 * counts[n] / len(past) - 0.4 * short[n] / min(50, len(past)), n))
-nums = sorted(ranking[:6])
+recent = Counter(n for r in past[-min(20,len(past)):] for n in r["nums"])
+def score(n):
+    a = counts[n] / len(past)
+    b = recent[n] / min(20,len(past))
+    return {"hot":a,"cold":-a,"recent":b,"balanced":0.6*a+0.4*b}[mode]
+nums = sorted(sorted(range(1,50),key=lambda n:(-score(n),n))[:6])
 entry = {
     "target": target,
     "nums": nums,
     "window": window,
     "historyUntil": rows[-1]["date"],
     "created": now.isoformat(),
-    "algorithm": "frequency-weighted-v1",
+    "algorithm": "historical-validation-v1:"+mode,
     "recordedBy": "GitHub Actions"
 }
 entries.append(entry)
