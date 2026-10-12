@@ -66,7 +66,7 @@ async function load(){
    const item=document.createElement('div');item.className='draw';
    const date=document.createElement('time');date.textContent=r.date;item.appendChild(date);
    const balls=combination(r.nums,r.reintegro);
-   for(const b of balls.querySelectorAll('.ball:not(.gold)'))if(repeated.has(Number(b.textContent))){b.classList.add('repeated');b.title='Repetido en los últimos 5 sorteos'}
+   for(const b of balls.querySelectorAll('.ball:not(.gold)')){const times=counts.get(Number(b.textContent))||0;if(times>=2){b.classList.add('repeated');b.title='Aparece '+times+' veces en los últimos 5 sorteos';const tag=document.createElement('span');tag.className='repeat-count';tag.textContent='×'+times;b.appendChild(tag)}}
    item.appendChild(balls);root.appendChild(item);
   }
   if(!draws.length)root.appendChild(p('No hay sorteos válidos disponibles.'));
