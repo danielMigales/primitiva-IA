@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "status": "frozen",
+  "frozenAt": "2026-10-12",
+  "strategy": {
+    "type": "pair",
+    "window": 50,
+    "scoring": "greedy-pair-v1"
+  },
+  "objective": "at-least-three-main-numbers",
+  "evaluation": "prospective-only",
+  "selectionReason": "Most recent three chronological folds selected pair with window 50; exploratory selection, not validated predictive advantage.",
+  "rule": "Do not change strategy until at least 30 prospectively registered and settled draws; record changes as a new version.",
+  "historicalDataVerifiedOfficially": false
+}
