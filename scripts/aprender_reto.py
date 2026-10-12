@@ -53,5 +53,16 @@ result={"updatedAt":datetime.now(timezone.utc).isoformat(),"historicalDraws":len
  "hasDemonstratedAdvantage":False,
  "note":"Exploratory holdout only; no reliable predictive advantage established. Strategy selected without using holdout outcomes.",
  "nextCombination":predict(rows,*chosen),"lastHistoricalDate":rows[-1]["date"]}
+# Keep the advanced experiment visible without promoting an unverified edge.
+advanced_path=Path("data/reto-entrenamientos-avanzados.json")
+if advanced_path.exists():
+    advanced=json.loads(advanced_path.read_text(encoding="utf-8"))
+    result["advancedExperiment"]={
+        "strategiesCompared":advanced["strategiesCompared"],
+        "testDraws":advanced["totalTestDraws"],
+        "threePlus":advanced["totalThreePlus"],
+        "randomExpectedThreePlus":round(advanced["randomExpectedThreePlus"],2),
+        "status":"exploratory-only"
+    }
 Path("data/reto-aprendizaje.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n")
 print("Selected",chosen,"three or more",three_plus,"random expectation",round(n*chance_three_plus,2))
