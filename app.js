@@ -44,7 +44,17 @@ async function load(){
   draws=history.value.draws.filter(r=>r&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&Array.isArray(r.nums)&&r.nums.length===6&&r.nums.every(n=>Number.isInteger(n)&&n>=1&&n<=49)).sort((a,b)=>b.date.localeCompare(a.date));
   $('draws-status').textContent='Último resultado registrado: '+(draws[0]?.date||'ninguno')+'. Actualización del archivo: '+(history.value.updated_at||'no indicada')+'.';
   const root=$('recent-draws');root.replaceChildren();
-  for(const r of draws.slice(0,5)){const item=document.createElement('div');item.className='draw';const date=document.createElement('time');date.textContent=r.date;item.appendChild(date);item.appendChild(combination(r.nums,r.reintegro));root.appendChild(item)}
+  const recent=draws.slice(0,5);
+  const counts=new Map();
+  for(const draw of recent)for(const n of new Set(draw.nums))counts.set(n,(counts.get(n)||0)+1);
+  const repeated=new Set([...counts].filter(([,times])=>times>=2).map(([n])=>n));
+  for(const r of recent){
+   const item=document.createElement('div');item.className='draw';
+   const date=document.createElement('time');date.textContent=r.date;item.appendChild(date);
+   const balls=combination(r.nums,r.reintegro);
+   for(const b of balls.querySelectorAll('.ball:not(.gold)'))if(repeated.has(Number(b.textContent))){b.classList.add('repeated');b.title='Repetido en los últimos 5 sorteos'}
+   item.appendChild(balls);root.appendChild(item);
+  }
   if(!draws.length)root.appendChild(p('No hay sorteos válidos disponibles.'));
  }else $('draws-status').textContent='No se ha podido cargar el histórico actualizado.';
  if(pred.status!=='fulfilled'||!Array.isArray(pred.value.predictions)){ $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';return}
