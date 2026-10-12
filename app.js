@@ -87,3 +87,28 @@ window.addEventListener('DOMContentLoaded',refreshHistory);
   const a=document.createElement('a');a.href=url;a.download='sorteos-combinados.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);
  };
 })();
+
+/* Panel de los 20 últimos sorteos disponibles en el histórico cargado. */
+(function(){
+ const historySection=document.getElementById('load').closest('section');
+ const panel=document.createElement('section');
+ panel.innerHTML='<h2>Últimos 20 sorteos</h2><p id="last20-info" class="muted">Cargando histórico…</p><div id="last20-list"></div>';
+ historySection.insertAdjacentElement('afterend',panel);
+ const render=()=>{
+  const info=document.getElementById('last20-info'),list=document.getElementById('last20-list');
+  if(!draws.length){info.textContent='Todavía no hay resultados cargados.';list.replaceChildren();return;}
+  const latest=[...draws].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,20);
+  info.textContent='Último sorteo disponible: '+latest[0].date+'. Son los últimos resultados guardados, no necesariamente los últimos celebrados. Verifica los datos con SELAE.';
+  list.replaceChildren();
+  for(const item of latest){
+   const row=document.createElement('div');row.style.cssText='padding:10px 0;border-bottom:1px solid #365066';
+   const date=document.createElement('strong');date.textContent=item.date;
+   const balls=document.createElement('div');balls.className='balls';balls.style.marginTop='7px';
+   for(const n of item.nums){const ball=document.createElement('span');ball.className='ball';ball.textContent=n;balls.appendChild(ball);}
+   row.append(date,balls);list.appendChild(row);
+  }
+ };
+ const previous=setDraws;
+ setDraws=function(rows,source){previous(rows,source);render();};
+ render();
+})();
