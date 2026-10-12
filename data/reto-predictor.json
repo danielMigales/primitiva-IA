@@ -1,5 +1,24 @@
 {
   "version": 1,
   "description": "Registro permanente del Reto Predictor. Las predicciones se incorporan mediante commits de GitHub; no son pruebas de ventaja predictiva.",
-  "predictions": []
+  "predictions": [
+    {
+      "target": "2026-10-12",
+      "nums": [
+        12,
+        17,
+        20,
+        24,
+        34,
+        40
+      ],
+      "window": 50,
+      "historyUntil": "2026-10-10",
+      "algorithm": "frozen-pair-50-v1",
+      "strategyFile": "data/reto-estrategia-congelada.json",
+      "recordedBy": "ChatGPT GitHub commit",
+      "goal": "at-least-three-main-numbers",
+      "note": "Manual early registration before draw; created timestamp denotes requested local time, Git commit is authoritative timestamp."
+    }
+  ]
 }
