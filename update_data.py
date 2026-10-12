@@ -9,6 +9,7 @@ import urllib.parse
 import urllib.request
 
 DEST = pathlib.Path(__file__).resolve().parent / "data" / "sorteos.json"
+CUTOFF = dt.date(2000, 1, 1)
 BASE_URL = "https://www.loteriasyapuestas.es/f/loterias/resultados/primitiva.html"
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; PrimitivaIA/1.0)", "Accept": "application/json,text/html;q=0.9,*/*;q=0.8"}
 
@@ -67,7 +68,7 @@ def main():
         return 1
     payload = json.loads(DEST.read_text(encoding="utf-8"))
     rows = payload.get("draws", [])
-    if len(rows) < 4200 or not all(valid(r) for r in rows):
+    if len(rows) < 2900 or not all(valid(r) and dt.date.fromisoformat(r["date"]) >= CUTOFF for r in rows):
         print("Histórico incompleto o inválido: actualización detenida", file=sys.stderr)
         return 1
     existing = {}
@@ -77,7 +78,7 @@ def main():
         if date in existing and existing[date]["nums"] != nums:
             print("Conflicto en histórico:", date, file=sys.stderr)
             return 1
-        existing[date] = {"date": date, "nums": nums}
+        existing[date] = dict(row, nums=nums)
     if len(existing) != len(rows):
         print("Fechas duplicadas: revisión manual necesaria", file=sys.stderr)
         return 1
@@ -108,7 +109,8 @@ def main():
     if not added:
         print("Sin nuevos resultados oficiales verificables. Histórico intacto.")
         return 0
-    payload["draws"] = [existing[key] for key in sorted(existing)]
+    payload["draws"] = [existing[key] for key in sorted(existing) if dt.date.fromisoformat(key) >= CUTOFF]
+    payload["reintegro_coverage"] = dict(payload.get("reintegro_coverage", {}), with_reintegro=sum(isinstance(x.get("reintegro"), int) for x in payload["draws"]), total=len(payload["draws"]), partial=any("reintegro" not in x for x in payload["draws"]))
     payload["updated_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     sources = payload.get("sources", [])
     payload["sources"] = list(dict.fromkeys(sources + ["SELAE: https://www.loteriasyapuestas.es/es/resultados/primitiva"]))
