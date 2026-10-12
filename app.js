@@ -10,7 +10,7 @@ function weeklyEvidence(r,draws,n,gold=false){
  if(!recent.length)return {days:7,hits:0,draws:0};
  return {days:7,hits:recent.filter(d=>gold?d.reintegro===n:d.nums.includes(n)).length,draws:recent.length};
 }
-function explain(r,draws){
+function explain(r,draws,entries){
  const root=$('reasoning');root.replaceChildren();
  const d=document.createElement('details');d.open=true;
  const summary=document.createElement('summary');summary.textContent='Por qué se eligieron estos números';d.appendChild(summary);
@@ -29,6 +29,13 @@ function explain(r,draws){
     line.append(period,count);copy.appendChild(line);
    }
   }else copy.textContent=fallback;
+  if(!gold){
+   const last=draws.find(x=>x.date===r.historyUntil);
+   const prior=entries.find(x=>x.target===last?.date);
+   if(last?.nums.includes(n)&&prior?.nums?.includes(n)){
+    copy.appendChild(p('Acertado también en la predicción del '+last.date+'. Sigue entre los seis números mejor clasificados por su frecuencia reciente; esto no aumenta su probabilidad real de salir.','repeat-note'));
+   }
+  }
   item.append(badge,copy);list.appendChild(item);
  }
  if(Array.isArray(r.numberEvidence)&&r.numberEvidence.length){
@@ -80,6 +87,6 @@ async function load(){
  const root=$('prediction');root.replaceChildren();root.appendChild(combination(latest.nums,latest.reintegro));
  if(!Number.isInteger(latest.reintegro))root.appendChild(p('Predicción antigua: no se registró reintegro antes del sorteo. No se añadirá retrospectivamente.','muted'));
  if(actual){const hits=latest.nums.filter(n=>actual.nums.includes(n)).length;root.appendChild(p('Resultado: '+hits+' de 6 números acertados'+(Number.isInteger(latest.reintegro)&&Number.isInteger(actual.reintegro)?' · Reintegro '+(latest.reintegro===actual.reintegro?'acertado':'no acertado'):'')+'.'))}
- explain(latest,draws);
+ explain(latest,draws,entries);
 }
 load().catch(e=>{$('prediction-status').textContent='Error de carga: '+e.message});
