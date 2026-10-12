@@ -88,3 +88,7 @@ Actualizado: 2026-10-12. Fuente principal: archivos existentes en este repositor
 
 ---
 **Guía de continuidad:** este archivo es la memoria técnica durable del proyecto, no una promesa de memoria automática de ChatGPT. En un chat nuevo, basta pedir: «Abre el repositorio danielMigales/primitiva-IA, lee MEMORIA_PROYECTO.md y continuemos».
+
+
+## 11. Privacidad y migración (2026-10-12)
+El propietario quiere proteger el código de predicción manteniendo la web y el widget funcionales. Se confirmó que el repositorio original sigue público, con GitHub Pages activado; `app.js` ejecuta el algoritmo del Laboratorio en el navegador y el widget usa la URL pública del JSON de predicciones. Se creó `PLAN_PRIVACIDAD.md` (commit `19a4c522ddf6662cf1c129e8dec1db8a6552b99d`) con el orden de migración a un motor privado y un frontend público mínimo. **No se ha creado todavía el repositorio privado ni se ha cambiado la visibilidad**; la conexión disponible no ofrece operaciones de administración para ello. Evitar cambios que rompan Pages o la publicación automática. Las copias públicas anteriores no pueden retirarse retroactivamente.
