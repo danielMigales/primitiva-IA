@@ -7,31 +7,33 @@ function explain(r){
  const d=document.createElement('details');d.open=true;
  const summary=document.createElement('summary');summary.textContent='Por qué se eligieron estos números';d.appendChild(summary);
  const list=document.createElement('div');list.className='selection-reasons';
- function reasonCard(n,description,gold=false){
+ function reasonCard(n,windows,gold=false,fallback=''){
   const item=document.createElement('div');item.className='selection-reason';
   const badge=document.createElement('span');badge.className='chosen-number'+(gold?' chosen-gold':'');badge.textContent=n;
-  const copy=document.createElement('div');copy.className='reason-copy';copy.textContent=description;
+  const copy=document.createElement('div');copy.className='reason-copy';
+  if(Array.isArray(windows)&&windows.length){
+   for(const w of windows){
+    const line=document.createElement('div');line.className='frequency-line';
+    const period=document.createElement('span');period.className='frequency-period';
+    period.textContent=w.days===30?'Último mes':w.days===90?'Últimos 3 meses':w.days===365?'Último año':'Últimos '+w.days+' días';
+    const count=document.createElement('span');count.className='frequency-count';
+    count.textContent=w.hits+' '+(w.hits===1?'aparición':'apariciones')+' en '+w.draws+' sorteos';
+    line.append(period,count);copy.appendChild(line);
+   }
+  }else copy.textContent=fallback;
   item.append(badge,copy);list.appendChild(item);
  }
  if(Array.isArray(r.numberEvidence)&&r.numberEvidence.length){
-  d.appendChild(p('Análisis de frecuencia: últimos 30, 90 y 365 días, ponderados al 45 %, 35 % y 20 %.'));
-  for(const item of [...r.numberEvidence].sort((a,b)=>a.number-b.number)){
-   const windows=(item.windows||[]).map(w=>w.days+' días: '+w.hits+' apariciones en '+w.draws+' sorteos').join('. ');
-   reasonCard(item.number,windows+'. Puntuación ponderada: '+Number(item.score).toFixed(2)+'.');
-  }
+  for(const item of [...r.numberEvidence].sort((a,b)=>a.number-b.number))reasonCard(item.number,item.windows);
  }else{
-  d.appendChild(p('Esta predicción pertenece al método anterior. No se inventarán motivos que no quedaron registrados.'));
-  for(const n of r.nums||[])reasonCard(n,'Número registrado con el método anterior; no se conserva una justificación individual verificable.');
+  d.appendChild(p('Predicción anterior: no se conservaron explicaciones individuales verificables.','muted'));
+  for(const n of r.nums||[])reasonCard(n,null,false,'Sin desglose estadístico registrado.');
  }
  if(Number.isInteger(r.reintegro)&&r.reintegro>=0&&r.reintegro<=9){
-  if(r.reintegroEvidence&&Array.isArray(r.reintegroEvidence.windows)){
-   const ev=r.reintegroEvidence;
-   reasonCard(r.reintegro,'Reintegro: '+ev.windows.map(w=>w.days+' días: '+w.hits+' de '+w.draws+' sorteos').join('. ')+'.',true);
-  }else reasonCard(r.reintegro,'Reintegro registrado sin explicación estadística individual.',true);
+  reasonCard(r.reintegro,r.reintegroEvidence?.windows,true,'Reintegro registrado sin desglose estadístico.');
  }
  d.appendChild(list);
- if(r.reintegroEvidence?.backtest){const b=r.reintegroEvidence.backtest;d.appendChild(p('Comprobación retrospectiva del reintegro: '+b.hits+' aciertos en '+b.tests+' pruebas; referencia aleatoria '+b.expectedRandom+'.','muted'));}
- d.appendChild(p('Las frecuencias son descriptivas; no hay una ventaja predictiva demostrada.','muted'));
+ d.appendChild(p('Estos datos describen el histórico; no demuestran una ventaja predictiva.','muted'));
  root.appendChild(d);
 }
 async function fetchJson(path){const r=await fetch(path+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
