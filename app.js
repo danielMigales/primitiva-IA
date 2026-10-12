@@ -184,24 +184,31 @@ function reintegroMasFrecuente(rows){
  return {digit:best,counts};
 }
 function renderReintegroLaboratorio(){
- const node=document.getElementById('reintegro-lab');if(!node)return;
- node.replaceChildren();
- const heading=document.createElement('h3');heading.textContent='Reintegro · análisis del Laboratorio';node.appendChild(heading);
+ const output=document.getElementById('output');if(!output)return;
+ const previous=document.getElementById('reintegro-result');if(previous)previous.remove();
+ const balls=output.querySelector('.balls');if(!balls)return; // Solo tras solicitar una combinación.
  const rows=reintegrosVerificados.slice(-Number(document.getElementById('window').value));
- if(!rows.length){const p=document.createElement('p');p.textContent='No hay reintegros oficiales verificados cargados. No se genera un número sin datos.';node.appendChild(p);return;}
- const result=reintegroMasFrecuente(rows);
- const p=document.createElement('p');p.innerHTML='<strong>Dígito experimental: <span class="ball" style="display:inline-grid">'+result.digit+'</span></strong> · '+result.counts[result.digit]+' apariciones en '+rows.length+' sorteos documentados.';node.appendChild(p);
- const freq=document.createElement('p');freq.textContent='Frecuencias: '+result.counts.map((n,i)=>i+': '+n).join(' · ');node.appendChild(freq);
- let hits=0,tests=0;
- for(let i=5;i<rows.length;i++){const prior=reintegroMasFrecuente(rows.slice(0,i)).digit;if(prior===rows[i].reintegro)hits++;tests++;}
- const info=document.createElement('p');info.className='muted';info.textContent='Muestra parcial de SELAE ('+rows[0].date+' a '+rows.at(-1).date+'), no histórico completo. Prueba cronológica disponible: '+tests+' sorteos, '+hits+' aciertos; referencia aleatoria: '+(tests/10).toFixed(1)+' esperados. Cada dígito tiene un 10 % de probabilidad teórica en el próximo sorteo; el histórico no demuestra que el dígito propuesto tenga más posibilidades. El reintegro del boleto oficial lo asigna aleatoriamente SELAE.';node.appendChild(info);
- const link=document.createElement('a');link.href='./data/reintegros-verificados.json';link.textContent='Consultar fechas y fuentes oficiales de la muestra';link.target='_blank';link.rel='noopener noreferrer';node.appendChild(link);
+ const wrapper=document.createElement('div');wrapper.id='reintegro-result';wrapper.style.cssText='display:inline-flex;align-items:center;gap:9px;flex-wrap:wrap;margin:10px 0 0';
+ const label=document.createElement('strong');label.textContent='Reintegro sugerido:';wrapper.appendChild(label);
+ if(rows.length){
+  const result=reintegroMasFrecuente(rows);
+  const digit=document.createElement('span');digit.className='ball';digit.style.cssText='background:#f6d58a;color:#10263b';digit.textContent=result.digit;wrapper.appendChild(digit);
+  const details=document.createElement('details');details.style.margin='10px 0';
+  const summary=document.createElement('summary');summary.textContent='Cómo se eligió el reintegro';details.appendChild(summary);
+  const freq=document.createElement('p');freq.textContent='Frecuencias observadas en '+rows.length+' sorteos documentados: '+result.counts.map((n,i)=>i+': '+n).join(' · ')+'. Selección: dígito más frecuente (empates: menor dígito).';details.appendChild(freq);
+  let hits=0,tests=0;for(let i=5;i<rows.length;i++){if(reintegroMasFrecuente(rows.slice(0,i)).digit===rows[i].reintegro)hits++;tests++;}
+  const note=document.createElement('p');note.textContent='Prueba cronológica: '+hits+' aciertos en '+tests+' sorteos evaluados; referencia de azar: '+(tests/10).toFixed(1)+'. Muestra parcial, no histórico completo. El dígito sugerido sigue teniendo una probabilidad teórica del 10 % en un sorteo justo; no existe ventaja demostrada.';details.appendChild(note);
+  const link=document.createElement('a');link.href='./data/reintegros-verificados.json';link.textContent='Ver datos y fuentes de la muestra';link.target='_blank';link.rel='noopener noreferrer';details.appendChild(link);
+  wrapper.appendChild(details);
+ }else{const unavailable=document.createElement('span');unavailable.textContent='sin datos verificados disponibles';wrapper.appendChild(unavailable);}
+ balls.insertAdjacentElement('afterend',wrapper);
 }
+
 (async function(){try{
  const response=await fetch('./data/reintegros-verificados.json?nocache='+Date.now(),{cache:'no-store'});
  if(!response.ok)throw Error('HTTP '+response.status);
  const data=await response.json();if(!Array.isArray(data.draws))throw Error('Formato inválido');
  const seen=new Set();reintegrosVerificados=data.draws.filter(r=>r&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&Number.isInteger(r.reintegro)&&r.reintegro>=0&&r.reintegro<=9&&typeof r.url==='string'&&!seen.has(r.date)&&seen.add(r.date)).sort((a,b)=>a.date.localeCompare(b.date));
  }catch(e){console.warn('Reintegros no disponibles:',e.message)}
- renderReintegroLaboratorio();
+ if(document.getElementById('output')?.querySelector('.balls'))renderReintegroLaboratorio();
 })();
