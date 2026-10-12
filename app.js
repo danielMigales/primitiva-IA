@@ -157,47 +157,17 @@ window.addEventListener('DOMContentLoaded',refreshHistory);
 })();
 
 
-/* Simulación retrospectiva reproducible, sin consultar resultados futuros. */
-(function(){
- const run=document.getElementById('reto-backtest-run'),out=document.getElementById('reto-backtest-output');
- if(!run||!out)return;
- const previous=setDraws;
- setDraws=function(rows,source){previous(rows,source);run.disabled=rows.length<25};
- function predict(past){
-  const freq=Array(50).fill(0),recent=Array(50).fill(0);
-  for(const r of past)for(const n of r.nums)freq[n]++;
-  for(const r of past.slice(-Math.min(50,past.length)))for(const n of r.nums)recent[n]++;
-  // Deterministic ranking. Uses only the historical window before the target draw.
-  return Array.from({length:49},(_,i)=>i+1)
-   .sort((a,b)=>(.6*freq[b]/past.length+.4*recent[b]/Math.min(50,past.length))-(.6*freq[a]/past.length+.4*recent[a]/Math.min(50,past.length))||a-b)
-   .slice(0,6).sort((a,b)=>a-b);
- }
- run.onclick=()=>{
-  const requested=Number(document.getElementById('reto-backtest-count').value);
-  const windowSize=Number(document.getElementById('reto-backtest-window').value);
-  const start=Math.max(windowSize,draws.length-requested),counts=Array(7).fill(0),results=[];
-  for(let i=start;i<draws.length;i++){
-   const nums=predict(draws.slice(i-windowSize,i)),actual=draws[i],actualSet=new Set(actual.nums);
-   const hits=nums.filter(n=>actualSet.has(n)).length;
-   counts[hits]++;results.push({date:actual.date,nums,actual:actual.nums,hits});
-  }
-  out.replaceChildren();
-  if(!results.length){out.textContent='No hay suficientes sorteos históricos para esta ventana.';return}
-  const h=document.createElement('h3');h.textContent='Viaje al pasado: '+results.length+' predicciones';out.appendChild(h);
-  const total=results.reduce((s,r)=>s+r.hits,0),expected=results.length*36/49;
-  const p=document.createElement('p');p.textContent='Aciertos totales: '+total+' · Esperados por azar: '+expected.toFixed(1)+' · Media: '+(total/results.length).toFixed(3)+' por sorteo.';out.appendChild(p);
-  const distribution=document.createElement('p');distribution.textContent='Distribución: '+counts.map((v,i)=>i+' aciertos: '+v).join(' · ');out.appendChild(distribution);
-  const note=document.createElement('p');note.className='muted';note.textContent='Cada simulación utiliza exclusivamente los '+windowSize+' sorteos anteriores. Método fijo y reproducible: 60 % frecuencia en la ventana y 40 % frecuencia en los últimos 50 de esa ventana; desempates por número menor. No es una predicción registrada en el pasado ni demuestra ventaja predictiva. Los datos históricos requieren contraste con SELAE.';out.appendChild(note);
-  const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Ver las '+results.length+' predicciones y resultados';details.appendChild(summary);
-  const list=document.createElement('div');list.style.cssText='max-height:480px;overflow-y:auto;margin-top:10px';
-  for(const r of results.slice().reverse()){
-   const card=document.createElement('div');card.className='reto-card';
-   const title=document.createElement('strong');title.textContent=r.date+' · '+r.hits+' aciertos';card.appendChild(title);
-   const balls=document.createElement('div');balls.className='balls';
-   for(const n of r.nums){const b=document.createElement('span');b.className='ball';b.textContent=n;if(r.actual.includes(n))b.classList.add('reto-hit');balls.appendChild(b)}
-   card.appendChild(balls);
-   const actual=document.createElement('p');actual.className='reto-meta';actual.textContent='Resultado: '+r.actual.join(' · ');card.appendChild(actual);list.appendChild(card);
-  }
-  details.appendChild(list);out.appendChild(details);
- };
+/* Mostrar únicamente propuesta y estado del aprendizaje, no cada prueba. */
+(async function(){
+ const node=document.getElementById('reto-learning');if(!node)return;
+ try{
+  const response=await fetch('./data/reto-aprendizaje.json?nocache='+Date.now(),{cache:'no-store'});
+  if(!response.ok)throw Error('aún no publicado');
+  const model=await response.json();
+  node.replaceChildren();
+  const title=document.createElement('p');title.textContent='Estrategia seleccionada con pruebas cronológicas: '+model.strategy.mode+' · ventana '+model.strategy.window+' sorteos.';node.appendChild(title);
+  const row=document.createElement('div');row.className='balls';
+  for(const n of model.nextCombination){const ball=document.createElement('span');ball.className='ball';ball.textContent=n;row.appendChild(ball)}node.appendChild(row);
+  const note=document.createElement('p');note.className='muted';note.textContent='Combinación experimental calculada con datos hasta '+model.lastHistoricalDate+'. No se ha demostrado una ventaja predictiva frente al azar. La predicción oficial del reto es la que queda registrada antes del sorteo en GitHub.';node.appendChild(note);
+ }catch(e){node.textContent='El aprendizaje automático todavía no se ha ejecutado o publicado en GitHub.'}
 })();
