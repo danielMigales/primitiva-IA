@@ -18,7 +18,7 @@ class Element {
 const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10-12',reintegro:8};
 const draw = {date:'2026-10-12',nums:[2,5,26,40,42,45],reintegro:9};
 async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z') {
- const elements=Object.fromEntries(['prediction','prediction-status','reasoning','recent-draws','draws-status'].map(id=>[id,new Element('div')]));
+ const elements=Object.fromEntries(['prediction','prediction-status','reasoning','recent-draws','draws-status','tracking'].map(id=>[id,new Element('div')]));
  class Clock extends Date { constructor(...args){super(...(args.length?args:[today]));} static now(){return Date.parse(today);} }
  const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,
   fetch:async url=>{const data=url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
@@ -78,4 +78,41 @@ test('weekly reintegro frequency excludes draws lacking reintegro',async()=>{
 test('settled prediction has correct main and reintegro hits',async()=>{
  const {elements}=await render({predictions:[{...entry,target:draw.date,reintegro:9}]});
  assert.match(elements.prediction.textContent,/2 de 6 números acertados · Reintegro acertado/);
+});
+
+test('tracking separates algorithms and counts failures and pending records',async()=>{
+ const predictions=[
+  {...entry,target:draw.date,algorithm:'pairs',window:50,nums:[1,3,4,6,7,8],reintegro:8},
+  {...entry,algorithm:'recency',window:365}
+ ];
+ const {elements}=await render({predictions},undefined);
+ const text=elements.tracking.textContent;
+ assert.match(text,/2 predicciones registradas · 1 con resultado disponible · 1 sin resultado disponible/);
+ assert.match(text,/pairs \/ ventana 50/);
+ assert.match(text,/recency \/ ventana 365/);
+ assert.match(text,/Aciertos principales: 0 · Sorteos con 3 o más: 0/);
+ assert.match(text,/0 \/ 6 aciertos · Reintegro no acertado/);
+ assert.match(text,/0.73 aciertos principales y 0.02 sorteos/);
+});
+test('tracking does not count duplicate targets or unavailable reintegros',async()=>{
+ const prediction={...entry,target:draw.date,reintegro:null};
+ const {context}=await render();
+ context.input={entries:[prediction,prediction],draws:[draw]};
+ const rows=vm.runInContext('trackingResults(input.entries,input.draws)',context);
+ assert.equal(rows.length,1);
+ assert.equal(rows[0].hits,2);
+ assert.equal(rows[0].reintegro,null);
+});
+test('random reference is exact for six numbers out of 49',async()=>{
+ const {context}=await render();
+ assert.equal(vm.runInContext('choose(49,6)',context),13983816);
+ const p=vm.runInContext('[3,4,5,6].reduce((s,k)=>s+choose(6,k)*choose(43,6-k)/choose(49,6),0)',context);
+ assert.ok(Math.abs(p-260624/13983816)<1e-12);
+});
+test('tracking reports loading failures without inventing results',async()=>{
+ const {elements}=await render(undefined,new Error('offline'));
+ assert.match(elements.tracking.textContent,/0 con resultado disponible/);
+ assert.match(elements.tracking.textContent,/No se puede comprobar el histórico/);
+ const empty=await render({predictions:[]});
+ assert.match(empty.elements.tracking.textContent,/Aún no hay predicciones válidas/);
 });

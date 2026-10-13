@@ -107,3 +107,13 @@ Se copiaron a `danielMigales/Primitiva-IA-motor`: `update_data.py`, `diagnostico
 - Verificación adicional: 3.000 sorteos, máximo 2026-10-12, sin fechas duplicadas ni combinaciones inválidas, todos con reintegro 0–9; no equivale a cotejo oficial. Las ocho pruebas Python del Reto continúan pasando.
 - Archivos de datos, estrategia y algoritmo de predicción sin cambios. Commit: el que incorpora esta sección.
 - Limitaciones: inspección del navegador en escritorio y pruebas de lógica con DOM mínimo; no es prueba en un dispositivo Android real ni auditoría de la fuente SELAE. La presencia del manifiesto no garantiza capacidades offline.
+
+## 16. Seguimiento de predicciones (2026-10-13)
+- Petición: hacer operativo el seguimiento recomendado. Se añade a la web el historial completo de resultados declarados, incluidos cero aciertos, pendientes y ausencia de reintegro; se actualiza al cargar los JSON publicados.
+- Resumen por identificador de algoritmo y ventana: registros resueltos, progreso hasta 30, aciertos principales, casos de tres o más y reintegros evaluables. No se mezclan estrategias ni se cuentan revisiones o duplicados como predicciones adicionales.
+- Referencia matemática al azar para la misma cantidad de sorteos resueltos: 36/49 aciertos principales esperados por combinación, probabilidad hipergeométrica de tres o más y 0,1 para reintegro. No es simulación retrospectiva ni certificación de ventaja.
+- Registro manual: conserva metadatos suministrados de algoritmo, evidencias y reintegro, tras la validación existente; antes los descartaba en entradas nuevas. Nunca sustituye registros existentes.
+- Comprobaciones: trece pruebas del frontend y ocho del Reto; resultados por algoritmo, fallos, pendientes, duplicados, cobertura de reintegro, fórmula exacta y conservación de metadatos. Datos y estrategia congelada sin cambios.
+- Situación actual: predicción 2026-10-12 de parejas/50 con 1 de 6 aciertos y sin reintegro registrado; predicción 2026-10-15 de recencia/365 pendiente. Son resultados según el histórico publicado, no una auditoría oficial independiente.
+- Pendiente: elección del usuario entre mantener recencia 30/90/365 como versión nueva o volver a ejecutar parejas/50 conforme a la estrategia congelada. Hasta resolverlo, no se modifica el generador ni la configuración congelada.
+- Archivos: `app.js`, `index.html`, pruebas de app y Reto, `scripts/guardar_reto.py` y esta memoria. Commit: el que incorpora esta sección.

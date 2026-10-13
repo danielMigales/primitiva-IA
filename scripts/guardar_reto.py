@@ -27,6 +27,7 @@ for record in records:
             raise ValueError("Ya existe otra combinación registrada para " + target)
         continue
     known[target] = {
+        **record,
         "target": target,
         "nums": sorted(nums),
         "created": created,

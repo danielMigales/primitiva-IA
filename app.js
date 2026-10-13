@@ -71,6 +71,57 @@ function explain(r,draws,entries){
  d.appendChild(p('Estos datos describen el histórico; no demuestran una ventaja predictiva.','muted'));
  root.appendChild(d);
 }
+function choose(n,k){let result=1;for(let i=1;i<=k;i++)result=result*(n-i+1)/i;return result}
+function trackingResults(entries,draws){
+ const results=new Map(draws.map(d=>[d.date,d]));
+ const seen=new Set();
+ return entries.filter(r=>{if(seen.has(r.target))return false;seen.add(r.target);return true}).map(r=>{
+  const actual=results.get(r.target);
+  return {record:r,actual,hits:actual?r.nums.filter(n=>actual.nums.includes(n)).length:null,
+   reintegro:actual&&validReintegro(r.reintegro)&&validReintegro(actual.reintegro)?Number(r.reintegro===actual.reintegro):null};
+ });
+}
+function renderTracking(entries,draws,historyLoaded){
+ const root=$('tracking');root.replaceChildren();
+ if(!entries.length){root.appendChild(p('Aún no hay predicciones válidas registradas.'));return}
+ const rows=trackingResults(entries,draws);
+ const settled=rows.filter(r=>r.actual);
+ root.appendChild(p(rows.length+' predicciones registradas · '+settled.length+' con resultado disponible · '+(rows.length-settled.length)+' sin resultado disponible.'));
+ if(!historyLoaded)root.appendChild(p('No se puede comprobar el histórico en este momento.','muted'));
+ const groups=new Map();
+ for(const row of rows){
+  const algorithm=typeof row.record.algorithm==='string'?row.record.algorithm:'sin identificador';
+  const key=algorithm+' / ventana '+(row.record.window??'no indicada');
+  if(!groups.has(key))groups.set(key,[]);
+  groups.get(key).push(row);
+ }
+ const chanceThree=[3,4,5,6].reduce((sum,k)=>sum+choose(6,k)*choose(43,6-k)/choose(49,6),0);
+ for(const [label,group] of groups){
+  const resolved=group.filter(r=>r.actual);
+  const hits=resolved.reduce((sum,r)=>sum+r.hits,0);
+  const three=resolved.filter(r=>r.hits>=3).length;
+  const reintegros=resolved.filter(r=>r.reintegro!==null);
+  const card=document.createElement('div');card.className='tracking-group';
+  card.appendChild(p(label,'tracking-label'));
+  card.appendChild(p('Seguimiento: '+resolved.length+' / 30 sorteos con resultado'+(resolved.length>=30?' · Primer hito alcanzado; no demuestra ventaja.':'.')));
+  if(resolved.length){
+   card.appendChild(p('Aciertos principales: '+hits+' · Sorteos con 3 o más: '+three+'.'));
+   card.appendChild(p('Referencia al azar para '+resolved.length+' sorteos: '+(resolved.length*36/49).toFixed(2)+' aciertos principales y '+(resolved.length*chanceThree).toFixed(2)+' sorteos con 3 o más, en promedio.','muted'));
+   card.appendChild(p(reintegros.length?'Reintegro: '+reintegros.reduce((sum,r)=>sum+r.reintegro,0)+' aciertos en '+reintegros.length+' predicciones evaluables · Referencia al azar: '+(reintegros.length/10).toFixed(2)+'.':'Reintegro: sin predicciones evaluables.','muted'));
+  }
+  root.appendChild(card);
+ }
+ const detail=document.createElement('details');detail.open=true;
+ const summary=document.createElement('summary');summary.textContent='Resultados de todas las predicciones';detail.appendChild(summary);
+ for(const row of rows){
+  const item=document.createElement('div');item.className='tracking-entry';
+  item.appendChild(p(row.record.target+' · '+row.record.nums.join(', ')+(validReintegro(row.record.reintegro)?' + R '+row.record.reintegro:'')));
+  const result=row.actual?row.hits+' / 6 aciertos'+(row.reintegro!==null?' · Reintegro '+(row.reintegro?'acertado':'no acertado'):' · Reintegro no evaluable'):!historyLoaded?'Resultado sin comprobar':row.record.target<madridToday()?'Resultado no disponible en el histórico':'Pendiente de resultado';
+  item.appendChild(p(result,'muted'));detail.appendChild(item);
+ }
+ root.appendChild(detail);
+ root.appendChild(p('Se incluyen también los fallos. Cada algoritmo se evalúa por separado; las revisiones conservadas no cuentan como apuestas adicionales. La referencia al azar es matemática para sorteos uniformes de 6 entre 49 y reintegro de 0 a 9; no son apuestas generadas después del resultado. Las fechas de publicación se comprueban en los commits y los resultados pueden requerir cotejo oficial.','notice'));
+}
 async function fetchJson(path){const r=await fetch(path+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 async function load(){
  const [pred,history]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json')]);
@@ -94,8 +145,9 @@ async function load(){
   }
   if(!draws.length)root.appendChild(p('No hay sorteos válidos disponibles.'));
  }else $('draws-status').textContent='No se ha podido cargar el histórico actualizado.';
- if(pred.status!=='fulfilled'||!Array.isArray(pred.value?.predictions)){ $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';return}
+ if(pred.status!=='fulfilled'||!Array.isArray(pred.value?.predictions)){ $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';$('tracking').replaceChildren(p('No se pudo cargar el registro de predicciones.'));return}
  const entries=pred.value.predictions.filter(r=>r&&validDate(r.target)&&validNumbers(r.nums)).sort((a,b)=>b.target.localeCompare(a.target));
+ renderTracking(entries,draws,historyLoaded);
  const latest=entries[0];if(!latest){$('prediction-status').textContent='Aún no hay predicciones registradas.';return}
  const actual=draws.find(d=>d.date===latest.target);
  const status=actual?'Sorteo ya celebrado':!historyLoaded||!draws.length?'Resultado sin comprobar: histórico no disponible':latest.target<madridToday()?'Resultado no disponible en el histórico':'Pendiente de resultado';

@@ -116,6 +116,9 @@ class RetoTests(unittest.TestCase):
         # Created must not be in the future relative to the real test clock.
         entry["created"] = self.entry["created"]
         self.assertEqual(self.manual([entry]).returncode, 0)
+        saved_manual = json.loads(self.registry.read_text())["predictions"][-1]
+        for key in ("algorithm", "numberEvidence", "reintegro", "reintegroAlgorithm", "reintegroEvidence"):
+            self.assertEqual(saved_manual[key], entry[key])
 
     def test_automatic_rejection_prevents_write(self):
         before = self.registry.read_bytes()
