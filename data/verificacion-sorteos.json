@@ -1,5 +1,96 @@
 {
   "version": 1,
   "description": "Cotejos completos o parciales con resultados oficiales inequívocos. Sin cotejo registrado, el resultado queda pendiente. Se conserva una copia de los valores cotejados para detectar cambios.",
-  "draws": []
+  "draws": [
+    {
+      "date": "2026-10-03",
+      "nums": [
+        6,
+        20,
+        24,
+        27,
+        44,
+        45
+      ],
+      "reintegro": 2,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_03_10_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "9d59e12a31e323285033b35cf750fbfdbc3a15311fb3e55daa83ef2e80e385d3",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:07:24.290241+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_03_10_26.pdf"
+    },
+    {
+      "date": "2026-10-05",
+      "nums": [
+        4,
+        10,
+        20,
+        25,
+        40,
+        49
+      ],
+      "reintegro": 3,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_5_10_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "8fd9beab41e337fcb8b339e5e4bc479390e7d6693c971cdfb733edde76672bb0",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:07:28.683188+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_5_10_26.pdf"
+    },
+    {
+      "date": "2026-10-08",
+      "nums": [
+        6,
+        7,
+        14,
+        16,
+        21,
+        37
+      ],
+      "reintegro": 2,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_08_10_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "a61470569f1efc3bf0cb030403694de77aee14eb6891954aaf14809f66a33941",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:07:34.224372+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_08_10_26.pdf"
+    },
+    {
+      "date": "2026-10-10",
+      "nums": [
+        10,
+        16,
+        18,
+        20,
+        22,
+        29
+      ],
+      "reintegro": 7,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_10_10_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "10724371a0e25e5965c722e0edfd3532c7c3a0d84b6d983d4d055875169a5ee0",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:07:39.943540+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_10_10_26.pdf"
+    },
+    {
+      "date": "2026-10-12",
+      "nums": [
+        2,
+        5,
+        26,
+        40,
+        42,
+        45
+      ],
+      "reintegro": 9,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_12_10_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "9b46786d6d85f427cdbdffb3dc473b72dcaa7cd2abae5da4fc478ce5ed482cf4",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:07:45.582196+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_12_10_26.pdf"
+    }
+  ]
 }

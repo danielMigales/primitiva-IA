@@ -66,24 +66,50 @@ class UpdateTests(unittest.TestCase):
 
     def test_html_is_not_an_official_json_result(self):
         class Response:
+            url = "https://www.loteriasyapuestas.es/f/loterias/documentos/result.pdf"
             def __enter__(self): return self
             def __exit__(self, *args): pass
             def read(self, n): return b'<html>Primitiva 1 2 3 4 5 6</html>'
         with patch.object(updater.urllib.request, "urlopen", return_value=Response()):
-            self.assertIsNone(updater.official(date(2026, 10, 12)))
+            with self.assertRaisesRegex(ValueError, "PDF oficial"):
+                updater.official(date(2026, 10, 12))
 
-    def test_official_json_requires_exact_date_game_and_integer_numbers(self):
-        class Response:
-            def __init__(self, payload): self.payload = payload
-            def __enter__(self): return self
-            def __exit__(self, *args): pass
-            def read(self, n): return json.dumps(self.payload).encode()
-        good = {"fecha_sorteo": "20261012", "combinacion": [1,2,3,4,5,6], "reintegro": 9}
-        for change in ({"fecha_sorteo": "2026101234"}, {"game_id": "BONO"}, {"combinacion": [1,2,3,4,5,6.5]}):
-            with self.subTest(change=change), patch.object(updater.urllib.request, "urlopen", return_value=Response({**good, **change})):
-                self.assertIsNone(updater.official(date(2026, 10, 12)))
-        with patch.object(updater.urllib.request, "urlopen", return_value=Response(good)):
-            self.assertEqual(updater.official(date(2026, 10, 12))["nums"], good["combinacion"])
+    def pdf_text(self):
+        return """En el sorteo de la Lotería Primitiva celebrado hoy lunes día 12 de octubre de 2026
+la combinación ganadora ha correspondido a los siguientes números:
+40 26 42 02 45 05 23 9 - - - - -
+Complementario Reintegro JOKER: 4781884
+La recaudación del sorteo ascendió a 4.801.230,00 euros
+Reintegro 458.451 1,00"""
+
+    def test_pdf_result_block_excludes_prize_table_and_joker(self):
+        row = updater.parse_official_pdf_text(self.pdf_text(), date(2026, 10, 12))
+        self.assertEqual(row, {"date": "2026-10-12", "nums": [2,5,26,40,42,45], "reintegro": 9})
+
+    def test_pdf_labels_joined_to_digits_remain_separate_fields(self):
+        text = self.pdf_text().replace("23 9 - - - - -\nComplementario Reintegro", "- - - - -Complementario23Reintegro9")
+        row = updater.parse_official_pdf_text(text, date(2026,10,12))
+        self.assertEqual(row["reintegro"], 9)
+        self.assertEqual(row["nums"], [2,5,26,40,42,45])
+
+    def test_pdf_requires_correct_game_date_and_unique_block(self):
+        text = self.pdf_text()
+        for changed in (text.replace("Lotería Primitiva", "BonoLoto"),
+                        text.replace("12 de octubre", "10 de octubre"),
+                        text+text,
+                        text.replace("40 26 42 02 45 05", "40 40 42 02 45 05"),
+                        text.replace("23 9 -", "23 10 -"),
+                        text.replace("Reintegro JOKER", "JOKER")):
+            with self.subTest(text=changed), self.assertRaises(ValueError):
+                updater.parse_official_pdf_text(changed, date(2026, 10, 12))
+
+    def test_pdf_date_must_match_requested_target(self):
+        with self.assertRaises(ValueError):
+            updater.parse_official_pdf_text(self.pdf_text(), date(2026, 10, 10))
+
+    def test_url_is_official_dated_press_document(self):
+        self.assertEqual(updater.official_url(date(2026,10,12)),
+            "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_12_10_26.pdf")
 
 
 if __name__ == "__main__":
