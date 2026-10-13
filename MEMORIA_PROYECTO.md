@@ -27,7 +27,7 @@ Actualizado: 2026-10-13. Fuente principal: archivos existentes en este repositor
 
 ## 4. Reto Predictor: registro verificable
 - `data/reto-predictor.json`: registro versionado de predicciones; los commits GitHub permiten comprobar cuándo quedaron publicadas.
-- `scripts/generar_reto.py`: el código actual genera predicciones con recencia 30/90/365 días, ventana 365 e identificador `unified-recency-z-30-90-365-v1`; evita duplicados y usa sorteos anteriores al objetivo. No implementa actualmente la estrategia congelada de parejas/50.
+- `scripts/generar_reto.py`: usa `data/reto-estrategia-activa.json` (versión 2, recencia 30/90/365 días) y etiqueta las nuevas entradas con `strategyVersion: 2`. El identificador de implementación `unified-recency-z-30-90-365-v1` se conserva porque el cálculo no cambia. Evita duplicados; parejas/50 queda como versión anterior.
 - `scripts/guardar_reto.py`: valida e incorpora registros, con comprobaciones de fechas, números y ventanas admitidas.
 - `.github/workflows/reto-automatico.yml` y `guardar-reto.yml`: automatización/registro.
 - Predicción existente al revisar el repositorio: objetivo **2026-10-12**, números **12, 17, 20, 24, 34, 40**, ventana 50, histórico hasta 2026-10-10. El JSON indica registro manual por commit y advierte que el timestamp del commit es la referencia de auditoría.
@@ -73,7 +73,7 @@ Actualizado: 2026-10-13. Fuente principal: archivos existentes en este repositor
 
 ## 10. Pendientes y limitaciones
 - Auditar el origen y exactitud de `data/sorteos.json` frente a datos oficiales.
-- Resuelta la admisión de 50 y 365 y la validación común; permanece pendiente decidir por separado la relación entre el motor actual de recencia y la estrategia congelada de parejas/50.
+- Resuelta la admisión de 50 y 365 y la validación común. El usuario eligió recencia como versión 2 activa el 2026-10-13; parejas/50 queda preservada como configuración anterior.
 - Las opciones antiguas del Laboratorio ya no están en la interfaz actual; revisar solo si se decide recuperarlas.
 - Verificar la ejecución real de workflows y el estado de GitHub Pages; la presencia de archivos **no demuestra** que todas las automatizaciones estén funcionando.
 - Esperar la muestra prospectiva mínima prevista antes de evaluar cambios a la estrategia congelada.
@@ -115,5 +115,16 @@ Se copiaron a `danielMigales/Primitiva-IA-motor`: `update_data.py`, `diagnostico
 - Registro manual: conserva metadatos suministrados de algoritmo, evidencias y reintegro, tras la validación existente; antes los descartaba en entradas nuevas. Nunca sustituye registros existentes.
 - Comprobaciones: trece pruebas del frontend y ocho del Reto; resultados por algoritmo, fallos, pendientes, duplicados, cobertura de reintegro, fórmula exacta y conservación de metadatos. Datos y estrategia congelada sin cambios.
 - Situación actual: predicción 2026-10-12 de parejas/50 con 1 de 6 aciertos y sin reintegro registrado; predicción 2026-10-15 de recencia/365 pendiente. Son resultados según el histórico publicado, no una auditoría oficial independiente.
-- Pendiente: elección del usuario entre mantener recencia 30/90/365 como versión nueva o volver a ejecutar parejas/50 conforme a la estrategia congelada. Hasta resolverlo, no se modifica el generador ni la configuración congelada.
+- Decisión posterior: el usuario eligió mantener recencia 30/90/365 como nueva versión; implementada en la sección 17. La configuración congelada anterior permanece intacta.
 - Archivos: `app.js`, `index.html`, pruebas de app y Reto, `scripts/guardar_reto.py` y esta memoria. Commit: el que incorpora esta sección.
+
+## 17. Estrategia activa versión 2 (2026-10-13)
+- Elección explícita del usuario: «Mantener el motor actual: recencia 30/90/365, como nueva versión». Esta elección autoriza una nueva versión antes de completar los 30 sorteos del plan anterior; no altera su archivo ni sus registros.
+- Nuevo archivo `data/reto-estrategia-activa.json`: versión 2 activa, pesos 0,45/0,35/0,20 para 30/90/365 días, recorte z a ±3, redondeo principal a cinco decimales y desempate numérico ascendente. Se conserva el ranking de reintegro existente.
+- `scripts/generar_reto.py` lee la configuración activa, comprueba que coincide con el método elegido y añade `strategyVersion: 2` y `strategyFile` a las nuevas predicciones. Cambios de parámetros sin nueva implementación detienen la escritura.
+- No se renombra el identificador de implementación terminado en v1: el motor matemático es el mismo. La versión de estrategia 2 identifica la nueva etapa prospectiva.
+- La interfaz muestra el motor activo y separa la muestra v2 de las predicciones anteriores sin versión de estrategia. Empieza en 0/30; el registro del 15/10 queda intacto y no se reclasifica retrospectivamente.
+- Los workflows existentes siguen registrando una entrada por objetivo, sin sustituir combinaciones ya publicadas. El workflow de comprobación verifica ahora frontend y Python, incluidos cambios de configuración o scripts.
+- Verificación: catorce pruebas frontend y nueve Python; comprobación de parámetros alterados sin escritura, metadatos conservados y muestras por versión separadas. Comparación en directorios temporales con los 3.000 sorteos reales: mismos números, reintegro y evidencias antes/después; solo se añaden los dos campos de versión.
+- Configuración congelada parejas/50, registros de predicción y resultados históricos preservados. Primer hito: 30 sorteos resueltos de v2, sin reajustar automáticamente los parámetros; no equivale a demostrar ventaja.
+- Archivos: configuración activa, generador, interfaz, pruebas, workflow de comprobación y esta memoria. Commit: el que incorpora esta sección.

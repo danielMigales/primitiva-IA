@@ -5,6 +5,22 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 from validar_reto import validate_prediction
 
+strategy_path = "data/reto-estrategia-activa.json"
+strategy_config = json.loads(Path(strategy_path).read_text(encoding="utf-8"))
+strategy = strategy_config["strategy"]
+# Version 2 retains exactly the approved motor. Fail before writing if its
+# parameters drift; a method change must be implemented as a new version.
+expected_strategy = {
+    "type": "recency-z", "window": 365,
+    "windows": [{"days": 30, "weight": .45}, {"days": 90, "weight": .35}, {"days": 365, "weight": .20}],
+    "zClip": 3, "scorePrecision": 5, "tieBreak": "number-ascending",
+    "algorithm": "unified-recency-z-30-90-365-v1",
+    "reintegroAlgorithm": "recency-z-30-90-365-v1",
+}
+if strategy_config.get("version") != 2 or strategy_config.get("status") != "active" or strategy != expected_strategy:
+    raise ValueError("La estrategia activa no coincide con la versión 2 aprobada.")
+weights = tuple((item["days"], item["weight"]) for item in strategy["windows"])
+
 now = datetime.now(ZoneInfo("Europe/Madrid"))
 tomorrow = (now + timedelta(days=1)).date()
 if tomorrow.weekday() not in (0, 3, 5):
@@ -23,7 +39,7 @@ from math import sqrt
 def rank_numbers(history):
     latest = datetime.fromisoformat(history[-1]["date"]).date()
     windows = []
-    for days, weight in ((30,.45),(90,.35),(365,.20)):
+    for days, weight in weights:
         sample = [r for r in history if 0 <= (latest-datetime.fromisoformat(r["date"]).date()).days <= days]
         counts = [0]*50
         for r in sample:
@@ -44,14 +60,13 @@ def rank_numbers(history):
 ranked_numbers=rank_numbers(rows)
 chosen=sorted(x["number"] for x in ranked_numbers[:6])
 number_evidence=[x for x in ranked_numbers if x["number"] in chosen]
-window=365
+window=strategy["window"]
 # Modelo determinista de recencia del reintegro: ventanas 30, 90 y 365 días.
 # No se interpreta como garantía ni como evidencia de sesgo del sorteo.
 from math import sqrt
 def reintegro_rank(history):
     latest = datetime.fromisoformat(history[-1]["date"]).date()
     valid = [r for r in history if type(r.get("reintegro")) is int and 0 <= r["reintegro"] <= 9]
-    weights = ((30, .45), (90, .35), (365, .20))
     scored = []
     for digit in range(10):
         components = []
@@ -75,10 +90,11 @@ reintegro_ranking = reintegro_rank(rows)
 reintegro_test = reintegro_backtest(rows)
 reintegro_choice = reintegro_ranking[0]
 entry={"target":target,"nums":sorted(chosen),"window":window,"historyUntil":rows[-1]["date"],
-       "created":now.isoformat(),"algorithm":"unified-recency-z-30-90-365-v1",
+       "created":now.isoformat(),"algorithm":strategy["algorithm"],
+       "strategyVersion":strategy_config["version"],"strategyFile":strategy_path,
        "numberEvidence":number_evidence,"recordedBy":"GitHub Actions",
-       "goal":"maximize-main-and-reintegro-hits",
-       "reintegro":reintegro_choice["digit"],"reintegroAlgorithm":"recency-z-30-90-365-v1",
+       "goal":strategy_config["objective"],
+       "reintegro":reintegro_choice["digit"],"reintegroAlgorithm":strategy["reintegroAlgorithm"],
        "reintegroEvidence":{"lastHistoricalDate":rows[-1]["date"],"score":round(reintegro_choice["score"],4),"windows":reintegro_choice["windows"],"backtest":reintegro_test,
        "interpretation":"Exploratory ranking, no confirmed predictive advantage; fair-draw probability 10 percent."}}
 validate_prediction(entry, rows[-1]["date"])

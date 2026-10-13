@@ -20,6 +20,8 @@ class RetoTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.work = Path(self.temp.name)
         (self.work / "data").mkdir()
+        (self.work / "data/reto-estrategia-activa.json").write_bytes(
+            (ROOT / "data/reto-estrategia-activa.json").read_bytes())
         self.existing = {
             "version": 1,
             "predictions": [
@@ -108,6 +110,8 @@ class RetoTests(unittest.TestCase):
         entry = saved["predictions"][-1]
         self.assertEqual(entry["window"], 365)
         self.assertEqual(entry["algorithm"], "unified-recency-z-30-90-365-v1")
+        self.assertEqual(entry["strategyVersion"], 2)
+        self.assertEqual(entry["strategyFile"], "data/reto-estrategia-activa.json")
         self.assertEqual(saved["predictions"][:-1], self.existing["predictions"])
         self.assertEqual(saved["revisions"], self.existing["revisions"])
         validate_prediction(entry, "2026-10-12", date(2026, 10, 16))
@@ -117,8 +121,18 @@ class RetoTests(unittest.TestCase):
         entry["created"] = self.entry["created"]
         self.assertEqual(self.manual([entry]).returncode, 0)
         saved_manual = json.loads(self.registry.read_text())["predictions"][-1]
-        for key in ("algorithm", "numberEvidence", "reintegro", "reintegroAlgorithm", "reintegroEvidence"):
+        for key in ("algorithm", "strategyVersion", "strategyFile", "numberEvidence", "reintegro", "reintegroAlgorithm", "reintegroEvidence"):
             self.assertEqual(saved_manual[key], entry[key])
+
+    def test_active_strategy_drift_prevents_write(self):
+        config_path = self.work / "data/reto-estrategia-activa.json"
+        config = json.loads(config_path.read_text())
+        config["strategy"]["windows"][0]["weight"] = .5
+        config_path.write_text(json.dumps(config))
+        before = self.registry.read_bytes()
+        with self.assertRaisesRegex(ValueError, "versión 2 aprobada"):
+            self.automatic(16)
+        self.assertEqual(self.registry.read_bytes(), before)
 
     def test_automatic_rejection_prevents_write(self):
         before = self.registry.read_bytes()

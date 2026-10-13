@@ -81,7 +81,13 @@ function trackingResults(entries,draws){
    reintegro:actual&&validReintegro(r.reintegro)&&validReintegro(actual.reintegro)?Number(r.reintegro===actual.reintegro):null};
  });
 }
-function renderTracking(entries,draws,historyLoaded){
+function strategyLabel(record){
+ const algorithm=typeof record.algorithm==='string'?record.algorithm:'sin identificador';
+ const version=Number.isInteger(record.strategyVersion)?'versión '+record.strategyVersion:'registro anterior sin versión de estrategia';
+ return algorithm+' / ventana '+(record.window??'no indicada')+' / '+version;
+}
+function validActiveStrategy(config){return config?.status==='active'&&Number.isInteger(config.version)&&config.version>=2&&config.strategy?.type==='recency-z'&&config.strategy.window===365&&typeof config.strategy.algorithm==='string'}
+function renderTracking(entries,draws,historyLoaded,activeStrategy){
  const root=$('tracking');root.replaceChildren();
  if(!entries.length){root.appendChild(p('Aún no hay predicciones válidas registradas.'));return}
  const rows=trackingResults(entries,draws);
@@ -89,9 +95,9 @@ function renderTracking(entries,draws,historyLoaded){
  root.appendChild(p(rows.length+' predicciones registradas · '+settled.length+' con resultado disponible · '+(rows.length-settled.length)+' sin resultado disponible.'));
  if(!historyLoaded)root.appendChild(p('No se puede comprobar el histórico en este momento.','muted'));
  const groups=new Map();
+ if(validActiveStrategy(activeStrategy))groups.set(strategyLabel({algorithm:activeStrategy.strategy.algorithm,window:activeStrategy.strategy.window,strategyVersion:activeStrategy.version}),[]);
  for(const row of rows){
-  const algorithm=typeof row.record.algorithm==='string'?row.record.algorithm:'sin identificador';
-  const key=algorithm+' / ventana '+(row.record.window??'no indicada');
+  const key=strategyLabel(row.record);
   if(!groups.has(key))groups.set(key,[]);
   groups.get(key).push(row);
  }
@@ -124,7 +130,9 @@ function renderTracking(entries,draws,historyLoaded){
 }
 async function fetchJson(path){const r=await fetch(path+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 async function load(){
- const [pred,history]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json')]);
+ const [pred,history,active]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json'),fetchJson('./data/reto-estrategia-activa.json')]);
+ const activeStrategy=active.status==='fulfilled'?active.value:null;
+ $('active-strategy').textContent=validActiveStrategy(activeStrategy)?'Motor activo: recencia 30/90/365 días · Versión '+activeStrategy.version+'. Su evaluación empieza con las nuevas predicciones de esta versión.':'No se ha podido comprobar la estrategia activa.';
  let draws=[];
  const historyLoaded=history.status==='fulfilled'&&Array.isArray(history.value?.draws);
  if(historyLoaded){
@@ -147,7 +155,7 @@ async function load(){
  }else $('draws-status').textContent='No se ha podido cargar el histórico actualizado.';
  if(pred.status!=='fulfilled'||!Array.isArray(pred.value?.predictions)){ $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';$('tracking').replaceChildren(p('No se pudo cargar el registro de predicciones.'));return}
  const entries=pred.value.predictions.filter(r=>r&&validDate(r.target)&&validNumbers(r.nums)).sort((a,b)=>b.target.localeCompare(a.target));
- renderTracking(entries,draws,historyLoaded);
+ renderTracking(entries,draws,historyLoaded,activeStrategy);
  const latest=entries[0];if(!latest){$('prediction-status').textContent='Aún no hay predicciones registradas.';return}
  const actual=draws.find(d=>d.date===latest.target);
  const status=actual?'Sorteo ya celebrado':!historyLoaded||!draws.length?'Resultado sin comprobar: histórico no disponible':latest.target<madridToday()?'Resultado no disponible en el histórico':'Pendiente de resultado';

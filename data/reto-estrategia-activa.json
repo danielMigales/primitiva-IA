@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "status": "active",
+  "activatedAt": "2026-10-13T22:15:59+02:00",
+  "previousStrategyFile": "data/reto-estrategia-congelada.json",
+  "strategy": {
+    "type": "recency-z",
+    "window": 365,
+    "windows": [
+      {"days": 30, "weight": 0.45},
+      {"days": 90, "weight": 0.35},
+      {"days": 365, "weight": 0.20}
+    ],
+    "zClip": 3,
+    "scorePrecision": 5,
+    "tieBreak": "number-ascending",
+    "algorithm": "unified-recency-z-30-90-365-v1",
+    "reintegroAlgorithm": "recency-z-30-90-365-v1"
+  },
+  "objective": "maximize-main-and-reintegro-hits",
+  "evaluation": "prospective-only",
+  "minimumSettledDraws": 30,
+  "selectionReason": "User explicitly chose to retain the current recency motor as a new strategy version; no claim of predictive advantage.",
+  "rule": "Keep this method unchanged for at least 30 prospectively registered and settled draws of version 2; any later method change requires a new version. Earlier predictions are preserved and excluded from this version's sample.",
+  "historicalDataVerifiedOfficially": false
+}

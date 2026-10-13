@@ -7,6 +7,9 @@ on:
       - 'data/reto-predictor.json'
       - 'data/sorteos.json'
       - 'tests/test_app.cjs'
+      - 'tests/test_reto.py'
+      - 'scripts/**'
+      - 'data/reto-estrategia-activa.json'
       - '.github/workflows/comprobar-app.yml'
   pull_request:
     paths:
@@ -15,6 +18,9 @@ on:
       - 'data/reto-predictor.json'
       - 'data/sorteos.json'
       - 'tests/test_app.cjs'
+      - 'tests/test_reto.py'
+      - 'scripts/**'
+      - 'data/reto-estrategia-activa.json'
       - '.github/workflows/comprobar-app.yml'
 permissions:
   contents: read
@@ -30,3 +36,8 @@ jobs:
         run: |
           node --check app.js
           node --test tests/test_app.cjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Comprobar registro y estrategia activa
+        run: python -m unittest discover -s tests -v

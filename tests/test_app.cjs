@@ -17,11 +17,12 @@ class Element {
 }
 const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10-12',reintegro:8};
 const draw = {date:'2026-10-12',nums:[2,5,26,40,42,45],reintegro:9};
+const activeConfig=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json'),'utf8'));
 async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z') {
- const elements=Object.fromEntries(['prediction','prediction-status','reasoning','recent-draws','draws-status','tracking'].map(id=>[id,new Element('div')]));
+ const elements=Object.fromEntries(['prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy'].map(id=>[id,new Element('div')]));
  class Clock extends Date { constructor(...args){super(...(args.length?args:[today]));} static now(){return Date.parse(today);} }
  const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,
-  fetch:async url=>{const data=url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
+  fetch:async url=>{const data=url.includes('estrategia-activa')?activeConfig:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
  vm.runInContext(source.replace('load().catch(', 'globalThis.loaded=load().catch('),context);
  await context.loaded;
  return {elements,context};
@@ -115,4 +116,13 @@ test('tracking reports loading failures without inventing results',async()=>{
  assert.match(elements.tracking.textContent,/No se puede comprobar el histórico/);
  const empty=await render({predictions:[]});
  assert.match(empty.elements.tracking.textContent,/Aún no hay predicciones válidas/);
+});
+test('active strategy version starts a separate sample from old recency records',async()=>{
+ const {elements}=await render({predictions:[{...entry,target:draw.date,algorithm:activeConfig.strategy.algorithm,window:365}]});
+ assert.match(elements['active-strategy'].textContent,/Versión 2/);
+ const groups=elements.tracking.children.filter(c=>c.className==='tracking-group');
+ const active=groups.find(c=>c.textContent.includes('/ versión 2'));
+ const old=groups.find(c=>c.textContent.includes('registro anterior sin versión'));
+ assert.match(active.textContent,/Seguimiento: 0 \/ 30/);
+ assert.match(old.textContent,/Seguimiento: 1 \/ 30/);
 });
