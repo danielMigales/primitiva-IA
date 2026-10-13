@@ -149,3 +149,17 @@ Se copiaron a `danielMigales/Primitiva-IA-motor`: `update_data.py`, `diagnostico
 - Se mantiene visible el estado de cotejo SELAE junto al resultado; resaltar una coincidencia con el histórico no certifica su fuente.
 - Comprobaciones: 21 pruebas frontend y 15 Python (36 total), incluidos aciertos principales/reintegro, predicciones pendientes y comparación de registros anteriores.
 - Archivos: `app.js`, `index.html`, `tests/test_app.cjs` y esta memoria. Sin cambios de motor, estrategia, combinaciones o resultados. Commit: el que incorpora esta sección.
+
+## 20. Evaluación retrospectiva CDM adaptado y KNN (2026-10-13)
+- Petición: evaluar los candidatos investigados manteniendo recencia v2 activa.
+- Nuevo experimento v1 en `scripts/evaluar_metodos.py`; configuración fijada antes de ejecutar en `data/evaluacion-metodos-config.json`, sin búsqueda de parámetros.
+- Muestra: últimos 1.000 sorteos del histórico de 3.000, del 2019-03-02 al 2026-10-12, con 2.000 sorteos anteriores al primer objetivo. Walk-forward: cada combinación usa solo registros anteriores a su objetivo; una combinación por método y sorteo. Solo números principales.
+- CDM adaptado: media posterior Dirichlet sobre frecuencias de aparición de los 49 números, prior uniforme de 1 y todo el pasado. No reproduce el modelo por posiciones numéricas del artículo; con este prior su ranking coincide con números calientes.
+- KNN: estado del sorteo anterior codificado en 49 variables binarias, distancia de diferencia simétrica, 20 vecinos entre las últimas 500 transiciones históricas; empate por transición más reciente y, al escoger números, valor ascendente.
+- Recencia: se extrae únicamente la función pura de ranking del generador actual, sin ejecutar su registro. Control: una combinación uniforme por objetivo y semilla fija 20261013. Referencia adicional: 2.000 réplicas bajo la distribución hipergeométrica; seis contrastes unilaterales (tres métodos x dos métricas) ajustados por Holm.
+- Resultado (aciertos totales / sorteos con 3+): CDM adaptado 716/24; KNN 723/10; recencia v2 779/18; control uniforme 731/18. Referencia teórica: 734,694 aciertos y 18,638 sorteos con 3+.
+- Ningún método obtuvo cinco ni seis aciertos. Ningún contraste supera el umbral 0,05 después del ajuste. Recencia: p ajustado de aciertos totales 0,19490; CDM adaptado: p ajustado de 3+ 0,65467. No se declara ventaja ni se cambia la estrategia.
+- Limitaciones: histórico ya inspeccionado/utilizado en experimentos anteriores, no prueba prospectiva ni muestra completamente intacta; datos sin cotejo oficial completo; las implementaciones son adaptaciones especificadas, no clones de servicios comerciales. Holm no corrige toda la búsqueda previa del proyecto.
+- Artefactos: resumen `data/evaluacion-metodos.json` y detalle de las 1.000 comparaciones en `data/evaluacion-metodos-detalle.jsonl`, con combinaciones, objetivos, corte histórico y aciertos. Se guardan SHA256 del histórico, generador y estrategia activa para reproducir la ejecución.
+- Pruebas: seis nuevas comprobaciones (no usar resultados futuros, reproducibilidad, igual presupuesto de combinaciones, validación, ranking bayesiano y ajuste Holm); 42 pruebas totales (21 frontend y 21 Python).
+- Motor, estrategia, predicciones prospectivas y sorteos preservados. Archivos: evaluador, configuración, resultados separados, pruebas, CI y memoria. Commit: el que incorpora esta sección.

@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "config": {
+    "version": 1,
+    "evaluation": "retrospective-walk-forward",
+    "minimumTrainingDraws": 500,
+    "testDraws": 1000,
+    "bayesianPriorPerNumber": 1,
+    "knnTrainingPairs": 500,
+    "knnNeighbors": 20,
+    "randomSeed": 20261013,
+    "randomReferenceReplicates": 2000,
+    "familyAlpha": 0.05,
+    "primaryMetric": "draws-with-at-least-three-main-hits",
+    "secondaryMetric": "total-main-hits",
+    "ticketsPerMethodPerDraw": 1,
+    "note": "Parameters fixed before this run, without optimization. Historical data has been inspected and used in prior experiments; this is not an untouched or prospectively preregistered test."
+  },
+  "trainingDrawsBeforeFirstTest": 2000,
+  "testStart": "2019-03-02",
+  "testEnd": "2026-10-12",
+  "recencySourceSha256": "07e246d9fc41a2f12af39ec6711c8175465618247712e683a667397d2be4ab08",
+  "methods": {
+    "bayesian-cdm-adaptation": {
+      "draws": 1000,
+      "totalHits": 716,
+      "meanHits": 0.716,
+      "threePlus": 24,
+      "fourPlus": 1,
+      "fivePlus": 0,
+      "six": 0,
+      "histogram0to6": [
+        454,
+        401,
+        121,
+        23,
+        1,
+        0,
+        0
+      ],
+      "expectedRandomHits": 734.694,
+      "expectedRandomThreePlus": 18.638,
+      "oneSidedMonteCarloP": {
+        "totalHits": 0.77511,
+        "threePlus": 0.13093
+      },
+      "holmAdjustedP": {
+        "totalHits": 1.0,
+        "threePlus": 0.65467
+      },
+      "exploratorySignal": false
+    },
+    "knn": {
+      "draws": 1000,
+      "totalHits": 723,
+      "meanHits": 0.723,
+      "threePlus": 10,
+      "fourPlus": 0,
+      "fivePlus": 0,
+      "six": 0,
+      "histogram0to6": [
+        431,
+        425,
+        134,
+        10,
+        0,
+        0,
+        0
+      ],
+      "expectedRandomHits": 734.694,
+      "expectedRandomThreePlus": 18.638,
+      "oneSidedMonteCarloP": {
+        "totalHits": 0.68366,
+        "threePlus": 0.98751
+      },
+      "holmAdjustedP": {
+        "totalHits": 1.0,
+        "threePlus": 1.0
+      },
+      "exploratorySignal": false
+    },
+    "current-recency-v2": {
+      "draws": 1000,
+      "totalHits": 779,
+      "meanHits": 0.779,
+      "threePlus": 18,
+      "fourPlus": 1,
+      "fivePlus": 0,
+      "six": 0,
+      "histogram0to6": [
+        422,
+        396,
+        164,
+        17,
+        1,
+        0,
+        0
+      ],
+      "expectedRandomHits": 734.694,
+      "expectedRandomThreePlus": 18.638,
+      "oneSidedMonteCarloP": {
+        "totalHits": 0.03248,
+        "threePlus": 0.5902
+      },
+      "holmAdjustedP": {
+        "totalHits": 0.1949,
+        "threePlus": 1.0
+      },
+      "exploratorySignal": false
+    },
+    "uniform-control": {
+      "draws": 1000,
+      "totalHits": 731,
+      "meanHits": 0.731,
+      "threePlus": 18,
+      "fourPlus": 1,
+      "fivePlus": 0,
+      "six": 0,
+      "histogram0to6": [
+        434,
+        420,
+        128,
+        17,
+        1,
+        0,
+        0
+      ],
+      "expectedRandomHits": 734.694,
+      "expectedRandomThreePlus": 18.638
+    }
+  },
+  "hasDemonstratedPredictiveAdvantage": false,
+  "limitations": [
+    "Retrospective experiment on history already used in previous work; not independent prospective validation.",
+    "CDM is adapted to occurrence counts; not an exact reproduction of the original paper.",
+    "KNN uses one previous draw as a 49-component binary state; it is a specified implementation, not a clone of a commercial service.",
+    "Bayesian uniform-prior ranking equals historical hot-number ranking.",
+    "Holm covers only these six comparisons, not prior experiments or the wider method search.",
+    "Random reference assumes uniform independent 6/49 draws; historical data is not fully officially verified.",
+    "Only six main numbers are evaluated; no reintegro, payouts, or betting transactions."
+  ],
+  "historicalDataSha256": "555bf469bb7054c47d7a2d477c4c39896b6ae71abf2ac5d8fd52408658e84dc2",
+  "traceFile": "data/evaluacion-metodos-detalle.jsonl",
+  "activeStrategySha256": "0d4f809fc0db667421a1e769ae740912e162004f0d001ec166410cbbcad78c8f"
+}

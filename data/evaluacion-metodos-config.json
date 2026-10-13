@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "evaluation": "retrospective-walk-forward",
+  "minimumTrainingDraws": 500,
+  "testDraws": 1000,
+  "bayesianPriorPerNumber": 1,
+  "knnTrainingPairs": 500,
+  "knnNeighbors": 20,
+  "randomSeed": 20261013,
+  "randomReferenceReplicates": 2000,
+  "familyAlpha": 0.05,
+  "primaryMetric": "draws-with-at-least-three-main-hits",
+  "secondaryMetric": "total-main-hits",
+  "ticketsPerMethodPerDraw": 1,
+  "note": "Parameters fixed before this run, without optimization. Historical data has been inspected and used in prior experiments; this is not an untouched or prospectively preregistered test."
+}
