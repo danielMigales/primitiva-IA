@@ -3,6 +3,366 @@
   "description": "Cotejos completos o parciales con resultados oficiales inequívocos. Sin cotejo registrado, el resultado queda pendiente. Se conserva una copia de los valores cotejados para detectar cambios.",
   "draws": [
     {
+      "date": "2026-08-17",
+      "nums": [
+        2,
+        4,
+        19,
+        28,
+        46,
+        48
+      ],
+      "reintegro": 0,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_17_08_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "c6c06ae53fe313f892a542b63a164f1a48ac8186443f2f22044629ec0f7dfcc5",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:19:51.174991+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_17_08_26.pdf"
+    },
+    {
+      "date": "2026-08-20",
+      "nums": [
+        1,
+        9,
+        20,
+        22,
+        37,
+        45
+      ],
+      "reintegro": 9,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_20_08_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "be3c3bfe2cb5ec8339b18811eab1cbd46daad1cb34b1ad3388e6756b52e1df7b",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:19:41.013397+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_20_08_26.pdf"
+    },
+    {
+      "date": "2026-08-22",
+      "nums": [
+        5,
+        22,
+        30,
+        34,
+        45,
+        49
+      ],
+      "reintegro": 8,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_22_08_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "5fbe93a8ec57cecc796707640d7b2f7ca1110bb0ce829d4586d40f7d9c4b2c34",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:19:30.969502+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_22_08_26.pdf"
+    },
+    {
+      "date": "2026-08-24",
+      "nums": [
+        5,
+        8,
+        23,
+        28,
+        29,
+        38
+      ],
+      "reintegro": 3,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_24_08_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "44be8254eb09e384a64ef2f0c9a2d73257bb92e21267a4d091ec410ec6cf1c62",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:19:20.797600+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_24_08_26.pdf"
+    },
+    {
+      "date": "2026-08-27",
+      "nums": [
+        2,
+        8,
+        9,
+        33,
+        36,
+        38
+      ],
+      "reintegro": 3,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_27_08_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "19521d0fe331b2c9a1ac99a819a8720629324821196526ae850c5f71432e55c1",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:19:10.507249+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_27_08_26.pdf"
+    },
+    {
+      "date": "2026-08-29",
+      "nums": [
+        11,
+        22,
+        27,
+        30,
+        38,
+        41
+      ],
+      "reintegro": 7,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_29_08_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "b9763d0d54079ee5c503d6313760952a07df9d6d06fdc93e9d97faa262c1dfc3",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:19:00.642847+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_29_08_26.pdf"
+    },
+    {
+      "date": "2026-08-31",
+      "nums": [
+        5,
+        17,
+        20,
+        23,
+        31,
+        41
+      ],
+      "reintegro": 1,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_31_08_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "9db393d20a8903fb7d8249ed840b5be9d19c8fe239e55c124dd72f80c12fa66e",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:18:49.362652+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_31_08_26.pdf"
+    },
+    {
+      "date": "2026-09-03",
+      "nums": [
+        20,
+        24,
+        29,
+        34,
+        39,
+        40
+      ],
+      "reintegro": 5,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_3_09_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "899f3e6082ebeff605bc8d003a000a0eb62a545ffd5e41571d4d49c7af46fcc9",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:18:29.601348+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_3_09_26.pdf"
+    },
+    {
+      "date": "2026-09-05",
+      "nums": [
+        3,
+        12,
+        19,
+        31,
+        45,
+        47
+      ],
+      "reintegro": 3,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_05_09_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "66badd974db37cacad4eed798bf35c112b8e4d6056a28a1e794ba96fb843b24f",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:18:10.593026+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_05_09_26.pdf"
+    },
+    {
+      "date": "2026-09-07",
+      "nums": [
+        18,
+        27,
+        28,
+        33,
+        46,
+        48
+      ],
+      "reintegro": 4,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_7_09_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "4487d38d1747ac319a6ebde31aa9d4aa38c786eb3fc969a323fa6c93070cbe68",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:18:00.584744+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_7_09_26.pdf"
+    },
+    {
+      "date": "2026-09-10",
+      "nums": [
+        17,
+        26,
+        35,
+        44,
+        45,
+        48
+      ],
+      "reintegro": 5,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_10_09_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "54fe08758a914bba104af49854ccff685b2228571a69d50372112a1bae88f342",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:17:50.728292+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_10_09_26.pdf"
+    },
+    {
+      "date": "2026-09-12",
+      "nums": [
+        3,
+        4,
+        22,
+        26,
+        40,
+        44
+      ],
+      "reintegro": 8,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_12_09_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "7ac580be78d039547aa0797b02c906b51d0265d532917d2ddb05a0a18aafb59a",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:17:40.571416+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_12_09_26.pdf"
+    },
+    {
+      "date": "2026-09-14",
+      "nums": [
+        3,
+        15,
+        32,
+        35,
+        39,
+        40
+      ],
+      "reintegro": 8,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_14_9_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "8dda7fba247ff135213d3650c5601d6262c27bba90e13080d11d51fe2c8e2683",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:17:35.454565+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_14_9_26.pdf"
+    },
+    {
+      "date": "2026-09-17",
+      "nums": [
+        19,
+        20,
+        24,
+        25,
+        43,
+        46
+      ],
+      "reintegro": 8,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_17_9_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "fe94a3f5a39d0d1ab5b8973ea3d975eb85ba2a5dfda61707ceb8ae790b8e3a80",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:17:30.416725+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_17_9_26.pdf"
+    },
+    {
+      "date": "2026-09-19",
+      "nums": [
+        7,
+        10,
+        40,
+        44,
+        45,
+        46
+      ],
+      "reintegro": 4,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_19_9_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "8d3050988f883ae4781602fd0d0f45c1bc1f49008e007d64281e36c510ce8f5e",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:17:25.333997+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_19_9_26.pdf"
+    },
+    {
+      "date": "2026-09-21",
+      "nums": [
+        1,
+        4,
+        20,
+        34,
+        36,
+        37
+      ],
+      "reintegro": 1,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_21_9_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "42cc4167090976381fd2d4a3f8a75a6697f3d498358008ad50e8d2cbfcdf7312",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:17:20.075585+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_21_9_26.pdf"
+    },
+    {
+      "date": "2026-09-24",
+      "nums": [
+        6,
+        9,
+        21,
+        32,
+        38,
+        45
+      ],
+      "reintegro": 9,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_24_9_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "077ec05d7504b32f85d505fa03deaa33be461dab2acefc7dd6f6f6dece252847",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:17:14.889834+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_24_9_26.pdf"
+    },
+    {
+      "date": "2026-09-26",
+      "nums": [
+        3,
+        9,
+        10,
+        30,
+        36,
+        45
+      ],
+      "reintegro": 4,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_26_9_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "2d7374be55e76c4b58096b4930b1c33535f80c1f3874345dd9bfd51214a63b64",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:17:09.692854+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_26_9_26.pdf"
+    },
+    {
+      "date": "2026-09-28",
+      "nums": [
+        2,
+        10,
+        20,
+        29,
+        34,
+        49
+      ],
+      "reintegro": 4,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_28_09_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "fc8e8fc9ef7a9ad7e6f65c0ccebb291121188a19046ca6a256074f518e6e38e3",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:17:00.883087+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_28_09_26.pdf"
+    },
+    {
+      "date": "2026-10-01",
+      "nums": [
+        4,
+        14,
+        16,
+        22,
+        33,
+        45
+      ],
+      "reintegro": 7,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_01_10_26.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "2465e0a64f06267ffe43e3b384fc1294d4fa8a2ef7857df603426937d411117d",
+      "source": "SELAE",
+      "checkedAt": "2026-10-13T21:16:56.433509+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_01_10_26.pdf"
+    },
+    {
       "date": "2026-10-03",
       "nums": [
         6,

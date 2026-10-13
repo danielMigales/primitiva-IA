@@ -176,3 +176,16 @@ Se copiaron a `danielMigales/Primitiva-IA-motor`: `update_data.py`, `diagnostico
 - La actualización diaria sigue programada a las 09:00 UTC. Si SELAE cambia el diseño o el nombre de una nota fuera de las convenciones reconocidas, se informa el fallo y se conserva el histórico.
 - Esto verifica cinco resultados recientes, no los 3.000 sorteos completos ni el origen de todos los registros anteriores. Motor v2, predicciones y estrategia congelada preservados.
 - Archivos: actualizador, lector/prueba de acceso, dependencia, workflows, cotejos/informe, pruebas y memoria. Commit: el que incorpora esta sección.
+
+## 22. Auditoría reanudable del histórico (2026-10-13)
+- Se revisan internamente los 3.000 registros: fechas, seis bolas únicas 1–49, reintegro 0–9 y fechas duplicadas. Sin errores estructurales; no demuestra completitud del calendario ni veracidad de resultados.
+- Advertencia: los metadatos de cobertura declaran 2.999 sorteos/reintegros, frente a 3.000 existentes. Se registra en el informe sin reescribir el histórico.
+- Primer lote real: 25 sorteos coinciden con SELAE (los cinco anteriores más veinte, desde 17/08 hasta 12/10/2026), números y reintegro; sin discrepancias.
+- Cuatro consultas reales adicionales (01/01/2000, 02/01/2010, 02/01/2020 y 29/02/2024) agotaron las convenciones de nombre con HTTP 404. Se registran como documentos no localizados; no equivale a resultados incorrectos ni a inexistencia de otras fuentes oficiales.
+- `scripts/auditar_historico.py` y `data/auditoria-historico.json`: progreso por fecha, SHA256 del histórico y de cada registro, comprobación estructural completa, evidencias individuales oficiales, discrepancias, documentos ausentes y errores separados. Reutiliza cotejos válidos y vuelve a revisar un registro si cambia.
+- Solo las coincidencias generan entradas en `data/verificacion-sorteos.json`; los conflictos conservan el resultado oficial en el informe y retiran el cotejo anterior de esa fecha. Nunca escribe `sorteos.json`, predicciones, estrategias o evaluaciones.
+- Los errores de acceso/red/formato detienen el lote y señalan el fallo; los 404 no impiden continuar con otras fechas. `fullyVerified` solo será true si todos los registros coinciden también en reintegro; terminar las consultas no equivale a verificarlo todo.
+- Workflow `auditar-historico.yml`: diariamente a las 05:30 UTC, hasta 50 fechas pendientes y presupuesto de 10 minutos comprobado entre fechas; cinco fechas al publicar el workflow. Guarda el progreso y la evidencia. Concurrencia de auditoría limitada a una ejecución; push normal, sin forzar.
+- Revisión explícita de documentos ausentes o discrepancias: `python scripts/auditar_historico.py --date AAAA-MM-DD` (repetible). Las fechas deben estar en el histórico.
+- Ocho nuevas pruebas de reanudación, cambios del histórico, conflicto sin sobrescritura, retirada de cotejo anterior, documentos ausentes, errores que detienen el lote y reintegro incompleto. Total: 54 pruebas (33 Python y 21 frontend), superadas.
+- La auditoría oficial completa sigue pendiente; las cifras del informe deben consultarse para el progreso actual, que aumentará en ejecuciones posteriores.
