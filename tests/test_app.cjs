@@ -13,6 +13,7 @@ class Element {
  appendChild(child) { this.children.push(child); return child; }
  append(...children) { children.forEach(c=>this.appendChild(c)); }
  replaceChildren(...children) { this.value=''; this.children=children; }
+ setAttribute(name,value) { (this.attributes??={})[name]=value; }
  querySelectorAll(selector) { return this.children.filter(c=>c.className.split(' ').includes('ball')&&!c.className.split(' ').includes('gold')); }
 }
 const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10-12',reintegro:8};
@@ -156,4 +157,25 @@ test('update report surfaces inaccessible sources and conflicts',async()=>{
  assert.match(unavailable.elements.incidents.textContent,/no obtuvo resultados oficiales verificables/);
  const conflict=await render(undefined,undefined,undefined,undefined,{status:'conflict'});
  assert.match(conflict.elements.incidents.textContent,/discrepancia con SELAE/);
+});
+test('matched main numbers and reintegro are highlighted with accessible labels',async()=>{
+ const {elements}=await render({predictions:[{...entry,target:draw.date,reintegro:9}]});
+ const balls=elements.prediction.children[0].children;
+ const hits=balls.filter(b=>b.className.split(' ').includes('hit'));
+ assert.equal(hits.length,3);
+ assert.deepEqual(hits.map(b=>b.attributes['aria-label']),['Número 40 acertado','Número 45 acertado','Reintegro 9 acertado']);
+ assert.match(elements.prediction.textContent,/Resultado publicado/);
+ assert.match(elements.prediction.textContent,/Pendiente de cotejo SELAE/);
+});
+test('pending prediction has no hit marks',async()=>{
+ const {elements}=await render();
+ assert.equal(elements.prediction.children[0].children.filter(b=>b.className.split(' ').includes('hit')).length,0);
+});
+test('historical predictions highlight only actual matches',async()=>{
+ const prediction={...entry,target:draw.date,reintegro:8};
+ const {elements}=await render({predictions:[entry,prediction]});
+ const detail=elements.tracking.children.find(c=>c.tagName==='details');
+ const past=detail.children.find(c=>c.className==='tracking-entry'&&c.textContent.includes(draw.date));
+ const predicted=past.children.find(c=>c.className==='balls');
+ assert.equal(predicted.children.filter(c=>c.className.split(' ').includes('hit')).length,2);
 });

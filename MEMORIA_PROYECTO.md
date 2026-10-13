@@ -141,3 +141,11 @@ Se copiaron a `danielMigales/Primitiva-IA-motor`: `update_data.py`, `diagnostico
 - Limitación observada: el endpoint existente devolvió HTTP 200 con HTML desde este entorno; al abrir la página oficial del 12/10/2026 se redirigió a aviso de geobloqueo de SELAE. No se acreditó ningún cotejo oficial nuevo. La automatización queda preparada para guardar evidencias cuando reciba JSON oficial válido; sigue pendiente disponer de una fuente oficial accesible en el entorno de ejecución.
 - Motor de recencia v2, predicciones registradas y archivo de sorteos preservados. Los avisos no garantizan puntualidad de GitHub Actions ni sustituyen el cotejo oficial.
 - Archivos: app, HTML, actualizador, informes separados, pruebas, workflows y esta memoria. Commit: el que incorpora esta sección.
+
+## 19. Resaltado de aciertos (2026-10-13)
+- Continuación autorizada del siguiente punto sugerido: comparación visual de predicciones y resultados.
+- La predicción más reciente, si ya tiene resultado, y cada registro histórico resuelto muestran sus números acertados con borde y símbolo ✓. Se identifica también el reintegro acertado, exclusivamente si estaba registrado y consta en el resultado.
+- Se muestra debajo la combinación publicada para facilitar la comparación. La marca dispone de etiqueta accesible y no depende solo del color. Una predicción pendiente no recibe marcas.
+- Se mantiene visible el estado de cotejo SELAE junto al resultado; resaltar una coincidencia con el histórico no certifica su fuente.
+- Comprobaciones: 21 pruebas frontend y 15 Python (36 total), incluidos aciertos principales/reintegro, predicciones pendientes y comparación de registros anteriores.
+- Archivos: `app.js`, `index.html`, `tests/test_app.cjs` y esta memoria. Sin cambios de motor, estrategia, combinaciones o resultados. Commit: el que incorpora esta sección.

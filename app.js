@@ -13,7 +13,24 @@ function madridToday(){
  return values.year+'-'+values.month+'-'+values.day;
 }
 function ball(n,gold=false){const el=document.createElement('span');el.className='ball'+(gold?' gold':'');el.textContent=n;return el}
-function combination(nums,reintegro){const row=document.createElement('div');row.className='balls';for(const n of nums)row.appendChild(ball(n));if(Number.isInteger(reintegro)&&reintegro>=0&&reintegro<=9){const plus=document.createElement('span');plus.className='plus';plus.textContent='+';row.appendChild(plus);row.appendChild(ball(reintegro,true))}return row}
+function hitBall(n,gold,hit){
+ const el=ball(n,gold);
+ if(hit){
+  el.classList.add('hit');
+  el.setAttribute('aria-label',(gold?'Reintegro ':'Número ')+n+' acertado');
+  const mark=document.createElement('span');mark.className='hit-mark';mark.textContent='✓';mark.setAttribute('aria-hidden','true');el.appendChild(mark);
+ }
+ return el;
+}
+function combination(nums,reintegro,actual=null){
+ const row=document.createElement('div');row.className='balls';
+ for(const n of nums)row.appendChild(hitBall(n,false,!!actual?.nums.includes(n)));
+ if(validReintegro(reintegro)){
+  const plus=document.createElement('span');plus.className='plus';plus.textContent='+';row.appendChild(plus);
+  row.appendChild(hitBall(reintegro,true,!!actual&&validReintegro(actual.reintegro)&&reintegro===actual.reintegro));
+ }
+ return row;
+}
 function p(text,cls=''){const e=document.createElement('p');e.textContent=text;if(cls)e.className=cls;return e}
 function weeklyEvidence(r,draws,n,gold=false){
  if(!validDate(r.historyUntil))return null;
@@ -160,10 +177,15 @@ function renderTracking(entries,draws,historyLoaded,activeStrategy,proofs=[]){
  const summary=document.createElement('summary');summary.textContent='Resultados de todas las predicciones';detail.appendChild(summary);
  for(const row of rows){
   const item=document.createElement('div');item.className='tracking-entry';
-  item.appendChild(p(row.record.target+' · '+row.record.nums.join(', ')+(validReintegro(row.record.reintegro)?' + R '+row.record.reintegro:'')));
+  item.appendChild(p(row.record.target+' · Predicción registrada'));
+  item.appendChild(combination(row.record.nums,row.record.reintegro,row.actual));
   const result=row.actual?row.hits+' / 6 aciertos'+(row.reintegro!==null?' · Reintegro '+(row.reintegro?'acertado':'no acertado'):' · Reintegro no evaluable'):!historyLoaded?'Resultado sin comprobar':row.record.target<madridToday()?'Resultado no disponible en el histórico':'Pendiente de resultado';
   item.appendChild(p(result,'muted'));detail.appendChild(item);
-  if(row.actual)item.appendChild(p(verificationFor(row.actual,proofs),'verification-note'));
+  if(row.actual){
+   item.appendChild(p('Resultado publicado:','muted'));
+   item.appendChild(combination(row.actual.nums,row.actual.reintegro));
+   item.appendChild(p('✓ señala los aciertos de la predicción. '+verificationFor(row.actual,proofs)+'.','verification-note'));
+  }
  }
  root.appendChild(detail);
  root.appendChild(p('Se incluyen también los fallos. Cada algoritmo se evalúa por separado; las revisiones conservadas no cuentan como apuestas adicionales. La referencia al azar es matemática para sorteos uniformes de 6 entre 49 y reintegro de 0 a 9; no son apuestas generadas después del resultado. Las fechas de publicación se comprueban en los commits y los resultados pueden requerir cotejo oficial.','notice'));
@@ -204,9 +226,14 @@ async function load(){
  const actual=draws.find(d=>d.date===latest.target);
  const status=actual?'Sorteo ya celebrado':!historyLoaded||!draws.length?'Resultado sin comprobar: histórico no disponible':latest.target<madridToday()?'Resultado no disponible en el histórico':'Pendiente de resultado';
  $('prediction-status').textContent='Predicción registrada para '+latest.target+' · Histórico utilizado hasta '+(latest.historyUntil||'fecha no indicada')+' · '+status;
- const root=$('prediction');root.replaceChildren();root.appendChild(combination(latest.nums,latest.reintegro));
+ const root=$('prediction');root.replaceChildren();root.appendChild(combination(latest.nums,latest.reintegro,actual));
  if(!validReintegro(latest.reintegro))root.appendChild(p('No hay un reintegro válido registrado para esta predicción. No se añadirá retrospectivamente.','muted'));
- if(actual){const hits=latest.nums.filter(n=>actual.nums.includes(n)).length;root.appendChild(p('Resultado: '+hits+' de 6 números acertados'+(validReintegro(latest.reintegro)&&validReintegro(actual.reintegro)?' · Reintegro '+(latest.reintegro===actual.reintegro?'acertado':'no acertado'):'')+'.'))}
+ if(actual){
+  const hits=latest.nums.filter(n=>actual.nums.includes(n)).length;
+  root.appendChild(p('Resultado: '+hits+' de 6 números acertados'+(validReintegro(latest.reintegro)&&validReintegro(actual.reintegro)?' · Reintegro '+(latest.reintegro===actual.reintegro?'acertado':'no acertado'):'')+'.'));
+  root.appendChild(p('Resultado publicado:','muted'));root.appendChild(combination(actual.nums,actual.reintegro));
+  root.appendChild(p('✓ señala los aciertos de la predicción. '+verificationFor(actual,proofs)+'.','verification-note'));
+ }
  explain(latest,draws,entries);
 }
 load().catch(e=>{$('prediction-status').textContent='Error de carga: '+e.message});
