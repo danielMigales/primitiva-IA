@@ -1,6 +1,6 @@
 # MEMORIA DEL PROYECTO — PRIMITIVA IA
 
-Actualizado: 2026-10-12. Fuente principal: archivos existentes en este repositorio y cambios comprobados en GitHub. Este documento conserva el contexto del proyecto aunque se borren conversaciones de ChatGPT. **No equivale a recuperar literalmente todos los chats anteriores.**
+Actualizado: 2026-10-13. Fuente principal: archivos existentes en este repositorio y cambios comprobados en GitHub. Este documento conserva el contexto del proyecto aunque se borren conversaciones de ChatGPT. **No equivale a recuperar literalmente todos los chats anteriores.**
 
 ## 1. Identidad y propósito
 - Repositorio: https://github.com/danielMigales/primitiva-IA (rama principal: `main`).
@@ -30,16 +30,16 @@ Actualizado: 2026-10-12. Fuente principal: archivos existentes en este repositor
 
 ## 4. Reto Predictor: registro verificable
 - `data/reto-predictor.json`: registro versionado de predicciones; los commits GitHub permiten comprobar cuándo quedaron publicadas.
-- `scripts/generar_reto.py`: genera una predicción prospectiva a partir de la estrategia congelada, evitando registrar duplicados y usando solo sorteos anteriores al objetivo.
+- `scripts/generar_reto.py`: el código actual genera predicciones con recencia 30/90/365 días, ventana 365 e identificador `unified-recency-z-30-90-365-v1`; evita duplicados y usa sorteos anteriores al objetivo. No implementa actualmente la estrategia congelada de parejas/50.
 - `scripts/guardar_reto.py`: valida e incorpora registros, con comprobaciones de fechas, números y ventanas admitidas.
 - `.github/workflows/reto-automatico.yml` y `guardar-reto.yml`: automatización/registro.
 - Predicción existente al revisar el repositorio: objetivo **2026-10-12**, números **12, 17, 20, 24, 34, 40**, ventana 50, histórico hasta 2026-10-10. El JSON indica registro manual por commit y advierte que el timestamp del commit es la referencia de auditoría.
-- **Atención técnica pendiente:** `scripts/guardar_reto.py` admite ventanas 5, 20, 100, 500, 1000 y 99999, pero no 50. Esto puede bloquear registros manuales con ventana 50; la opción nueva del Laboratorio no cambia automáticamente este validador. Revisar antes de modificarlo.
+- **Validación corregida (2026-10-13):** ambos scripts usan `scripts/validar_reto.py`, que admite 5, 20, 50, 100, 365, 500, 1000 y 99999. Se valida cada entrada nueva antes de guardar; no se revalidan ni migran registros históricos.
 
 ## 5. Estrategia congelada (no cambiar inadvertidamente)
 - `data/reto-estrategia-congelada.json`: versión 1, estado `frozen`, fecha 2026-10-12.
 - Estrategia: **parejas, ventana 50**, puntuación `greedy-pair-v1`; objetivo: **tres o más números principales**.
-- `scripts/generar_reto.py` implementa la estrategia congelada; identificador `frozen-pair-50-v1`.
+- El registro histórico de parejas/50 usa `frozen-pair-50-v1`. El generador actual usa recencia 30/90/365; la configuración congelada se conserva sin cambios. No atribuir sus nuevas predicciones a la estrategia congelada.
 - Regla escrita en la configuración: **no cambiar la estrategia hasta registrar y resolver al menos 30 sorteos prospectivos**; cualquier cambio posterior debe crear nueva versión.
 - La elección procede de experimentos históricos exploratorios, no de una ventaja demostrada.
 
@@ -76,7 +76,7 @@ Actualizado: 2026-10-12. Fuente principal: archivos existentes en este repositor
 
 ## 10. Pendientes y limitaciones
 - Auditar el origen y exactitud de `data/sorteos.json` frente a datos oficiales.
-- Revisar la inconsistencia del validador de ventanas de `scripts/guardar_reto.py` respecto a 50 sorteos.
+- Resuelta la admisión de 50 y 365 y la validación común; permanece pendiente decidir por separado la relación entre el motor actual de recencia y la estrategia congelada de parejas/50.
 - Comprobar las opciones de 5 y 20 sorteos frente al mínimo de 30 registros requerido por la interfaz.
 - Verificar la ejecución real de workflows y el estado de GitHub Pages; la presencia de archivos **no demuestra** que todas las automatizaciones estén funcionando.
 - Esperar la muestra prospectiva mínima prevista antes de evaluar cambios a la estrategia congelada.
@@ -92,5 +92,11 @@ El propietario quiere proteger el código de predicción manteniendo la web func
 
 ## 13. Segunda fase de copia privada (2026-10-12)
 Se copiaron a `danielMigales/Primitiva-IA-motor`: `update_data.py`, `diagnostico_selae.py`, `probar_selae.py`, `data/sorteos.json` y cinco workflows de actualización, reto y diagnóstico. En el repositorio privado, `actualizar.yml` y `reto-automatico.yml` se cambiaron a **solo `workflow_dispatch`** (sin cron) para no duplicar las ejecuciones del repositorio público; no se alteraron los workflows públicos. Comprobado que `app.js` descarga por rutas relativas `data/sorteos.json`, `data/reto-predictor.json` y `data/reto-aprendizaje.json`. Queda pendiente configurar la publicación selectiva y evitar exponer la lógica del Laboratorio ejecutada en el navegador. Las copias privadas no implican retirada de material público.
-
-
+## 14. Validación del Reto Predictor (2026-10-13)
+- Motivo: aceptar ventana 50 y evitar que el flujo automático de ventana 365 eluda la validación manual.
+- Cambio mínimo funcional: extraer las comprobaciones existentes a `scripts/validar_reto.py`, añadir 50 y 365 a las ventanas admitidas y llamar al mismo validador antes de incorporar la entrada automática. Las reglas previas de fechas y números se mantienen.
+- Archivos: ambos scripts de registro/generación, nuevo validador, `tests/test_reto.py`, ambos workflows del Reto y esta memoria. Los workflows ejecutan las comprobaciones antes del registro.
+- Verificación: ocho pruebas con `python -m unittest discover -s tests -v`: ventanas válidas e inválidas, fechas y números, registro manual, duplicados/conflictos, rechazo de lotes sin escritura, generación automática y no-op. Pruebas en directorios temporales; predicciones y revisiones anteriores conservadas. Comparación adicional del generador antes/después: misma entrada y evidencias.
+- Estrategia congelada, algoritmo de recencia, archivos de datos e histórico sin cambios. La corrección no convierte el generador en parejas/50.
+- Commit: el commit que incorpora esta sección (consultar historial Git de este archivo).
+- Limitación: comprobación local de las rutas ejecutadas por ambos workflows; no se lanzan workflows de producción ni se registran predicciones de prueba en el histórico real.

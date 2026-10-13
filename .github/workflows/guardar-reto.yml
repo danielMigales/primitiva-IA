@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Comprobar registro del Reto Predictor
+        run: python -m unittest discover -s tests -v
       - name: Validar y añadir predicciones
         env:
           REGISTRO_JSON: ${{ inputs.registro_json }}

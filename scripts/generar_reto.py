@@ -1,8 +1,9 @@
-"""Register an auditable prospective prediction using a frozen strategy."""
+"""Register an auditable prospective prediction using the current recency model."""
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from validar_reto import validate_prediction
 
 now = datetime.now(ZoneInfo("Europe/Madrid"))
 tomorrow = (now + timedelta(days=1)).date()
@@ -80,7 +81,8 @@ entry={"target":target,"nums":sorted(chosen),"window":window,"historyUntil":rows
        "reintegro":reintegro_choice["digit"],"reintegroAlgorithm":"recency-z-30-90-365-v1",
        "reintegroEvidence":{"lastHistoricalDate":rows[-1]["date"],"score":round(reintegro_choice["score"],4),"windows":reintegro_choice["windows"],"backtest":reintegro_test,
        "interpretation":"Exploratory ranking, no confirmed predictive advantage; fair-draw probability 10 percent."}}
+validate_prediction(entry, rows[-1]["date"])
 record["predictions"].append(entry)
 record["predictions"].sort(key=lambda r:r["target"])
 path.write_text(json.dumps(record,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-print("Frozen prospective prediction:",target,entry["nums"])
+print("Prospective prediction:",target,entry["nums"])
