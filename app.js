@@ -87,7 +87,46 @@ function strategyLabel(record){
  return algorithm+' / ventana '+(record.window??'no indicada')+' / '+version;
 }
 function validActiveStrategy(config){return config?.status==='active'&&Number.isInteger(config.version)&&config.version>=2&&config.strategy?.type==='recency-z'&&config.strategy.window===365&&typeof config.strategy.algorithm==='string'}
-function renderTracking(entries,draws,historyLoaded,activeStrategy){
+function verificationFor(draw,proofs){
+ const proof=proofs.find(r=>r?.date===draw.date&&r.source==='SELAE'&&/^https:\/\/www\.loteriasyapuestas\.es\//.test(r.url||'')&&typeof r.checkedAt==='string'&&Number.isFinite(Date.parse(r.checkedAt))&&validNumbers(r.nums));
+ if(!proof)return 'Pendiente de cotejo SELAE';
+ if([...proof.nums].sort((a,b)=>a-b).join(',')!==[...draw.nums].sort((a,b)=>a-b).join(',')||(validReintegro(proof.reintegro)&&validReintegro(draw.reintegro)&&proof.reintegro!==draw.reintegro))return 'Discrepancia con el cotejo SELAE';
+ return validReintegro(proof.reintegro)&&validReintegro(draw.reintegro)?'Números y reintegro cotejados con SELAE':'Números cotejados; reintegro pendiente';
+}
+function shiftDay(day,offset){return new Date(Date.parse(day+'T00:00:00Z')+offset*86400000).toISOString().slice(0,10)}
+function drawDay(day){return [1,4,6].includes(new Date(day+'T00:00:00Z').getUTCDay())}
+function madridMinutes(){
+ const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Madrid',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+ const values=Object.fromEntries(parts.map(p=>[p.type,p.value]));return Number(values.hour)*60+Number(values.minute);
+}
+function renderIncidents(entries,draws,historyLoaded,predLoaded,report){
+ const root=$('incidents');root.replaceChildren();
+ const today=madridToday(),minutes=madridMinutes();
+ let next=minutes>=21*60+40?shiftDay(today,1):today;
+ while(!drawDay(next))next=shiftDay(next,1);
+ const before=shiftDay(next,-1);
+ const warningDue=today>=next||(today===before&&minutes>=14*60);
+ const hasNext=entries.some(r=>r.target===next);
+ root.appendChild(p('Próximo sorteo según el calendario configurado: '+next+'.'));
+ if(!predLoaded)root.appendChild(p('No se puede comprobar si la próxima predicción está registrada.','incident-warning'));
+ else if(hasNext)root.appendChild(p('Predicción para '+next+' registrada.'));
+ else root.appendChild(p(warningDue?'Falta la predicción para '+next+'. Revisa la generación automática.':'La predicción para '+next+' aún no está registrada. La generación está prevista el día anterior. ',warningDue?'incident-warning':'muted'));
+ if(!historyLoaded||!draws.length)root.appendChild(p('Histórico no disponible: no se pueden comprobar los resultados.','incident-warning'));
+ else{
+  // Allow the next morning's scheduled update before declaring a missing result.
+  let expected=shiftDay(today,-1);
+  if(minutes<12*60&&drawDay(expected))expected=shiftDay(expected,-1);
+  while(!drawDay(expected))expected=shiftDay(expected,-1);
+  if(!draws.some(r=>r.date===expected))root.appendChild(p('Falta el resultado del '+expected+' en el histórico. Los aciertos están pendientes de actualización.','incident-warning'));
+ }
+ if(report?.status==='unavailable')root.appendChild(p('El último intento de actualización no obtuvo resultados oficiales verificables de SELAE'+(report.checkedAt?' ('+report.checkedAt+')':'')+'.','incident-warning'));
+ else if(report?.status==='conflict')root.appendChild(p('El actualizador detectó una discrepancia con SELAE. Se ha detenido sin sustituir los resultados existentes.','incident-warning'));
+ else if(report?.status==='invalid-history')root.appendChild(p('La actualización se ha detenido porque el histórico está incompleto o es inválido.','incident-warning'));
+ else if(report?.status==='confirmed')root.appendChild(p('Último cotejo automático: '+report.checkedAt+'. Solo los resultados con evidencia individual se marcan como cotejados.','muted'));
+ else root.appendChild(p('Aún no hay un informe de cotejo automático disponible.','muted'));
+ root.appendChild(p('Calendario del proyecto: lunes, jueves y sábado. Aviso de predicción ausente desde las 14:00 del día anterior; resultado ausente desde las 12:00 del día siguiente, hora de Madrid. Son avisos en esta página, sin notificaciones externas.','notice'));
+}
+function renderTracking(entries,draws,historyLoaded,activeStrategy,proofs=[]){
  const root=$('tracking');root.replaceChildren();
  if(!entries.length){root.appendChild(p('Aún no hay predicciones válidas registradas.'));return}
  const rows=trackingResults(entries,draws);
@@ -124,13 +163,16 @@ function renderTracking(entries,draws,historyLoaded,activeStrategy){
   item.appendChild(p(row.record.target+' · '+row.record.nums.join(', ')+(validReintegro(row.record.reintegro)?' + R '+row.record.reintegro:'')));
   const result=row.actual?row.hits+' / 6 aciertos'+(row.reintegro!==null?' · Reintegro '+(row.reintegro?'acertado':'no acertado'):' · Reintegro no evaluable'):!historyLoaded?'Resultado sin comprobar':row.record.target<madridToday()?'Resultado no disponible en el histórico':'Pendiente de resultado';
   item.appendChild(p(result,'muted'));detail.appendChild(item);
+  if(row.actual)item.appendChild(p(verificationFor(row.actual,proofs),'verification-note'));
  }
  root.appendChild(detail);
  root.appendChild(p('Se incluyen también los fallos. Cada algoritmo se evalúa por separado; las revisiones conservadas no cuentan como apuestas adicionales. La referencia al azar es matemática para sorteos uniformes de 6 entre 49 y reintegro de 0 a 9; no son apuestas generadas después del resultado. Las fechas de publicación se comprueban en los commits y los resultados pueden requerir cotejo oficial.','notice'));
 }
 async function fetchJson(path){const r=await fetch(path+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 async function load(){
- const [pred,history,active]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json'),fetchJson('./data/reto-estrategia-activa.json')]);
+ const [pred,history,active,verification,update]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json'),fetchJson('./data/reto-estrategia-activa.json'),fetchJson('./data/verificacion-sorteos.json'),fetchJson('./data/estado-actualizacion.json')]);
+ const proofs=verification.status==='fulfilled'&&Array.isArray(verification.value?.draws)?verification.value.draws:[];
+ const report=update.status==='fulfilled'?update.value:null;
  const activeStrategy=active.status==='fulfilled'?active.value:null;
  $('active-strategy').textContent=validActiveStrategy(activeStrategy)?'Motor activo: recencia 30/90/365 días · Versión '+activeStrategy.version+'. Su evaluación empieza con las nuevas predicciones de esta versión.':'No se ha podido comprobar la estrategia activa.';
  let draws=[];
@@ -150,12 +192,14 @@ async function load(){
    const balls=combination(r.nums,r.reintegro);
    for(const b of balls.querySelectorAll('.ball:not(.gold)')){const times=counts.get(Number(b.textContent))||0;if(times>=2){b.classList.add('repeated');b.style.setProperty('--repeat-hue',String((colorByNumber.get(Number(b.textContent))*137.508+25)%360));b.title='Aparece '+times+' veces en los últimos 5 sorteos';const tag=document.createElement('span');tag.className='repeat-count';tag.textContent='×'+times;b.appendChild(tag)}}
    item.appendChild(balls);root.appendChild(item);
+   item.appendChild(p(verificationFor(r,proofs),'verification-note'));
   }
   if(!draws.length)root.appendChild(p('No hay sorteos válidos disponibles.'));
  }else $('draws-status').textContent='No se ha podido cargar el histórico actualizado.';
- if(pred.status!=='fulfilled'||!Array.isArray(pred.value?.predictions)){ $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';$('tracking').replaceChildren(p('No se pudo cargar el registro de predicciones.'));return}
+ if(pred.status!=='fulfilled'||!Array.isArray(pred.value?.predictions)){renderIncidents([],draws,historyLoaded,false,report); $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';$('tracking').replaceChildren(p('No se pudo cargar el registro de predicciones.'));return}
  const entries=pred.value.predictions.filter(r=>r&&validDate(r.target)&&validNumbers(r.nums)).sort((a,b)=>b.target.localeCompare(a.target));
- renderTracking(entries,draws,historyLoaded,activeStrategy);
+ renderIncidents(entries,draws,historyLoaded,true,report);
+ renderTracking(entries,draws,historyLoaded,activeStrategy,proofs);
  const latest=entries[0];if(!latest){$('prediction-status').textContent='Aún no hay predicciones registradas.';return}
  const actual=draws.find(d=>d.date===latest.target);
  const status=actual?'Sorteo ya celebrado':!historyLoaded||!draws.length?'Resultado sin comprobar: histórico no disponible':latest.target<madridToday()?'Resultado no disponible en el histórico':'Pendiente de resultado';

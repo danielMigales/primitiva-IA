@@ -42,16 +42,22 @@ def official(date):
         if not isinstance(item, dict):
             continue
         stamp = str(item.get("fecha_sorteo", item.get("fecha", "")))
-        if date.strftime("%Y%m%d") not in re.sub(r"\D", "", stamp) and date.isoformat() != stamp:
+        if item.get("game_id", "LAPR") != "LAPR":
+            continue
+        if stamp not in (date.strftime("%Y%m%d"), date.isoformat()) and not re.fullmatch(re.escape(date.isoformat()) + r"[T ][0-9:.+\-]+Z?", stamp):
             continue
         combo = item.get("combinacion", item.get("combinacion_ganadora"))
         if isinstance(combo, str):
+            if not re.fullmatch(r"[0-9\s,;\-]+", combo):
+                continue
             parts = re.findall(r"\d+", combo)
         elif isinstance(combo, list):
             parts = combo
         else:
             continue
         if len(parts) != 6:
+            continue
+        if any(type(n) is not int and not (isinstance(n, str) and re.fullmatch(r"[0-9]{1,2}", n)) for n in parts):
             continue
         try:
             nums = sorted(int(n) for n in parts)
@@ -68,14 +74,28 @@ def official(date):
             return row
     return None
 
+def write_report(status, latest=None, checked=0, conflicts=None):
+    report = {
+        "version": 1, "checkedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "status": status, "latestHistoricalDate": latest,
+        "officialResultsReceived": checked, "conflicts": conflicts or [],
+        "sourceUrl": BASE_URL,
+        "note": "Only unambiguous official JSON results can confirm a draw; HTML or inaccessible sources never count as verification."
+    }
+    DEST.with_name("estado-actualizacion.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def main():
     if not DEST.exists():
         print("Histórico ausente: no se crea uno parcial", file=sys.stderr)
+        write_report("invalid-history")
         return 1
     payload = json.loads(DEST.read_text(encoding="utf-8"))
     rows = payload.get("draws", [])
     if len(rows) < 2900 or not all(valid(r) and dt.date.fromisoformat(r["date"]) >= CUTOFF for r in rows):
         print("Histórico incompleto o inválido: actualización detenida", file=sys.stderr)
+        write_report("invalid-history")
         return 1
     existing = {}
     for row in rows:
@@ -83,11 +103,17 @@ def main():
         nums = sorted(row["nums"])
         if date in existing and existing[date]["nums"] != nums:
             print("Conflicto en histórico:", date, file=sys.stderr)
+            write_report("invalid-history")
             return 1
         existing[date] = dict(row, nums=nums)
     if len(existing) != len(rows):
         print("Fechas duplicadas: revisión manual necesaria", file=sys.stderr)
+        write_report("invalid-history")
         return 1
+    verification_path = DEST.with_name("verificacion-sorteos.json")
+    verification = json.loads(verification_path.read_text(encoding="utf-8")) if verification_path.exists() else {"version": 1, "draws": []}
+    confirmed = {r["date"]: r for r in verification["draws"]}
+    checked = 0
     today = dt.date.today()
     latest = dt.date.fromisoformat(max(existing))
     added = 0
@@ -104,14 +130,27 @@ def main():
             continue
         if row is None:
             continue
+        checked += 1
         key = row["date"]
         if key in existing:
             if existing[key]["nums"] != row["nums"]:
                 print("Conflicto con SELAE:", key, file=sys.stderr)
+                write_report("conflict", max(existing), checked, [{"date": key, "field": "nums"}])
+                return 1
+            if "reintegro" in row and "reintegro" in existing[key] and row["reintegro"] != existing[key]["reintegro"]:
+                print("Conflicto de reintegro con SELAE:", key, file=sys.stderr)
+                write_report("conflict", max(existing), checked, [{"date": key, "field": "reintegro"}])
                 return 1
         else:
             existing[key] = row
             added += 1
+        confirmed[key] = dict(row, source="SELAE",
+                              checkedAt=dt.datetime.now(dt.timezone.utc).isoformat(),
+                              url=BASE_URL + "?" + urllib.parse.urlencode({"game_id": "LAPR", "fecha_sorteo": date.strftime("%Y%m%d")}))
+    if checked:
+        verification["draws"] = [confirmed[key] for key in sorted(confirmed)]
+        verification_path.write_text(json.dumps(verification, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_report("confirmed" if checked else "unavailable", max(existing), checked)
     if not added:
         print("Sin nuevos resultados oficiales verificables. Histórico intacto.")
         return 0

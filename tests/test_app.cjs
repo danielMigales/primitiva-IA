@@ -18,11 +18,11 @@ class Element {
 const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10-12',reintegro:8};
 const draw = {date:'2026-10-12',nums:[2,5,26,40,42,45],reintegro:9};
 const activeConfig=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json'),'utf8'));
-async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z') {
- const elements=Object.fromEntries(['prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy'].map(id=>[id,new Element('div')]));
+async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'}) {
+ const elements=Object.fromEntries(['prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
  class Clock extends Date { constructor(...args){super(...(args.length?args:[today]));} static now(){return Date.parse(today);} }
  const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,
-  fetch:async url=>{const data=url.includes('estrategia-activa')?activeConfig:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
+  fetch:async url=>{const data=url.includes('estrategia-activa')?activeConfig:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
  vm.runInContext(source.replace('load().catch(', 'globalThis.loaded=load().catch('),context);
  await context.loaded;
  return {elements,context};
@@ -125,4 +125,35 @@ test('active strategy version starts a separate sample from old recency records'
  const old=groups.find(c=>c.textContent.includes('registro anterior sin versión'));
  assert.match(active.textContent,/Seguimiento: 0 \/ 30/);
  assert.match(old.textContent,/Seguimiento: 1 \/ 30/);
+});
+
+test('missing prediction warns only after the configured generation grace period',async()=>{
+ const morning=await render({predictions:[]},undefined,'2026-10-14T10:00:00Z');
+ assert.doesNotMatch(morning.elements.incidents.textContent,/Falta la predicción/);
+ const afternoon=await render({predictions:[]},undefined,'2026-10-14T12:00:00Z');
+ assert.match(afternoon.elements.incidents.textContent,/Falta la predicción para 2026-10-15/);
+});
+test('missing results allow the next morning update and use Madrid time',async()=>{
+ const history={draws:[{...draw,date:'2026-10-10'}]};
+ const early=await render(undefined,history,'2026-10-13T09:00:00Z');
+ assert.doesNotMatch(early.elements.incidents.textContent,/Falta el resultado/);
+ const late=await render(undefined,history,'2026-10-13T10:00:00Z');
+ assert.match(late.elements.incidents.textContent,/Falta el resultado del 2026-10-12/);
+});
+test('official verification requires matching snapshots and has partial coverage',async()=>{
+ const proof={...draw,source:'SELAE',checkedAt:'2026-10-13T10:00:00Z',url:'https://www.loteriasyapuestas.es/resultados'};
+ const full=await render(undefined,undefined,undefined,{draws:[proof]});
+ assert.match(full.elements['recent-draws'].textContent,/Números y reintegro cotejados con SELAE/);
+ const partial=await render(undefined,undefined,undefined,{draws:[{...proof,reintegro:null}]});
+ assert.match(partial.elements['recent-draws'].textContent,/Números cotejados; reintegro pendiente/);
+ const conflict=await render(undefined,undefined,undefined,{draws:[{...proof,reintegro:8}]});
+ assert.match(conflict.elements['recent-draws'].textContent,/Discrepancia con el cotejo SELAE/);
+ const absent=await render();
+ assert.match(absent.elements['recent-draws'].textContent,/Pendiente de cotejo SELAE/);
+});
+test('update report surfaces inaccessible sources and conflicts',async()=>{
+ const unavailable=await render(undefined,undefined,undefined,undefined,{status:'unavailable',checkedAt:'2026-10-13T10:00:00Z'});
+ assert.match(unavailable.elements.incidents.textContent,/no obtuvo resultados oficiales verificables/);
+ const conflict=await render(undefined,undefined,undefined,undefined,{status:'conflict'});
+ assert.match(conflict.elements.incidents.textContent,/discrepancia con SELAE/);
 });

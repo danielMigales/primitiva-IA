@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "description": "Cotejos completos o parciales con resultados oficiales inequívocos. Sin cotejo registrado, el resultado queda pendiente. Se conserva una copia de los valores cotejados para detectar cambios.",
+  "draws": []
+}
