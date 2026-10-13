@@ -1,13 +1,26 @@
 const $=id=>document.getElementById(id);
+function validDate(value){
+ if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
+ const time=Date.parse(value+'T00:00:00Z');
+ return Number.isFinite(time)&&new Date(time).toISOString().slice(0,10)===value;
+}
+function validNumbers(nums){return Array.isArray(nums)&&nums.length===6&&nums.every(n=>Number.isInteger(n)&&n>=1&&n<=49)&&new Set(nums).size===6}
+function validReintegro(n){return Number.isInteger(n)&&n>=0&&n<=9}
+function evidenceWindows(value){return Array.isArray(value)?value.filter(w=>w&&[30,90].includes(w.days)&&Number.isInteger(w.hits)&&Number.isInteger(w.draws)&&w.draws>0&&w.hits>=0&&w.hits<=w.draws):[]}
+function madridToday(){
+ const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+ const values=Object.fromEntries(parts.map(p=>[p.type,p.value]));
+ return values.year+'-'+values.month+'-'+values.day;
+}
 function ball(n,gold=false){const el=document.createElement('span');el.className='ball'+(gold?' gold':'');el.textContent=n;return el}
 function combination(nums,reintegro){const row=document.createElement('div');row.className='balls';for(const n of nums)row.appendChild(ball(n));if(Number.isInteger(reintegro)&&reintegro>=0&&reintegro<=9){const plus=document.createElement('span');plus.className='plus';plus.textContent='+';row.appendChild(plus);row.appendChild(ball(reintegro,true))}return row}
 function p(text,cls=''){const e=document.createElement('p');e.textContent=text;if(cls)e.className=cls;return e}
 function weeklyEvidence(r,draws,n,gold=false){
- if(!/^\d{4}-\d{2}-\d{2}$/.test(r.historyUntil||''))return null;
+ if(!validDate(r.historyUntil))return null;
  const end=Date.parse(r.historyUntil+'T00:00:00Z');
  const start=end-6*86400000;
- const recent=draws.filter(d=>{const t=Date.parse(d.date+'T00:00:00Z');return t>=start&&t<=end});
- if(!recent.length)return {days:7,hits:0,draws:0};
+ const recent=draws.filter(d=>{const t=Date.parse(d.date+'T00:00:00Z');return t>=start&&t<=end&&(!gold||validReintegro(d.reintegro))});
+ if(!recent.length)return null;
  return {days:7,hits:recent.filter(d=>gold?d.reintegro===n:d.nums.includes(n)).length,draws:recent.length};
 }
 function explain(r,draws,entries){
@@ -39,18 +52,19 @@ function explain(r,draws,entries){
   item.append(badge,copy);list.appendChild(item);
  }
  if(Array.isArray(r.numberEvidence)&&r.numberEvidence.length){
-  for(const item of [...r.numberEvidence].sort((a,b)=>a.number-b.number)){
-   const week=weeklyEvidence(r,draws,item.number);
-   const windows=[...(week?[week]:[]),...(item.windows||[]).filter(w=>w.days===30||w.days===90)];
-   reasonCard(item.number,windows);
+  for(const n of [...r.nums].sort((a,b)=>a-b)){
+   const item=r.numberEvidence.find(e=>e&&e.number===n);
+   const week=weeklyEvidence(r,draws,n);
+   const windows=[...(week?[week]:[]),...evidenceWindows(item?.windows)];
+   reasonCard(n,windows,false,'Sin desglose estadístico registrado.');
   }
  }else{
   d.appendChild(p('Predicción anterior: no se conservaron explicaciones individuales verificables.','muted'));
   for(const n of r.nums||[])reasonCard(n,null,false,'Sin desglose estadístico registrado.');
  }
- if(Number.isInteger(r.reintegro)&&r.reintegro>=0&&r.reintegro<=9){
+ if(validReintegro(r.reintegro)){
   const week=weeklyEvidence(r,draws,r.reintegro,true);
-  const windows=[...(week?[week]:[]),...(r.reintegroEvidence?.windows||[]).filter(w=>w.days===30||w.days===90)];
+  const windows=[...(week?[week]:[]),...evidenceWindows(r.reintegroEvidence?.windows)];
   reasonCard(r.reintegro,windows,true,'Reintegro registrado sin desglose estadístico.');
  }
  d.appendChild(list);
@@ -61,8 +75,9 @@ async function fetchJson(path){const r=await fetch(path+'?t='+Date.now(),{cache:
 async function load(){
  const [pred,history]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json')]);
  let draws=[];
- if(history.status==='fulfilled'&&Array.isArray(history.value.draws)){
-  draws=history.value.draws.filter(r=>r&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&Array.isArray(r.nums)&&r.nums.length===6&&r.nums.every(n=>Number.isInteger(n)&&n>=1&&n<=49)).sort((a,b)=>b.date.localeCompare(a.date));
+ const historyLoaded=history.status==='fulfilled'&&Array.isArray(history.value?.draws);
+ if(historyLoaded){
+  draws=history.value.draws.filter(r=>r&&validDate(r.date)&&validNumbers(r.nums)).sort((a,b)=>b.date.localeCompare(a.date));
   $('draws-status').textContent='Último resultado registrado: '+(draws[0]?.date||'ninguno')+'. Actualización del archivo: '+(history.value.updated_at||'no indicada')+'.';
   const root=$('recent-draws');root.replaceChildren();
   const recent=draws.slice(0,5);
@@ -79,14 +94,15 @@ async function load(){
   }
   if(!draws.length)root.appendChild(p('No hay sorteos válidos disponibles.'));
  }else $('draws-status').textContent='No se ha podido cargar el histórico actualizado.';
- if(pred.status!=='fulfilled'||!Array.isArray(pred.value.predictions)){ $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';return}
- const entries=pred.value.predictions.filter(r=>r&&/^\d{4}-\d{2}-\d{2}$/.test(r.target)&&Array.isArray(r.nums)&&r.nums.length===6).sort((a,b)=>b.target.localeCompare(a.target));
+ if(pred.status!=='fulfilled'||!Array.isArray(pred.value?.predictions)){ $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';return}
+ const entries=pred.value.predictions.filter(r=>r&&validDate(r.target)&&validNumbers(r.nums)).sort((a,b)=>b.target.localeCompare(a.target));
  const latest=entries[0];if(!latest){$('prediction-status').textContent='Aún no hay predicciones registradas.';return}
  const actual=draws.find(d=>d.date===latest.target);
- $('prediction-status').textContent='Predicción registrada para '+latest.target+' · Histórico utilizado hasta '+(latest.historyUntil||'fecha no indicada')+(actual?' · Sorteo ya celebrado':' · Pendiente de resultado');
+ const status=actual?'Sorteo ya celebrado':!historyLoaded||!draws.length?'Resultado sin comprobar: histórico no disponible':latest.target<madridToday()?'Resultado no disponible en el histórico':'Pendiente de resultado';
+ $('prediction-status').textContent='Predicción registrada para '+latest.target+' · Histórico utilizado hasta '+(latest.historyUntil||'fecha no indicada')+' · '+status;
  const root=$('prediction');root.replaceChildren();root.appendChild(combination(latest.nums,latest.reintegro));
- if(!Number.isInteger(latest.reintegro))root.appendChild(p('Predicción antigua: no se registró reintegro antes del sorteo. No se añadirá retrospectivamente.','muted'));
- if(actual){const hits=latest.nums.filter(n=>actual.nums.includes(n)).length;root.appendChild(p('Resultado: '+hits+' de 6 números acertados'+(Number.isInteger(latest.reintegro)&&Number.isInteger(actual.reintegro)?' · Reintegro '+(latest.reintegro===actual.reintegro?'acertado':'no acertado'):'')+'.'))}
+ if(!validReintegro(latest.reintegro))root.appendChild(p('No hay un reintegro válido registrado para esta predicción. No se añadirá retrospectivamente.','muted'));
+ if(actual){const hits=latest.nums.filter(n=>actual.nums.includes(n)).length;root.appendChild(p('Resultado: '+hits+' de 6 números acertados'+(validReintegro(latest.reintegro)&&validReintegro(actual.reintegro)?' · Reintegro '+(latest.reintegro===actual.reintegro?'acertado':'no acertado'):'')+'.'))}
  explain(latest,draws,entries);
 }
 load().catch(e=>{$('prediction-status').textContent='Error de carga: '+e.message});

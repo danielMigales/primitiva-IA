@@ -10,14 +10,11 @@ Actualizado: 2026-10-13. Fuente principal: archivos existentes en este repositor
 - Principio científico: un sorteo justo es aleatorio; **no existe ventaja predictiva demostrada** en el proyecto. No presentar patrones ni backtests exploratorios como garantías de acierto.
 
 ## 2. Aplicación web
-- `index.html`: interfaz, sección **Laboratorio**, **RETO PREDICTOR**, explicación de metodología y datos históricos.
-- `app.js`: carga/validación de sorteos, estadísticas, selección experimental, backtest, presentación de combinaciones, últimos cinco sorteos y panel del Reto Predictor.
-- `manifest.json`: configuración de aplicación web instalable.
-- Laboratorio: selector **5, 20, 50, 100, 500, 1000 y Todos**; botón **Analizar y generar**.
-- El motor calcula frecuencias, retrasos, parejas, tríos y puntuaciones, y muestra una prueba retrospectiva frente a una referencia aleatoria. La selección del Laboratorio es experimental y **distinta** de la estrategia congelada del Reto Predictor.
-- La opción **50 sorteos** se añadió el 2026-10-12 al selector de `index.html`, sin modificar el motor, que ya acepta cualquier tamaño numérico de ventana. Commit: `2ee9cbb01b6942bd2f5319c7ef69dc99e09d323c`.
-- El código de `app.js` exige al menos 30 sorteos válidos para habilitar el botón; por tanto la opción de 5 y 20 requiere revisar si su disponibilidad es coherente con el diseño original (no cambiarla sin decidirlo).
-- Los últimos cinco sorteos se muestran con resaltado de números repetidos.
+- `index.html`: interfaz actual con combinación designada, explicación individual y últimos cinco sorteos.
+- `app.js`: carga el registro de predicciones y el histórico; muestra la predicción más reciente y, cuando consta su resultado, aciertos principales y reintegro. El motor de generación está en Python.
+- `manifest.json`: manifiesto con apertura independiente e icono SVG. No hay service worker; no se ha comprobado instalación en Android ni funcionamiento sin conexión.
+- El Laboratorio y su selector de ventanas pertenecen a una interfaz anterior; no están presentes en la versión actual. No evaluar sus antiguas opciones como funciones activas.
+- Los últimos cinco sorteos muestran colores y etiquetas de repetición.
 - La web no almacena en el móvil un historial permanente de predicciones.
 
 ## 3. Histórico y actualización
@@ -77,7 +74,7 @@ Actualizado: 2026-10-13. Fuente principal: archivos existentes en este repositor
 ## 10. Pendientes y limitaciones
 - Auditar el origen y exactitud de `data/sorteos.json` frente a datos oficiales.
 - Resuelta la admisión de 50 y 365 y la validación común; permanece pendiente decidir por separado la relación entre el motor actual de recencia y la estrategia congelada de parejas/50.
-- Comprobar las opciones de 5 y 20 sorteos frente al mínimo de 30 registros requerido por la interfaz.
+- Las opciones antiguas del Laboratorio ya no están en la interfaz actual; revisar solo si se decide recuperarlas.
 - Verificar la ejecución real de workflows y el estado de GitHub Pages; la presencia de archivos **no demuestra** que todas las automatizaciones estén funcionando.
 - Esperar la muestra prospectiva mínima prevista antes de evaluar cambios a la estrategia congelada.
 - Las conversaciones borradas no pueden reconstruirse palabra por palabra desde el repositorio; añadir aquí cualquier decisión anterior que el usuario recuerde y que aún no esté documentada.
@@ -92,6 +89,7 @@ El propietario quiere proteger el código de predicción manteniendo la web func
 
 ## 13. Segunda fase de copia privada (2026-10-12)
 Se copiaron a `danielMigales/Primitiva-IA-motor`: `update_data.py`, `diagnostico_selae.py`, `probar_selae.py`, `data/sorteos.json` y cinco workflows de actualización, reto y diagnóstico. En el repositorio privado, `actualizar.yml` y `reto-automatico.yml` se cambiaron a **solo `workflow_dispatch`** (sin cron) para no duplicar las ejecuciones del repositorio público; no se alteraron los workflows públicos. Comprobado que `app.js` descarga por rutas relativas `data/sorteos.json`, `data/reto-predictor.json` y `data/reto-aprendizaje.json`. Queda pendiente configurar la publicación selectiva y evitar exponer la lógica del Laboratorio ejecutada en el navegador. Las copias privadas no implican retirada de material público.
+
 ## 14. Validación del Reto Predictor (2026-10-13)
 - Motivo: aceptar ventana 50 y evitar que el flujo automático de ventana 365 eluda la validación manual.
 - Cambio mínimo funcional: extraer las comprobaciones existentes a `scripts/validar_reto.py`, añadir 50 y 365 a las ventanas admitidas y llamar al mismo validador antes de incorporar la entrada automática. Las reglas previas de fechas y números se mantienen.
@@ -100,3 +98,12 @@ Se copiaron a `danielMigales/Primitiva-IA-motor`: `update_data.py`, `diagnostico
 - Estrategia congelada, algoritmo de recencia, archivos de datos e histórico sin cambios. La corrección no convierte el generador en parejas/50.
 - Commit: el commit que incorpora esta sección (consultar historial Git de este archivo).
 - Limitación: comprobación local de las rutas ejecutadas por ambos workflows; no se lanzan workflows de producción ni se registran predicciones de prueba en el histórico real.
+
+## 15. Revisión de la app (2026-10-13)
+- Inspeccionada la web publicada y el código de `main`; la página carga la predicción del 15/10 y los cinco resultados recientes. No se observaron errores de la app en consola; apareció un aviso ajeno, de la extensión del navegador.
+- Fallos reproducidos: JSON raíz nulo rompe la carga; números repetidos/no enteros y fechas imposibles se aceptan; explicaciones mal formadas provocan errores o muestran números ajenos; fallo del histórico o resultado pasado ausente se presenta como pendiente; el recuento semanal del reintegro incluye sorteos sin reintegro.
+- Corregidos en `app.js`: validación de fechas y seis números únicos, manejo de JSON nulo y evidencias parciales, tarjetas de los números realmente seleccionados, estados de resultado separados con fecha de Madrid y denominador del reintegro limitado a datos válidos.
+- `index.html`: nueva versión de caché del script. `tests/test_app.cjs`: nueve pruebas de carga/renderizado con DOM mínimo y sin dependencias; siete fallaban antes de la corrección y nueve pasan después. `.github/workflows/comprobar-app.yml`: comprobación automática del frontend en push/PR.
+- Verificación adicional: 3.000 sorteos, máximo 2026-10-12, sin fechas duplicadas ni combinaciones inválidas, todos con reintegro 0–9; no equivale a cotejo oficial. Las ocho pruebas Python del Reto continúan pasando.
+- Archivos de datos, estrategia y algoritmo de predicción sin cambios. Commit: el que incorpora esta sección.
+- Limitaciones: inspección del navegador en escritorio y pruebas de lógica con DOM mínimo; no es prueba en un dispositivo Android real ni auditoría de la fuente SELAE. La presencia del manifiesto no garantiza capacidades offline.
