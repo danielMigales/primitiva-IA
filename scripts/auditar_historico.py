@@ -57,7 +57,7 @@ def trusted_proof(proof, row):
             and isinstance(proof.get("checkedAt"), str))
 
 
-def audit(root=ROOT, limit=20, delay=0.5, fetch=source.official, dates=None):
+def audit(root=ROOT, limit=20, delay=0.5, fetch=source.official, dates=None, max_seconds=600):
     history = root / "data/sorteos.json"
     raw = history.read_bytes()
     payload = json.loads(raw)
@@ -91,7 +91,7 @@ def audit(root=ROOT, limit=20, delay=0.5, fetch=source.official, dates=None):
                 continue
             if dates is None and records.get(key, {}).get("status") in ("matched", "numbers-only", "conflict", "document-not-found"):
                 continue
-            if attempts >= limit or time.monotonic() - started >= 600:
+            if attempts >= limit or time.monotonic() - started >= max_seconds:
                 break
             stamp = dt.datetime.now(dt.timezone.utc).isoformat()
             entry = dict(date=key, historyRowSha256=fingerprint(row), checkedAt=stamp)
@@ -139,12 +139,15 @@ def audit(root=ROOT, limit=20, delay=0.5, fetch=source.official, dates=None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--limit", type=int, default=20)
+    parser.add_argument("--max-seconds", type=int, default=600)
     parser.add_argument("--date", action="append", help="Revisar expresamente una fecha del histórico; se puede repetir")
     args = parser.parse_args()
-    if not 0 <= args.limit <= 100:
-        parser.error("--limit debe estar entre 0 y 100")
+    if not 0 <= args.limit <= 200:
+        parser.error("--limit debe estar entre 0 y 200")
+    if not 1 <= args.max_seconds <= 7200:
+        parser.error("--max-seconds debe estar entre 1 y 7200")
     if args.date:
         known = {r["date"] for r in json.loads((ROOT / "data/sorteos.json").read_text())["draws"]}
         if any(day not in known for day in args.date):
             parser.error("Las fechas deben existir en el histórico")
-    sys.exit(audit(limit=args.limit, dates=set(args.date) if args.date else None))
+    sys.exit(audit(limit=args.limit, dates=set(args.date) if args.date else None, max_seconds=args.max_seconds))
