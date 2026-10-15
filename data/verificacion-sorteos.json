@@ -3,6 +3,42 @@
   "description": "Cotejos completos o parciales con resultados oficiales inequívocos. Sin cotejo registrado, el resultado queda pendiente. Se conserva una copia de los valores cotejados para detectar cambios.",
   "draws": [
     {
+      "date": "2024-08-26",
+      "nums": [
+        7,
+        12,
+        26,
+        30,
+        34,
+        42
+      ],
+      "reintegro": 3,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_26_08_24.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "ffdf2b0654582fe64b95694358731a46574cb1c8591b73b92cad84d39da2b342",
+      "source": "SELAE",
+      "checkedAt": "2026-10-15T10:09:23.850444+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_26_08_24.pdf"
+    },
+    {
+      "date": "2024-09-02",
+      "nums": [
+        15,
+        16,
+        34,
+        35,
+        38,
+        39
+      ],
+      "reintegro": 0,
+      "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_2_09_24.pdf",
+      "sourceType": "official-press-pdf",
+      "sourceSha256": "a15a1a89fe544e9c61a50fa92b0517e8bc3ddb88099a9781a108215981b2433e",
+      "source": "SELAE",
+      "checkedAt": "2026-10-15T10:09:19.409392+00:00",
+      "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_2_09_24.pdf"
+    },
+    {
       "date": "2024-09-09",
       "nums": [
         27,
