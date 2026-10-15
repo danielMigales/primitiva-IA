@@ -1,7 +1,10 @@
 # Consulta oficial al abrir la aplicación
 
-Esta rama está preparada para revisión. No fusionar hasta desplegar `resultados.mjs`
-como servicio HTTP e indicar su URL HTTPS en `results-config.js`.
+Servicio público desplegado: https://primitiva-resultados-daniel.wittyeel5.chatgpt.site/api/resultados
+
+Identidad de Sites: appgprj_6ad134e99da481919a166eb639dc71bc.
+La URL de consulta está configurada en `results-config.js`.
+El código desplegado corresponde a `api/resultados.mjs`.
 
 GitHub Pages sirve archivos estáticos. SELAE no envía Access-Control-Allow-Origin
 en su servicio de resultados, por lo que la app necesita este pequeño intermediario.

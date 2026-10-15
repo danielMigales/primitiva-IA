@@ -9,7 +9,7 @@ export function parseResults(data, from, to) {
   for (const value of data) {
     const date = value?.fecha_sorteo?.slice(0,10);
     const match = /^\s*(\d{1,2})\s*-\s*(\d{1,2})\s*-\s*(\d{1,2})\s*-\s*(\d{1,2})\s*-\s*(\d{1,2})\s*-\s*(\d{1,2})\s+C\((\d{1,2})\)\s+R\((\d)\)\s*$/.exec(value?.combinacion || '');
-    if (value?.game_id !== 'LAPR' || !date || date < from || date > to || !match || ![1,4,6].includes(new Date(date+'T00:00:00Z').getUTCDay())) throw new Error('Resultado SELAE inválido');
+    if (value?.game_id !== 'LAPR' || !date || !/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(Date.parse(date)) || new Date(date).toISOString().slice(0,10)!==date || date < from || date > to || !match || ![1,4,6].includes(new Date(date+'T00:00:00Z').getUTCDay())) throw new Error('Resultado SELAE inválido');
     const nums = match.slice(1,7).map(Number).sort((a,b)=>a-b), complementario = Number(match[7]);
     if (new Set(nums).size !== 6 || nums.some(n=>n<1||n>49) || complementario<1 || complementario>49 || nums.includes(complementario)) throw new Error('Bolas SELAE inválidas');
     const row = {date, nums, reintegro:Number(match[8]), complementario};
@@ -31,6 +31,7 @@ export default {
     if (from<lower) from=lower;
     const upstream = new URL(SOURCE);
     for (const [key,value] of Object.entries({game_id:'LAPR',celebrados:'true',fechaInicioInclusiva:from.replaceAll('-',''),fechaFinInclusiva:to.replaceAll('-','')})) upstream.searchParams.set(key,value);
+    upstream.searchParams.set('_',String(Math.floor(Date.now()/60000)));
     try {
       const result = await fetch(upstream, {headers:{Accept:'application/json'},signal:AbortSignal.timeout(10000),redirect:'error',cache:'no-store'});
       if (!result.ok) throw new Error('SELAE HTTP '+result.status);
