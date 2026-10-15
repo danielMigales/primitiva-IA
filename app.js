@@ -237,7 +237,7 @@ async function loadContent(){
     const result=await PrimitivaLive.sync(globalThis.PRIMITIVA_RESULTS_ENDPOINT,draws,proofs);
     draws=result.draws;proofs=result.proofs;
     if($('sync-status'))$('sync-status').textContent=result.message;
-   }catch(error){if($('sync-status'))$('sync-status').textContent=error.message;}
+   }catch(error){if($('sync-status'))$('sync-status').textContent=error?.message?.startsWith('Discrepancia')?'Los nuevos resultados requieren revisión. Se mantienen los datos guardados.':'Mostrando los últimos resultados guardados.';}
   }
   $('draws-status').textContent='Último resultado registrado: '+(draws[0]?.date||'ninguno')+'. Actualización del archivo: '+(history.value.updated_at||'no indicada')+'.';
   const root=$('recent-draws');root.replaceChildren();
@@ -290,7 +290,7 @@ async function loadContent(){
  }
  explain(latest,draws,entries);
 }
-load().catch(e=>{$('prediction-status').textContent='Error de carga: '+e.message});
+load().catch(()=>{$('prediction-status').textContent='No se ha podido cargar la aplicación. Vuelve a intentarlo.'});
 
 
 if(typeof window!=='undefined'){

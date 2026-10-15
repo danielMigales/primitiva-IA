@@ -191,10 +191,10 @@ test('opening the app synchronizes results before recomputing predictions and re
  assert.match(elements['draws-status'].textContent,/2026-10-15/);
  assert.equal(elements['recent-draws'].children.length,2);
 });
-test('failed live update preserves published history and reports the connection error',async()=>{
+test('failed live update preserves published history and shows a saved-results notice',async()=>{
  const live={sync:async()=>{throw Error('No se ha podido conectar con SELAE.')}};
  const {elements}=await render(undefined,undefined,undefined,undefined,undefined,live);
- assert.match(elements['sync-status'].textContent,/No se ha podido conectar/);
+ assert.match(elements['sync-status'].textContent,/Mostrando los últimos resultados guardados/);
  assert.equal(elements['recent-draws'].children.length,1);
  assert.doesNotMatch(elements['sync-status'].textContent,/aún no ha publicado/);
 });
