@@ -19,10 +19,10 @@ class Element {
 const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10-12',reintegro:8};
 const draw = {date:'2026-10-12',nums:[2,5,26,40,42,45],reintegro:9};
 const activeConfig=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json'),'utf8'));
-async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'}) {
- const elements=Object.fromEntries(['prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
+async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null) {
+ const elements=Object.fromEntries(['sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
  class Clock extends Date { constructor(...args){super(...(args.length?args:[today]));} static now(){return Date.parse(today);} }
- const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,
+ const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,PrimitivaLive:live,PRIMITIVA_RESULTS_ENDPOINT:'https://results.example/api/resultados',
   fetch:async url=>{const data=url.includes('estrategia-activa')?activeConfig:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
  vm.runInContext(source.replace('load().catch(', 'globalThis.loaded=load().catch('),context);
  await context.loaded;
@@ -178,4 +178,23 @@ test('historical predictions highlight only actual matches',async()=>{
  const past=detail.children.find(c=>c.className==='tracking-entry'&&c.textContent.includes(draw.date));
  const predicted=past.children.find(c=>c.className==='balls');
  assert.equal(predicted.children.filter(c=>c.className.split(' ').includes('hit')).length,2);
+});
+
+test('opening the app synchronizes results before recomputing predictions and recent draws',async()=>{
+ const actual={date:entry.target,nums:[6,17,24,35,39,47],reintegro:3};
+ let calls=0;
+ const live={sync:async()=>{calls++;return {draws:[actual,draw],proofs:[],message:'Resultados actualizados con SELAE.'}}};
+ const {elements}=await render(undefined,undefined,'2026-10-15T20:15:00Z',undefined,undefined,live);
+ assert.equal(calls,1);
+ assert.match(elements['sync-status'].textContent,/Resultados actualizados con SELAE/);
+ assert.match(elements.prediction.textContent,/0 de 6 números acertados/);
+ assert.match(elements['draws-status'].textContent,/2026-10-15/);
+ assert.equal(elements['recent-draws'].children.length,2);
+});
+test('failed live update preserves published history and reports the connection error',async()=>{
+ const live={sync:async()=>{throw Error('No se ha podido conectar con SELAE.')}};
+ const {elements}=await render(undefined,undefined,undefined,undefined,undefined,live);
+ assert.match(elements['sync-status'].textContent,/No se ha podido conectar/);
+ assert.equal(elements['recent-draws'].children.length,1);
+ assert.doesNotMatch(elements['sync-status'].textContent,/aún no ha publicado/);
 });
