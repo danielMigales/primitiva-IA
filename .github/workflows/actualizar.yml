@@ -2,7 +2,9 @@ name: Actualizar sorteos
 
 on:
   schedule:
-    - cron: '0 9 * * *'
+    # Después del sorteo: lunes, jueves y sábado a las 22:00 en España peninsular.
+    - cron: '0 22 * * 1,4,6'
+      timezone: 'Europe/Madrid'
   workflow_dispatch:
 
 permissions:
