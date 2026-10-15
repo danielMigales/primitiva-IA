@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "checkedAt": "2026-10-15T10:10:41.742555+00:00",
+  "checkedAt": "2026-10-15T17:23:28.762466+00:00",
   "historySha256": "555bf469bb7054c47d7a2d477c4c39896b6ae71abf2ac5d8fd52408658e84dc2",
   "total": 3000,
   "structural": {
@@ -18,11 +18,11 @@
     "note": "La validez interna no confirma el resultado ni que estén todos los sorteos del calendario."
   },
   "summary": {
-    "document-not-found": 65,
+    "document-not-found": 165,
     "matched": 319,
-    "pending": 2616
+    "pending": 2516
   },
-  "attemptsThisRun": 50,
+  "attemptsThisRun": 100,
   "stoppedAt": null,
   "status": "in-progress",
   "fullyVerified": false,
@@ -73,6 +73,736 @@
       ]
     },
     {
+      "date": "2023-09-18",
+      "historyRowSha256": "2fb78b6ecc31adfd69b7143ad82d4af0c283586128502784c990818c78e1175f",
+      "checkedAt": "2026-10-15T17:23:27.640648+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_18_9_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_18_09_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-09-21",
+      "historyRowSha256": "bcd3c814297975a1df4a1af8992a11e181353b5f17a2dd029b76ae2c8c66a290",
+      "checkedAt": "2026-10-15T17:23:26.474118+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_21_9_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_21_09_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-09-23",
+      "historyRowSha256": "41f1e947c994cb0588851be298db88020289a3f5cca1f68d5d10c5b94439caca",
+      "checkedAt": "2026-10-15T17:23:24.561858+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_23_9_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_23_09_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_23_9_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_23_09_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-09-25",
+      "historyRowSha256": "9ed33cf232d6785d5005d7657f498ffd7dbebc9910cc3553d798ab799622bf45",
+      "checkedAt": "2026-10-15T17:23:23.404859+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_25_9_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_25_09_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-09-28",
+      "historyRowSha256": "e8412edb14c57e34dad32b333a867a2a9f840d5ce645897bd0443132f05fb349",
+      "checkedAt": "2026-10-15T17:23:22.285475+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_28_9_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_28_09_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-09-30",
+      "historyRowSha256": "5568678b4a475f5e5d6d0367c166fdd1584341cef3bf4144a99b8db8da10be80",
+      "checkedAt": "2026-10-15T17:23:20.375776+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_30_9_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_30_09_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_30_9_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_30_09_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-02",
+      "historyRowSha256": "89c52c322848372f80bab906bc931a2cfd3bb478ec013dbcdbac89948ef48ea5",
+      "checkedAt": "2026-10-15T17:23:19.203766+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_2_10_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_02_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-05",
+      "historyRowSha256": "54e0b8fa30c40573ec963e564fa045336178e2b6d41353f9ab0f536c845fc320",
+      "checkedAt": "2026-10-15T17:23:17.376503+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_05_10_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_5_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-07",
+      "historyRowSha256": "6df4e34059ce2d7a4a783ec7277acf00cf8e794ba657e53b929aed08df63d81e",
+      "checkedAt": "2026-10-15T17:23:15.395013+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_7_10_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_07_10_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_7_10_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_07_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-09",
+      "historyRowSha256": "bb5c8c8f399318bdfd9d8df78c66f93390706ee1730ef08a42f2b726e1fc9a0d",
+      "checkedAt": "2026-10-15T17:23:14.210656+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_9_10_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_09_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-12",
+      "historyRowSha256": "170f6fa052df2c82fc364351684d08ad631d77ce0091293a1e7540796e2ed569",
+      "checkedAt": "2026-10-15T17:23:13.340446+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_12_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-14",
+      "historyRowSha256": "0c499b0446993fa02b7d487493b74d5fab8329981d4a8a91759b41d7f472363d",
+      "checkedAt": "2026-10-15T17:23:12.074633+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_14_10_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_14_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-16",
+      "historyRowSha256": "8b217fbf020dd61755b12dac96556101fab98bc89964f529f31e2cb4760f2ab6",
+      "checkedAt": "2026-10-15T17:23:11.201134+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_16_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-19",
+      "historyRowSha256": "09498fc76ca9a4af94a57bcf11bb144a182b23813b750f29068073c40eb9b0e2",
+      "checkedAt": "2026-10-15T17:23:10.351584+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_19_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-21",
+      "historyRowSha256": "520113f9a4b5633fa7b218d263cb7c94229ac7cc4dcd53e025e7a535c440727a",
+      "checkedAt": "2026-10-15T17:23:09.103161+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_21_10_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_21_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-23",
+      "historyRowSha256": "1e95d4effff46f4d8728dc04ecac1257f71138af17514d2263ab554431b94d78",
+      "checkedAt": "2026-10-15T17:23:08.254310+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_23_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-26",
+      "historyRowSha256": "f806ecd926668a1af107acc0063312574959299aaa76a1912ae3255b63cb7dd2",
+      "checkedAt": "2026-10-15T17:23:07.432646+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_26_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-28",
+      "historyRowSha256": "ae2e1b04dc0965d6e4168d45c945fcaa7f9834dd71f82cee5c12bf6fa73913ac",
+      "checkedAt": "2026-10-15T17:23:06.238141+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_28_10_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_28_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-10-30",
+      "historyRowSha256": "800791122188977f1a0aa3cd0688b19bc4b42e2269afa51340588b9757b603b9",
+      "checkedAt": "2026-10-15T17:23:05.381738+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_30_10_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-02",
+      "historyRowSha256": "aaa59ed44b4d021bd666cd100b7c779a916591a74a92e85026fb5eb2da0d958e",
+      "checkedAt": "2026-10-15T17:23:04.132851+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_02_11_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_2_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-04",
+      "historyRowSha256": "62a3ac1e7f714041a3db5f295a6d2a543f60dd3987d753698fd7865a4a4a5774",
+      "checkedAt": "2026-10-15T17:23:02.183502+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_4_11_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_04_11_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_4_11_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_04_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-06",
+      "historyRowSha256": "8952da759908375055e764d7a47277cf87e848ca6051409d44f25a382173f810",
+      "checkedAt": "2026-10-15T17:23:00.931381+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_6_11_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_06_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-09",
+      "historyRowSha256": "63b15ec8ce97fac2fd6bf967030492abe09afb30412bd47abfae42613f60d180",
+      "checkedAt": "2026-10-15T17:22:59.730461+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_09_11_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_9_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-11",
+      "historyRowSha256": "37ef00c97362def57b77248aa9f8734985f71a9b15134146b0f9f996df2fc692",
+      "checkedAt": "2026-10-15T17:22:58.433489+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_11_11_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_11_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-13",
+      "historyRowSha256": "21f31af801c76fe3776b41a6a76f7d573ce3ed470ab43afdfe5b42b6483d8f00",
+      "checkedAt": "2026-10-15T17:22:57.590318+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_13_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-16",
+      "historyRowSha256": "6e7bae44a11e3ba85fc863db162bc2fda1b490fe3941e7964e1f8da9edcf53c7",
+      "checkedAt": "2026-10-15T17:22:56.718023+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_16_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-18",
+      "historyRowSha256": "b7a0d98d70a454fc69516efc593d1ba06c142c5fd760d7d3c99869fe5edae9c7",
+      "checkedAt": "2026-10-15T17:22:55.487064+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_18_11_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_18_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-20",
+      "historyRowSha256": "cda76e2a66f7f2a1d384adbceaf96275bdad8d7bb93f3c6354df7dfdd1f068f0",
+      "checkedAt": "2026-10-15T17:22:54.538962+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_20_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-23",
+      "historyRowSha256": "80f3e2f860938c33a6ca25f9675fd9f6d3486bd6209772b0383ee8a149509f34",
+      "checkedAt": "2026-10-15T17:22:53.730100+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_23_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-25",
+      "historyRowSha256": "db174326af042026f5adea750b68d61993b517be006f727b7fa3e6b984674ea3",
+      "checkedAt": "2026-10-15T17:22:52.534376+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_25_11_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_25_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-27",
+      "historyRowSha256": "2f3c4c86ea6373329bb6bfcb43668354c714f0fe779077804484a236dd67a424",
+      "checkedAt": "2026-10-15T17:22:51.673636+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_27_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-11-30",
+      "historyRowSha256": "c90048db548298caa87dc34d63311438c3d7ebfe9d4a2f0dd03a233c68d71de5",
+      "checkedAt": "2026-10-15T17:22:50.845395+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_30_11_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-02",
+      "historyRowSha256": "4f43e7a3050b2890a1a4a491506e6176847d294339fbf5d1e1d6debd165f1b14",
+      "checkedAt": "2026-10-15T17:22:48.970720+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_2_12_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_02_12_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_2_12_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_02_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-04",
+      "historyRowSha256": "5d56ba7bd4d768827c52b05bdd205788295d97ce60a1db0e67ee7691bca94b22",
+      "checkedAt": "2026-10-15T17:22:47.680112+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_4_12_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_04_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-07",
+      "historyRowSha256": "3122111f18eed6bb9281fd4e9335173415ef0424dd7763f08a13c82a026ff53c",
+      "checkedAt": "2026-10-15T17:22:46.268157+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_07_12_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_7_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-09",
+      "historyRowSha256": "cf2ab8e92c753131af204976ac261f9f64133ad03add85f6ae0ebc2887bb9216",
+      "checkedAt": "2026-10-15T17:22:44.022841+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_9_12_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_09_12_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_9_12_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_09_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-11",
+      "historyRowSha256": "0848b732a2b8e71875ceab6a1cfa6a6a1f08d839c94da3483771b6d519f2d0b4",
+      "checkedAt": "2026-10-15T17:22:43.200553+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_11_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-14",
+      "historyRowSha256": "ed046cc42f005d8750c1a44c1aad0a51e2dcfbe9f656b31daf0b47facf6b6edd",
+      "checkedAt": "2026-10-15T17:22:42.353794+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_14_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-16",
+      "historyRowSha256": "a65eced3b8067c0da05c8d2fc0b6bbf618b38ce5d626eba55dbf9f45815bcf25",
+      "checkedAt": "2026-10-15T17:22:41.039067+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_16_12_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_16_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-18",
+      "historyRowSha256": "7a55ca85dac763c2a7fe40f5416c4b5e41288c1bdb7399a4cee3142ca2dffa60",
+      "checkedAt": "2026-10-15T17:22:40.175318+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_18_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-21",
+      "historyRowSha256": "ff6117abf4d0a37a529c97cd3626ddebe98efe02726b999c3abafaf680294f36",
+      "checkedAt": "2026-10-15T17:22:39.322052+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_21_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-23",
+      "historyRowSha256": "3848e41351ac929ce09338ca53bed3c0a276c29a2cfadcb0a5bb6f595df0bb6c",
+      "checkedAt": "2026-10-15T17:22:38.061768+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_23_12_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_23_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-25",
+      "historyRowSha256": "0fe535aff2fd7c09419cb76c83f24f96cbfd351e9be8a57f4c5340d744599bf7",
+      "checkedAt": "2026-10-15T17:22:37.223721+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_25_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-28",
+      "historyRowSha256": "a4fdc318aeda6c08454e57f35cbefdf1191abb2b7e5ef6e672198829bcff7f0c",
+      "checkedAt": "2026-10-15T17:22:36.288616+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_28_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2023-12-30",
+      "historyRowSha256": "5bf07e90becd39565f3a1b770d5c68b296ed1ce408b6274868ff5d41dd4035e1",
+      "checkedAt": "2026-10-15T17:22:35.074736+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_30_12_23.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_30_12_23.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-01",
+      "historyRowSha256": "6bc1091402197d83449f5bf2ba3fedcc9611f04a629669e26d34c7a8061b1aeb",
+      "checkedAt": "2026-10-15T17:22:33.075420+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_1_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_1_01_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_01_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_01_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-04",
+      "historyRowSha256": "c7a365bc0b4e4cb0a924110982a6c93a28fc7a09dceaf5be1097cac406f4aeb7",
+      "checkedAt": "2026-10-15T17:22:31.069260+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_04_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_04_01_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_4_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_4_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-06",
+      "historyRowSha256": "855fb88faea7f5698d022b0944a3becb89ee7f279891f27d35716ce75d827373",
+      "checkedAt": "2026-10-15T17:22:27.889382+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_6_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_6_01_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_06_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_06_01_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_6_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_6_01_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_06_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_06_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-08",
+      "historyRowSha256": "73210b593ca59df78dfd5eb7462198cbb025654a74c80ab8bc02b1eab1260f10",
+      "checkedAt": "2026-10-15T17:22:26.001491+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_8_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_8_01_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_08_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_08_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-11",
+      "historyRowSha256": "ebed226ef966eb718e9080bb4f5a555a1460f4fdd0d75e7aa3862a267d99f85c",
+      "checkedAt": "2026-10-15T17:22:24.813004+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_11_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_11_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-13",
+      "historyRowSha256": "bdd0fcc8261c46824a02c7b5589784e1cb02be54041ff9fceeb5db2c869b8217",
+      "checkedAt": "2026-10-15T17:22:22.852979+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_13_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_13_01_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_13_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_13_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-15",
+      "historyRowSha256": "b99e56abb4e5f2ae6e98bc75eb0e83664fdfdbccad0c93e01e64ca6c01fb8bfb",
+      "checkedAt": "2026-10-15T17:22:21.651197+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_15_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_15_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-18",
+      "historyRowSha256": "ccc144ef48042b93c45193ee5fb4fe87519cb406d77052a1ee7edfcfb71cf8c0",
+      "checkedAt": "2026-10-15T17:22:20.538178+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_18_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_18_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-20",
+      "historyRowSha256": "cbe050a669a50ab6b1709cff9f7b5ce2aff85e2f1959e4e63fc17703ad449a42",
+      "checkedAt": "2026-10-15T17:22:18.660196+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_20_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_20_01_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_20_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_20_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-22",
+      "historyRowSha256": "c69083e73d7522f4b6bd4d3e11f99341447593c3f9f135884626c47272201c2e",
+      "checkedAt": "2026-10-15T17:22:17.483472+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_22_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_22_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-25",
+      "historyRowSha256": "115dbd73efe3c291862e21f3207da9cf6e46a413f5194c1539efa49a71ed457e",
+      "checkedAt": "2026-10-15T17:22:16.239250+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_25_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_25_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-27",
+      "historyRowSha256": "9f42ecb69ca80b0ca2c7a4e8e636138701aa18a6ccadf414d594ab47459cfdd3",
+      "checkedAt": "2026-10-15T17:22:14.251861+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_27_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_27_01_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_27_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_27_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-01-29",
+      "historyRowSha256": "68aac8f44bd296125a2c6cb88e7fd0a255c12b5740970b8f1bf4dd1c46ae3e3b",
+      "checkedAt": "2026-10-15T17:22:12.940380+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_29_1_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_29_01_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-01",
+      "historyRowSha256": "522451314d372aaed797e068f717046f84a7e21295c6a39b59c7b64b9f246566",
+      "checkedAt": "2026-10-15T17:22:10.897988+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_01_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_01_02_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_1_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_1_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-03",
+      "historyRowSha256": "4eac297e3201078201b79d69f0703d12722178a3758a68a25f757de6902c94ce",
+      "checkedAt": "2026-10-15T17:22:07.427868+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_3_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_3_02_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_03_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_03_02_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_3_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_3_02_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_03_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_03_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-05",
+      "historyRowSha256": "7ff434e042bfffd846584db9ff473566a6c2fa43e3cf44157f1aac4f1ef56676",
+      "checkedAt": "2026-10-15T17:22:05.452468+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_5_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_5_02_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_05_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_05_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-08",
+      "historyRowSha256": "76801af4b1bc8a8db95922b5c822a22f4149cce0fdf64d0f32d79ac999a5b896",
+      "checkedAt": "2026-10-15T17:22:03.577538+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_08_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_08_02_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_8_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_8_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-10",
+      "historyRowSha256": "78525e9d2983cab973b814409dbfcc6095d00ac33ca523279bd493870471b2b7",
+      "checkedAt": "2026-10-15T17:22:01.598916+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_10_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_10_02_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_10_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_10_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-12",
+      "historyRowSha256": "cf9dac203bae24e2a632101be94a318b4c0f37e44e51fd0394acb53f7b3bc8bf",
+      "checkedAt": "2026-10-15T17:22:00.377464+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_12_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_12_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-15",
+      "historyRowSha256": "983e3ea0c5d9dedb831a6cb32dbabf96617564642c32163e224ef819a845c9eb",
+      "checkedAt": "2026-10-15T17:21:59.133512+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_15_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_15_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-17",
+      "historyRowSha256": "0eb1155ee1a8a009c090a7ffb093efda0462a2540116f41755ec255e353d6198",
+      "checkedAt": "2026-10-15T17:21:57.120644+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_17_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_17_02_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_17_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_17_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-19",
+      "historyRowSha256": "22c8827290d89aed085739c6a83021ad82e585cabf52dbe37b1165db98112298",
+      "checkedAt": "2026-10-15T17:21:55.845254+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_19_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_19_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-22",
+      "historyRowSha256": "1fae77fc28e8bd1bbe38cdfcc09d5633e006f04f0e14e3dff4c0c97275e8e918",
+      "checkedAt": "2026-10-15T17:21:54.628347+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_22_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_22_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-24",
+      "historyRowSha256": "a9c611aca180e16402380f82434b5129c5895e624b04670580c73d63b6652074",
+      "checkedAt": "2026-10-15T17:21:52.590002+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_24_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_24_02_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_24_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_24_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-02-26",
+      "historyRowSha256": "f92541a19e5e6e6daf2fdd873c7995d42f3e0006e942bc7a8146a4a6f4c2dcfb",
+      "checkedAt": "2026-10-15T17:21:51.476558+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_26_2_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_26_02_24.pdf"
+      ]
+    },
+    {
       "date": "2024-02-29",
       "historyRowSha256": "5bd812baadc05010e3c7dddbb4eef7c704f53fc87de42dfe9385164d7c184ce3",
       "checkedAt": "2026-10-13T21:20:35.137536+00:00",
@@ -80,6 +810,358 @@
       "attemptedUrls": [
         "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_29_2_24.pdf",
         "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_29_02_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-02",
+      "historyRowSha256": "0e448bd4beaf4efd64bc1ef589ceb3c4c03b3f600327f62c1323deea68ed8fdd",
+      "checkedAt": "2026-10-15T17:21:48.184886+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_2_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_2_03_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_02_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_02_03_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_2_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_2_03_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_02_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_02_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-04",
+      "historyRowSha256": "364d4f024d084ff26fc3c5c3d97fe626430c6a588242b2f25bd6ab215f29d2f3",
+      "checkedAt": "2026-10-15T17:21:46.118152+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_4_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_4_03_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_04_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_04_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-07",
+      "historyRowSha256": "be594a7304b60a079617f5310af12c8a149f75c15aa409b7d930c4c52556c2b0",
+      "checkedAt": "2026-10-15T17:21:43.686645+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_07_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_07_03_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_7_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_7_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-09",
+      "historyRowSha256": "728673620368b0cf9d33ca7a1eae513d42aafab0a5bc41cd25ef79a8082edf53",
+      "checkedAt": "2026-10-15T17:21:40.331735+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_9_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_9_03_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_09_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_09_03_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_9_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_9_03_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_09_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_09_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-11",
+      "historyRowSha256": "553c3c98d126b404f93b1f627d227b5094be1ba6e06ec8b87075bc756da46a4d",
+      "checkedAt": "2026-10-15T17:21:39.107043+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_11_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_11_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-14",
+      "historyRowSha256": "f5a7e018342a4d2ec040edf770f8902317084ed923758b074e31c97b6a3191ec",
+      "checkedAt": "2026-10-15T17:21:37.876259+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_14_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_14_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-16",
+      "historyRowSha256": "705fa94df503062c8c2e8725a44f0a4838c65f7454f12404302deca719b1e95e",
+      "checkedAt": "2026-10-15T17:21:36.127686+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_16_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_16_03_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_16_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_16_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-18",
+      "historyRowSha256": "09e725f2b8686aa71728d127a1f0b5df4ab4607b51049f64fab04229aa387744",
+      "checkedAt": "2026-10-15T17:21:34.905164+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_18_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_18_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-21",
+      "historyRowSha256": "949294d21c7ebfafa43d30a72f74c73b4f8fe03dc06de70bc5acb22722f10137",
+      "checkedAt": "2026-10-15T17:21:33.742783+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_21_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_21_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-23",
+      "historyRowSha256": "758c168611b8734c14e870c1cf67da047315021169604bf18e9712d343627952",
+      "checkedAt": "2026-10-15T17:21:31.768507+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_23_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_23_03_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_23_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_23_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-25",
+      "historyRowSha256": "4e7594d360b9615a0438307a015332b4da07cdb212d0da14aea8371a1dbd1638",
+      "checkedAt": "2026-10-15T17:21:30.571497+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_25_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_25_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-28",
+      "historyRowSha256": "5fdc1f640284b19adaef35723c1ffd64a10ff7d2b0ee64868c9f29403d17da1e",
+      "checkedAt": "2026-10-15T17:21:29.270340+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_28_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_28_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-03-30",
+      "historyRowSha256": "29284387079d5a56f578f6fd6e833ea885e0bf96d3c97aa47499baf4ae36957c",
+      "checkedAt": "2026-10-15T17:21:27.352851+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_30_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_30_03_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_30_3_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_30_03_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-01",
+      "historyRowSha256": "75b18290464f75b403be581480ac6e136a7c1d2ea781f785df68b8d671f489d6",
+      "checkedAt": "2026-10-15T17:21:25.518898+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_1_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_1_04_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_01_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_01_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-04",
+      "historyRowSha256": "6ede996a51a371935b6a160f176c84ac1001b94bbec1a59e4c9bee375be381f7",
+      "checkedAt": "2026-10-15T17:21:23.353013+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_04_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_04_04_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_4_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_4_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-06",
+      "historyRowSha256": "e9acae54bd40ed2ead73beee36d8df1fe063cb05e601f4ed111040d282277fcb",
+      "checkedAt": "2026-10-15T17:21:20.020731+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_6_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_6_04_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_06_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_06_04_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_6_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_6_04_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_06_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_06_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-08",
+      "historyRowSha256": "cbe126c9321609c2f382fe284a5886224d408e2c908f51b1cc8c31be21aa0eb1",
+      "checkedAt": "2026-10-15T17:21:18.168404+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_8_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_8_04_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_08_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_08_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-11",
+      "historyRowSha256": "e3af7418e5086b81893c892de01335ab271a5fd4d840e67510226ec9245ce6fe",
+      "checkedAt": "2026-10-15T17:21:16.971263+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_11_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_11_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-13",
+      "historyRowSha256": "2cd6ca2afbd4001512d62145fe85ae43596e2ff96be4f463407d457647537d5e",
+      "checkedAt": "2026-10-15T17:21:13.832453+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_13_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_13_04_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_13_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_13_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-15",
+      "historyRowSha256": "a1d02fc8603abc4e9ed003a97b419d5cc9fdaf64b9f106c63b8260e005875f13",
+      "checkedAt": "2026-10-15T17:21:12.611107+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_15_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_15_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-18",
+      "historyRowSha256": "27e3ad67962dbb2a493938b57d61f7c14583346d39f3b58fd3a14f770c9be5dd",
+      "checkedAt": "2026-10-15T17:21:11.124678+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_18_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_18_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-20",
+      "historyRowSha256": "c68d051127d6b062048b782b960fdce6bbfc9247e5a93170a44be910b2887beb",
+      "checkedAt": "2026-10-15T17:21:09.190534+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_20_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_20_04_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_20_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_20_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-22",
+      "historyRowSha256": "4829f41387f0ed396d1cd1b41b844a90f53209d21d96f20b0413d8607bdd05e7",
+      "checkedAt": "2026-10-15T17:21:07.988461+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_22_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_22_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-25",
+      "historyRowSha256": "98748f7ddad11daa14e6ea2c0dde48d3c2afbd6493a6a8d29bdc7f0d2a260f8b",
+      "checkedAt": "2026-10-15T17:21:06.677225+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_25_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_25_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-27",
+      "historyRowSha256": "9adb6a57b82babf7bf28a6b39345e6ee2ecdc8c43c5874f21bc8241ed90ba208",
+      "checkedAt": "2026-10-15T17:21:04.644871+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_27_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_27_04_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_27_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_27_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-04-29",
+      "historyRowSha256": "b0569009395e43a6c84979e1696f15c85dbc731366fde26eeb1b86056ae2e52a",
+      "checkedAt": "2026-10-15T17:21:03.461377+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_29_4_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_29_04_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-05-02",
+      "historyRowSha256": "ed4a81c6d4f2ce39c9f26168ea70126b96ecf1a3348f6e17c3a0e9cd31015df1",
+      "checkedAt": "2026-10-15T17:21:01.360858+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_02_5_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_02_05_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_2_5_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_2_05_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-05-04",
+      "historyRowSha256": "9dcfae027e7e18ac0bec9fb65310c74c2db16fdab829ef0a63c4a2f3ea9ddcd6",
+      "checkedAt": "2026-10-15T17:20:58.014305+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_4_5_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_4_05_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_04_5_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_04_05_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_4_5_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_4_05_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_04_5_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_SABADO_04_05_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-05-06",
+      "historyRowSha256": "61350ade0ac75be33820cd32a83e7bb76cf724b23057e06cbdff1270c89fa157",
+      "checkedAt": "2026-10-15T17:20:55.986656+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_6_5_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_6_05_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_06_5_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_06_05_24.pdf"
+      ]
+    },
+    {
+      "date": "2024-05-09",
+      "historyRowSha256": "bce2c97f7e7ec2da3ed16810a87e862c09fbc72a93b9c3edbf2b77cb1616e5bf",
+      "checkedAt": "2026-10-15T17:20:53.876678+00:00",
+      "status": "document-not-found",
+      "attemptedUrls": [
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_09_5_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_09_05_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_9_5_24.pdf",
+        "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_9_05_24.pdf"
       ]
     },
     {
@@ -609,8 +1691,8 @@
     {
       "date": "2024-08-26",
       "historyRowSha256": "aa59b0655d76d7e95812406d2c67c953e6fa1fad3cb089eff3823a9d139352e1",
-      "checkedAt": "2026-10-15T10:09:23.850444+00:00",
       "status": "matched",
+      "checkedAt": "2026-10-15T10:09:23.850444+00:00",
       "official": {
         "date": "2024-08-26",
         "nums": [
@@ -624,9 +1706,11 @@
         "reintegro": 3,
         "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_26_08_24.pdf",
         "sourceType": "official-press-pdf",
-        "sourceSha256": "ffdf2b0654582fe64b95694358731a46574cb1c8591b73b92cad84d39da2b342"
-      },
-      "conflictingFields": []
+        "sourceSha256": "ffdf2b0654582fe64b95694358731a46574cb1c8591b73b92cad84d39da2b342",
+        "source": "SELAE",
+        "checkedAt": "2026-10-15T10:09:23.850444+00:00",
+        "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_26_08_24.pdf"
+      }
     },
     {
       "date": "2024-08-29",
@@ -653,8 +1737,8 @@
     {
       "date": "2024-09-02",
       "historyRowSha256": "10c5775b36d129892cc920c0891ede4a57ded948b67eaec8a0eb136b46fe77e3",
-      "checkedAt": "2026-10-15T10:09:19.409392+00:00",
       "status": "matched",
+      "checkedAt": "2026-10-15T10:09:19.409392+00:00",
       "official": {
         "date": "2024-09-02",
         "nums": [
@@ -668,9 +1752,11 @@
         "reintegro": 0,
         "sourceUrl": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_2_09_24.pdf",
         "sourceType": "official-press-pdf",
-        "sourceSha256": "a15a1a89fe544e9c61a50fa92b0517e8bc3ddb88099a9781a108215981b2433e"
-      },
-      "conflictingFields": []
+        "sourceSha256": "a15a1a89fe544e9c61a50fa92b0517e8bc3ddb88099a9781a108215981b2433e",
+        "source": "SELAE",
+        "checkedAt": "2026-10-15T10:09:19.409392+00:00",
+        "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_2_09_24.pdf"
+      }
     },
     {
       "date": "2024-09-05",
@@ -8307,7 +9393,7 @@
       "date": "2026-10-03",
       "historyRowSha256": "057fc0a5c166085b19d5bf6b432b9b5014d4e6b2b463aa619d967701e5c0a322",
       "status": "matched",
-      "checkedAt": "2026-10-14T14:06:40.834579+00:00",
+      "checkedAt": "2026-10-15T13:44:35.438835+00:00",
       "official": {
         "date": "2026-10-03",
         "nums": [
@@ -8323,7 +9409,7 @@
         "sourceType": "official-press-pdf",
         "sourceSha256": "9d59e12a31e323285033b35cf750fbfdbc3a15311fb3e55daa83ef2e80e385d3",
         "source": "SELAE",
-        "checkedAt": "2026-10-14T14:06:40.834579+00:00",
+        "checkedAt": "2026-10-15T13:44:35.438835+00:00",
         "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_03_10_26.pdf"
       }
     },
@@ -8331,7 +9417,7 @@
       "date": "2026-10-05",
       "historyRowSha256": "2c2bd9727ffa719dce50735a45d605731fd41ae2d884bcc1172a7e3319f6eb56",
       "status": "matched",
-      "checkedAt": "2026-10-14T14:06:41.075952+00:00",
+      "checkedAt": "2026-10-15T13:44:35.633519+00:00",
       "official": {
         "date": "2026-10-05",
         "nums": [
@@ -8347,7 +9433,7 @@
         "sourceType": "official-press-pdf",
         "sourceSha256": "8fd9beab41e337fcb8b339e5e4bc479390e7d6693c971cdfb733edde76672bb0",
         "source": "SELAE",
-        "checkedAt": "2026-10-14T14:06:41.075952+00:00",
+        "checkedAt": "2026-10-15T13:44:35.633519+00:00",
         "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_5_10_26.pdf"
       }
     },
@@ -8355,7 +9441,7 @@
       "date": "2026-10-08",
       "historyRowSha256": "cf93624459e5ac53ab80d6fe3121ec41f459cdd04404069273ef6e8b4f56da35",
       "status": "matched",
-      "checkedAt": "2026-10-14T14:06:41.351608+00:00",
+      "checkedAt": "2026-10-15T13:44:35.842581+00:00",
       "official": {
         "date": "2026-10-08",
         "nums": [
@@ -8371,7 +9457,7 @@
         "sourceType": "official-press-pdf",
         "sourceSha256": "a61470569f1efc3bf0cb030403694de77aee14eb6891954aaf14809f66a33941",
         "source": "SELAE",
-        "checkedAt": "2026-10-14T14:06:41.351608+00:00",
+        "checkedAt": "2026-10-15T13:44:35.842581+00:00",
         "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_JUEVES_08_10_26.pdf"
       }
     },
@@ -8379,7 +9465,7 @@
       "date": "2026-10-10",
       "historyRowSha256": "92d2b6c9c5e9163350de13e759953e9fcb01c1020d04b31b362acefa5f138d7e",
       "status": "matched",
-      "checkedAt": "2026-10-14T14:06:41.564815+00:00",
+      "checkedAt": "2026-10-15T13:44:36.028354+00:00",
       "official": {
         "date": "2026-10-10",
         "nums": [
@@ -8395,7 +9481,7 @@
         "sourceType": "official-press-pdf",
         "sourceSha256": "10724371a0e25e5965c722e0edfd3532c7c3a0d84b6d983d4d055875169a5ee0",
         "source": "SELAE",
-        "checkedAt": "2026-10-14T14:06:41.564815+00:00",
+        "checkedAt": "2026-10-15T13:44:36.028354+00:00",
         "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_S%C3%81BADO_10_10_26.pdf"
       }
     },
@@ -8403,7 +9489,7 @@
       "date": "2026-10-12",
       "historyRowSha256": "6eb960da2fb4c9484543d4aca7e99899a5eaa3cc04ef4d5940dd5fd32f164eb9",
       "status": "matched",
-      "checkedAt": "2026-10-14T14:06:42.166195+00:00",
+      "checkedAt": "2026-10-15T13:44:36.115788+00:00",
       "official": {
         "date": "2026-10-12",
         "nums": [
@@ -8419,7 +9505,7 @@
         "sourceType": "official-press-pdf",
         "sourceSha256": "9b46786d6d85f427cdbdffb3dc473b72dcaa7cd2abae5da4fc478ce5ed482cf4",
         "source": "SELAE",
-        "checkedAt": "2026-10-14T14:06:42.166195+00:00",
+        "checkedAt": "2026-10-15T13:44:36.115788+00:00",
         "url": "https://www.loteriasyapuestas.es/f/loterias/documentos/La%20Primitiva/Notas%20de%20prensa/NOTA_DE_PRENSA_LA_PRIMITIVA_LUNES_12_10_26.pdf"
       }
     }
