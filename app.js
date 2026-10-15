@@ -191,9 +191,15 @@ function renderTracking(entries,draws,historyLoaded,activeStrategy,proofs=[]){
  root.appendChild(p('Se incluyen también los fallos. Cada algoritmo se evalúa por separado; las revisiones conservadas no cuentan como apuestas adicionales. La referencia al azar es matemática para sorteos uniformes de 6 entre 49 y reintegro de 0 a 9; no son apuestas generadas después del resultado. Las fechas de publicación se comprueban en los commits y los resultados pueden requerir cotejo oficial.','notice'));
 }
 async function fetchJson(path){const r=await fetch(path+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
+let loading=false;
 async function load(){
+ if(loading)return;loading=true;
+ try{await loadContent()}finally{loading=false}
+}
+async function loadContent(){
+ if($('sync-status'))$('sync-status').textContent='Consultando los últimos resultados en SELAE…';
  const [pred,history,active,verification,update]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json'),fetchJson('./data/reto-estrategia-activa.json'),fetchJson('./data/verificacion-sorteos.json'),fetchJson('./data/estado-actualizacion.json')]);
- const proofs=verification.status==='fulfilled'&&Array.isArray(verification.value?.draws)?verification.value.draws:[];
+ let proofs=verification.status==='fulfilled'&&Array.isArray(verification.value?.draws)?verification.value.draws:[];
  const report=update.status==='fulfilled'?update.value:null;
  const activeStrategy=active.status==='fulfilled'?active.value:null;
  $('active-strategy').textContent=validActiveStrategy(activeStrategy)?'Motor activo: recencia 30/90/365 días · Versión '+activeStrategy.version+'. Su evaluación empieza con las nuevas predicciones de esta versión.':'No se ha podido comprobar la estrategia activa.';
@@ -201,6 +207,13 @@ async function load(){
  const historyLoaded=history.status==='fulfilled'&&Array.isArray(history.value?.draws);
  if(historyLoaded){
   draws=history.value.draws.filter(r=>r&&validDate(r.date)&&validNumbers(r.nums)).sort((a,b)=>b.date.localeCompare(a.date));
+  if(globalThis.PrimitivaLive){
+   try{
+    const result=await PrimitivaLive.sync(globalThis.PRIMITIVA_RESULTS_ENDPOINT,draws,proofs);
+    draws=result.draws;proofs=result.proofs;
+    if($('sync-status'))$('sync-status').textContent=result.message;
+   }catch(error){if($('sync-status'))$('sync-status').textContent=error.message;}
+  }
   $('draws-status').textContent='Último resultado registrado: '+(draws[0]?.date||'ninguno')+'. Actualización del archivo: '+(history.value.updated_at||'no indicada')+'.';
   const root=$('recent-draws');root.replaceChildren();
   const recent=draws.slice(0,5);
@@ -217,7 +230,10 @@ async function load(){
    item.appendChild(p(verificationFor(r,proofs),'verification-note'));
   }
   if(!draws.length)root.appendChild(p('No hay sorteos válidos disponibles.'));
- }else $('draws-status').textContent='No se ha podido cargar el histórico actualizado.';
+ }else {
+  $('draws-status').textContent='No se ha podido cargar el histórico actualizado.';
+  if($('sync-status'))$('sync-status').textContent='No se ha podido cargar el histórico. No se puede comprobar la actualización con SELAE.';
+ }
  if(pred.status!=='fulfilled'||!Array.isArray(pred.value?.predictions)){renderIncidents([],draws,historyLoaded,false,report); $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';$('tracking').replaceChildren(p('No se pudo cargar el registro de predicciones.'));return}
  const entries=pred.value.predictions.filter(r=>r&&validDate(r.target)&&validNumbers(r.nums)).sort((a,b)=>b.target.localeCompare(a.target));
  renderIncidents(entries,draws,historyLoaded,true,report);
@@ -237,3 +253,10 @@ async function load(){
  explain(latest,draws,entries);
 }
 load().catch(e=>{$('prediction-status').textContent='Error de carga: '+e.message});
+
+
+if(typeof window!=='undefined'){
+ window.addEventListener('pageshow',event=>{if(event.persisted)load().catch(()=>{})});
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load().catch(()=>{})});
+ $('refresh-results')?.addEventListener('click',()=>load().catch(()=>{}));
+}

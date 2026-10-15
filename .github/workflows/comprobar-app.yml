@@ -3,6 +3,10 @@ on:
   push:
     paths:
       - 'app.js'
+      - 'live-results.js'
+      - 'results-config.js'
+      - 'api/**'
+      - 'tests/test_live_results.cjs'
       - 'index.html'
       - 'data/reto-predictor.json'
       - 'data/sorteos.json'
@@ -23,6 +27,10 @@ on:
   pull_request:
     paths:
       - 'app.js'
+      - 'live-results.js'
+      - 'results-config.js'
+      - 'api/**'
+      - 'tests/test_live_results.cjs'
       - 'index.html'
       - 'data/reto-predictor.json'
       - 'data/sorteos.json'
@@ -53,7 +61,9 @@ jobs:
       - name: Comprobar sintaxis y comportamiento
         run: |
           node --check app.js
-          node --test tests/test_app.cjs
+          node --check live-results.js
+          node --check api/resultados.mjs
+          node --test tests/test_app.cjs tests/test_live_results.cjs
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
