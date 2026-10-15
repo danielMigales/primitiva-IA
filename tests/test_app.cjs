@@ -20,7 +20,7 @@ const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10
 const draw = {date:'2026-10-12',nums:[2,5,26,40,42,45],reintegro:9};
 const activeConfig=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json'),'utf8'));
 async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null) {
- const elements=Object.fromEntries(['sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
+ const elements=Object.fromEntries(['learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
  class Clock extends Date { constructor(...args){super(...(args.length?args:[today]));} static now(){return Date.parse(today);} }
  const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,PrimitivaLive:live,PRIMITIVA_RESULTS_ENDPOINT:'https://results.example/api/resultados',
   fetch:async url=>{const data=url.includes('estrategia-activa')?activeConfig:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
@@ -197,4 +197,24 @@ test('failed live update preserves published history and reports the connection 
  assert.match(elements['sync-status'].textContent,/No se ha podido conectar/);
  assert.equal(elements['recent-draws'].children.length,1);
  assert.doesNotMatch(elements['sync-status'].textContent,/aún no ha publicado/);
+});
+
+test('zero-hit review remains visible when the next prediction is displayed',async()=>{
+ const old={...entry,algorithm:activeConfig.strategy.algorithm,strategyVersion:2};
+ const actual={date:entry.target,nums:[6,17,24,35,39,47],reintegro:3};
+ const next={...old,target:'2026-10-17',historyUntil:actual.date,nums:[6,10,20,22,40,45]};
+ const {elements}=await render({predictions:[old,next]},{draws:[actual,draw]},'2026-10-15T20:30:00Z');
+ assert.match(elements['prediction-status'].textContent,/2026-10-17/);
+ const review=elements['learning-review'].textContent;
+ assert.match(review,/2026-10-15: 0 de 6/);
+ assert.match(review,/43.60 %/);
+ assert.match(review,/No se ha demostrado una mejora/);
+ assert.match(review,/1 \/ 30/);
+ assert.match(review,/entran 6; salen 4/);
+});
+test('unversioned results are reviewed without being added to the active sample',async()=>{
+ const {elements}=await render({predictions:[{...entry,target:draw.date}]});
+ assert.match(elements['learning-review'].textContent,/0 \/ 30/);
+ assert.doesNotMatch(elements['learning-review'].textContent,/43.60/);
+ assert.match(elements['learning-review'].textContent,/Siguiente predicción pendiente/);
 });

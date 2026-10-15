@@ -87,11 +87,11 @@ class RetoTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(self.registry.read_bytes(), before)
 
-    def automatic(self, day, reject=False):
+    def automatic(self, day, reject=False, hour=12):
         class Clock(datetime):
             @classmethod
             def now(cls, tz=None):
-                return cls(2026, 10, day, 12, tzinfo=timezone.utc).astimezone(tz)
+                return cls(2026, 10, day, hour, tzinfo=timezone.utc).astimezone(tz)
         previous = Path.cwd()
         try:
             os.chdir(self.work)
@@ -123,6 +123,19 @@ class RetoTests(unittest.TestCase):
         saved_manual = json.loads(self.registry.read_text())["predictions"][-1]
         for key in ("algorithm", "strategyVersion", "strategyFile", "numberEvidence", "reintegro", "reintegroAlgorithm", "reintegroEvidence"):
             self.assertEqual(saved_manual[key], entry[key])
+
+    def test_generate_next_draw_immediately_after_thursday_result(self):
+        self.rows.append({"date":"2026-10-15","nums":[6,17,24,35,39,47],"reintegro":3})
+        (self.work / "data/sorteos.json").write_text(json.dumps({"draws":self.rows}))
+        self.automatic(15,hour=20)  # 22:00 Madrid, after the draw
+        saved=json.loads(self.registry.read_text())
+        self.assertEqual(saved["predictions"][-1]["target"],"2026-10-17")
+        self.assertEqual(saved["predictions"][-1]["historyUntil"],"2026-10-15")
+        self.assertEqual(saved["predictions"][:-1],self.existing["predictions"])
+        before=self.registry.read_bytes()
+        with self.assertRaises(SystemExit):
+            self.automatic(15,hour=20)
+        self.assertEqual(self.registry.read_bytes(),before)
 
     def test_active_strategy_drift_prevents_write(self):
         config_path = self.work / "data/reto-estrategia-activa.json"

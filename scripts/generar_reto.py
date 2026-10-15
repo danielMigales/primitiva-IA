@@ -22,11 +22,14 @@ if strategy_config.get("version") != 2 or strategy_config.get("status") != "acti
 weights = tuple((item["days"], item["weight"]) for item in strategy["windows"])
 
 now = datetime.now(ZoneInfo("Europe/Madrid"))
-tomorrow = (now + timedelta(days=1)).date()
-if tomorrow.weekday() not in (0, 3, 5):
-    print("No draw tomorrow; nothing to register.")
-    raise SystemExit(0)
-target = tomorrow.isoformat()
+# Choose the next future draw immediately, including after a settled draw.
+# Never generate a same-day prediction once the draw has started.
+target_day = now.date()
+if (now.hour, now.minute) >= (21, 40):
+    target_day += timedelta(days=1)
+while target_day.weekday() not in (0, 3, 5):
+    target_day += timedelta(days=1)
+target = target_day.isoformat()
 rows = sorted(json.loads(Path("data/sorteos.json").read_text(encoding="utf-8"))["draws"], key=lambda r:r["date"])
 if len(rows) < 120 or rows[-1]["date"] >= target:
     raise ValueError("Insufficient or future historical data.")
@@ -92,7 +95,7 @@ reintegro_choice = reintegro_ranking[0]
 entry={"target":target,"nums":sorted(chosen),"window":window,"historyUntil":rows[-1]["date"],
        "created":now.isoformat(),"algorithm":strategy["algorithm"],
        "strategyVersion":strategy_config["version"],"strategyFile":strategy_path,
-       "numberEvidence":number_evidence,"recordedBy":"GitHub Actions",
+       "numberEvidence":number_evidence,"recordedBy":"Generador determinista; fecha de publicación acreditada por el commit de GitHub",
        "goal":strategy_config["objective"],
        "reintegro":reintegro_choice["digit"],"reintegroAlgorithm":strategy["reintegroAlgorithm"],
        "reintegroEvidence":{"lastHistoricalDate":rows[-1]["date"],"score":round(reintegro_choice["score"],4),"windows":reintegro_choice["windows"],"backtest":reintegro_test,

@@ -22,11 +22,14 @@ jobs:
         id: actualizar
         continue-on-error: true
         run: python update_data.py
+      - name: Generar siguiente predicción con el histórico actualizado
+        if: steps.actualizar.outcome == 'success'
+        run: python scripts/generar_reto.py
       - name: Guardar cambios
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/sorteos.json data/verificacion-sorteos.json data/estado-actualizacion.json
+          git add data/sorteos.json data/verificacion-sorteos.json data/estado-actualizacion.json data/reto-predictor.json
           git diff --cached --quiet || (git commit -m 'Actualizar sorteos' && git push)
       - name: Señalar actualización detenida
         if: steps.actualizar.outcome == 'failure'

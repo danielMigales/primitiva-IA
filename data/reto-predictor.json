@@ -210,6 +210,203 @@
       },
       "note": "Revisión prospectiva antes del sorteo; original conservado en revisions. La fuente del sorteo del 12/10 fue prensa, pendiente de cotejo directo SELAE.",
       "created": "2026-10-12"
+    },
+    {
+      "target": "2026-10-17",
+      "nums": [
+        6,
+        10,
+        20,
+        22,
+        40,
+        45
+      ],
+      "window": 365,
+      "historyUntil": "2026-10-15",
+      "created": "2026-10-15T22:34:11.949063+02:00",
+      "algorithm": "unified-recency-z-30-90-365-v1",
+      "strategyVersion": 2,
+      "strategyFile": "data/reto-estrategia-activa.json",
+      "numberEvidence": [
+        {
+          "number": 20,
+          "score": 2.68123,
+          "windows": [
+            {
+              "days": 30,
+              "hits": 6,
+              "draws": 13,
+              "expected": 1.59
+            },
+            {
+              "days": 90,
+              "hits": 11,
+              "draws": 39,
+              "expected": 4.78
+            },
+            {
+              "days": 365,
+              "hits": 25,
+              "draws": 157,
+              "expected": 19.22
+            }
+          ]
+        },
+        {
+          "number": 45,
+          "score": 2.53515,
+          "windows": [
+            {
+              "days": 30,
+              "hits": 6,
+              "draws": 13,
+              "expected": 1.59
+            },
+            {
+              "days": 90,
+              "hits": 11,
+              "draws": 39,
+              "expected": 4.78
+            },
+            {
+              "days": 365,
+              "hits": 22,
+              "draws": 157,
+              "expected": 19.22
+            }
+          ]
+        },
+        {
+          "number": 40,
+          "score": 1.68571,
+          "windows": [
+            {
+              "days": 30,
+              "hits": 3,
+              "draws": 13,
+              "expected": 1.59
+            },
+            {
+              "days": 90,
+              "hits": 9,
+              "draws": 39,
+              "expected": 4.78
+            },
+            {
+              "days": 365,
+              "hits": 28,
+              "draws": 157,
+              "expected": 19.22
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "score": 1.32507,
+          "windows": [
+            {
+              "days": 30,
+              "hits": 5,
+              "draws": 13,
+              "expected": 1.59
+            },
+            {
+              "days": 90,
+              "hits": 5,
+              "draws": 39,
+              "expected": 4.78
+            },
+            {
+              "days": 365,
+              "hits": 19,
+              "draws": 157,
+              "expected": 19.22
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "score": 1.09041,
+          "windows": [
+            {
+              "days": 30,
+              "hits": 4,
+              "draws": 13,
+              "expected": 1.59
+            },
+            {
+              "days": 90,
+              "hits": 5,
+              "draws": 39,
+              "expected": 4.78
+            },
+            {
+              "days": 365,
+              "hits": 22,
+              "draws": 157,
+              "expected": 19.22
+            }
+          ]
+        },
+        {
+          "number": 22,
+          "score": 1.03662,
+          "windows": [
+            {
+              "days": 30,
+              "hits": 2,
+              "draws": 13,
+              "expected": 1.59
+            },
+            {
+              "days": 90,
+              "hits": 8,
+              "draws": 39,
+              "expected": 4.78
+            },
+            {
+              "days": 365,
+              "hits": 26,
+              "draws": 157,
+              "expected": 19.22
+            }
+          ]
+        }
+      ],
+      "recordedBy": "Generador determinista; fecha de publicación acreditada por el commit de GitHub",
+      "goal": "maximize-main-and-reintegro-hits",
+      "reintegro": 4,
+      "reintegroAlgorithm": "recency-z-30-90-365-v1",
+      "reintegroEvidence": {
+        "lastHistoricalDate": "2026-10-15",
+        "score": 0.7691,
+        "windows": [
+          {
+            "days": 30,
+            "hits": 3,
+            "draws": 13,
+            "expected": 1.3
+          },
+          {
+            "days": 90,
+            "hits": 5,
+            "draws": 39,
+            "expected": 3.9
+          },
+          {
+            "days": 365,
+            "hits": 13,
+            "draws": 157,
+            "expected": 15.7
+          }
+        ],
+        "backtest": {
+          "tests": 151,
+          "hits": 13,
+          "expectedRandom": 15.1
+        },
+        "interpretation": "Exploratory ranking, no confirmed predictive advantage; fair-draw probability 10 percent."
+      }
     }
   ],
   "revisions": [

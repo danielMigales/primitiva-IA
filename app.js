@@ -6,7 +6,7 @@ function validDate(value){
 }
 function validNumbers(nums){return Array.isArray(nums)&&nums.length===6&&nums.every(n=>Number.isInteger(n)&&n>=1&&n<=49)&&new Set(nums).size===6}
 function validReintegro(n){return Number.isInteger(n)&&n>=0&&n<=9}
-function evidenceWindows(value){return Array.isArray(value)?value.filter(w=>w&&[30,90].includes(w.days)&&Number.isInteger(w.hits)&&Number.isInteger(w.draws)&&w.draws>0&&w.hits>=0&&w.hits<=w.draws):[]}
+function evidenceWindows(value){return Array.isArray(value)?value.filter(w=>w&&[30,90,365].includes(w.days)&&Number.isInteger(w.hits)&&Number.isInteger(w.draws)&&w.draws>0&&w.hits>=0&&w.hits<=w.draws):[]}
 function madridToday(){
  const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
  const values=Object.fromEntries(parts.map(p=>[p.type,p.value]));
@@ -89,6 +89,31 @@ function explain(r,draws,entries){
  root.appendChild(d);
 }
 function choose(n,k){let result=1;for(let i=1;i<=k;i++)result=result*(n-i+1)/i;return result}
+function renderLearning(entries,draws,active,proofs=[]){
+ const root=$('learning-review');if(!root)return;root.replaceChildren();
+ const rows=trackingResults(entries,draws).filter(r=>r.actual).sort((a,b)=>b.record.target.localeCompare(a.record.target));
+ const last=rows[0];
+ if(!last){root.appendChild(p('Aún no hay una predicción con resultado disponible para evaluar.'));return}
+ const {record,actual,hits,reintegro}=last;
+ root.appendChild(p('Balance del '+record.target+': '+hits+' de 6 aciertos'+(reintegro===null?' · Reintegro no evaluable.':reintegro?' · Reintegro acertado.':' · Reintegro no acertado.')));
+ root.appendChild(p('Predicción registrada: '+record.nums.join(', ')+'. Resultado: '+actual.nums.join(', ')+'.'));
+ root.appendChild(p(verificationFor(actual,proofs)+'.','verification-note'));
+ const sameMotor=record.algorithm===active?.strategy?.algorithm;
+ root.appendChild(p(sameMotor?'Por qué se eligieron: el método priorizó frecuencias recientes en ventanas de 30, 90 y 365 días. Esa clasificación describe el pasado y no garantiza coincidencias en el siguiente sorteo.':'La predicción usó el método registrado '+(record.algorithm||'sin identificador')+'. No se conserva una explicación causal verificable de su fallo.'));
+ if(hits===0)root.appendChild(p('Ninguno de los seis números elegidos coincidió. En un sorteo uniforme de 6 entre 49, la probabilidad de obtener 0 aciertos con una combinación fija es '+(100*choose(43,6)/choose(49,6)).toFixed(2)+' %. El fallo, por sí solo, no identifica una causa especial ni demuestra que otro método prediga mejor.'));
+ else root.appendChild(p('Los aciertos observados se incorporan al seguimiento. Un único sorteo no demuestra una ventaja predictiva ni permite atribuir el resultado a una causa concreta.'));
+ const sample=rows.filter(r=>r.record.strategyVersion===active?.version&&r.record.algorithm===active?.strategy?.algorithm);
+ const minimum=Number.isInteger(active?.minimumSettledDraws)?active.minimumSettledDraws:30;
+ root.appendChild(p('Qué se ha aprendido: queda registrado este resultado para evaluar el método. No se ha demostrado una mejora predictiva ni se ha reentrenado el modelo a partir de este fallo. Se mantienen los pesos del método durante un mínimo de '+minimum+' sorteos evaluables de su versión.'));
+ root.appendChild(p('Seguimiento de la versión activa: '+sample.length+' / '+minimum+' sorteos con predicción y resultado. Los registros anteriores sin esa versión se conservan por separado.','muted'));
+ const next=entries.filter(r=>r.target>actual.date&&!draws.some(d=>d.date===r.target)).sort((a,b)=>a.target.localeCompare(b.target))[0];
+ if(next){
+  root.appendChild(p('Siguiente predicción registrada: '+next.target+' · Histórico hasta '+next.historyUntil+'.'));
+  const added=next.nums.filter(n=>!record.nums.includes(n)),removed=record.nums.filter(n=>!next.nums.includes(n));
+  root.appendChild(p(added.length?'Cambio en la combinación: entran '+added.join(', ')+'; salen '+removed.join(', ')+'.':'La nueva clasificación conserva los mismos seis números.'));
+  root.appendChild(p('La nueva propuesta recalcula las frecuencias del histórico indicado con el mismo método; un cambio de números no demuestra que haya aprendido a anticipar el sorteo.','muted'));
+ }else root.appendChild(p('Siguiente predicción pendiente de registro. Se generará al actualizar el histórico; no se modificará la predicción ya evaluada.','incident-warning'));
+}
 function trackingResults(entries,draws){
  const results=new Map(draws.map(d=>[d.date,d]));
  const seen=new Set();
@@ -236,6 +261,7 @@ async function loadContent(){
  }
  if(pred.status!=='fulfilled'||!Array.isArray(pred.value?.predictions)){renderIncidents([],draws,historyLoaded,false,report); $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';$('tracking').replaceChildren(p('No se pudo cargar el registro de predicciones.'));return}
  const entries=pred.value.predictions.filter(r=>r&&validDate(r.target)&&validNumbers(r.nums)).sort((a,b)=>b.target.localeCompare(a.target));
+ renderLearning(entries,draws,activeStrategy,proofs);
  renderIncidents(entries,draws,historyLoaded,true,report);
  renderTracking(entries,draws,historyLoaded,activeStrategy,proofs);
  const latest=entries[0];if(!latest){$('prediction-status').textContent='Aún no hay predicciones registradas.';return}
