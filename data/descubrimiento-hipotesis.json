@@ -1,0 +1,555 @@
+{
+  "version": 1,
+  "status": "searched",
+  "algorithm": "automatic-rule-search-v1",
+  "parameters": {
+    "algorithm": "automatic-rule-search-v1",
+    "warmup": 100,
+    "windows": [
+      5,
+      10,
+      20,
+      30,
+      50,
+      100
+    ],
+    "maxLag": 20,
+    "beamWidth": 8,
+    "maxDepth": 3,
+    "rulesPerTarget": 2,
+    "minimumDiscoverySupport": 30,
+    "minimumTestSupport": 20,
+    "minimumHistory": 600,
+    "splitFractions": [
+      0.6,
+      0.8
+    ],
+    "alpha": 0.05,
+    "thresholdQuantiles": [
+      0.25,
+      0.5,
+      0.75,
+      0.9
+    ]
+  },
+  "modelId": "36f061ee8a439f4850e4b23efff832d14bbd685427553e96e134e08344bdad4b",
+  "historyUntil": "2026-10-17",
+  "totalDraws": 3002,
+  "main": {
+    "rules": []
+  },
+  "refund": {
+    "rules": []
+  },
+  "search": {
+    "atomicConditions": 5321,
+    "hypothesesEvaluated": 317522,
+    "shortlisted": 118,
+    "confirmed": 0,
+    "survivedFinalAudit": 0,
+    "maxConditionsPerRule": 3
+  },
+  "protocol": {
+    "discoveryFrom": "2000-12-16",
+    "discoveryThrough": "2017-04-01",
+    "confirmationFrom": "2017-04-06",
+    "confirmationThrough": "2022-12-15",
+    "auditFrom": "2022-12-17",
+    "auditThrough": "2026-10-17",
+    "selectionUsesFinalOutcomes": false,
+    "nextModelSelectionUsesAudit": true,
+    "correction": "Bonferroni over fixed shortlisted rules; likelihood-ratio test martingales against uniform draws.",
+    "searchGrammar": "Numeric lag/count/gap conditions, all main-number pairs, combination shapes; automatic thresholds and beam search for conjunctions.",
+    "scope": "Búsqueda automática dentro de estas familias, no exploración de todas las reglas matemáticas posibles."
+  },
+  "finalEvaluation": {
+    "draws": 601,
+    "mainHits": 466,
+    "frequencyHits": 471,
+    "expectedRandomHits": 441.55102040816325,
+    "hitHistogram": [
+      243,
+      263,
+      82,
+      13,
+      0,
+      0,
+      0
+    ],
+    "refundHits": 60,
+    "refundDraws": 601,
+    "forecastRuleSource": "unvalidated-discovery-before-confirmation-and-audit"
+  },
+  "next": {
+    "target": "2026-10-19",
+    "nums": [
+      4,
+      9,
+      20,
+      22,
+      40,
+      45
+    ],
+    "reintegro": 3,
+    "registered": false,
+    "experimental": true,
+    "validatedRuleCount": 0,
+    "patternPredictionAvailable": false,
+    "method": "frequency-reference-only-no-surviving-rules"
+  },
+  "nextEvidence": {
+    "main": [],
+    "refund": []
+  },
+  "hasDemonstratedAdvantage": false,
+  "conclusion": "Ninguna hipótesis ha superado ambos contrastes. No se propone una nueva combinación basada en reglas descartadas.",
+  "note": "El programa elige condiciones y combinaciones de condiciones; no se le entregan reglas ganadoras. Buscar muchas relaciones produce coincidencias: se separan descubrimiento, confirmación y auditoría. Revisar este histórico otra vez no convierte sus resultados en evidencia futura.",
+  "examples": [
+    {
+      "channel": "main",
+      "number": 12,
+      "conditions": [
+        {
+          "kind": "gap-equal",
+          "channel": "main",
+          "number": 5,
+          "gap": 4
+        },
+        {
+          "kind": "count",
+          "channel": "main",
+          "number": 38,
+          "window": 100,
+          "threshold": 15
+        }
+      ],
+      "text": "la última aparición conocida del número 5 está a 4 sorteos del objetivo Y el número 38 apareció al menos 15 veces en 100 sorteos",
+      "discovery": {
+        "support": 42,
+        "hits": 18,
+        "rate": 0.42857142857142855,
+        "outsideRate": 0.11633514165159735,
+        "score": 6.062461685318035,
+        "effect": 0.3122362869198312
+      },
+      "estimatedProbability": 0.4081632653061225,
+      "id": "f87e9b4ffe5cb709",
+      "confirmation": {
+        "support": 2,
+        "hits": 0,
+        "rate": 0.0,
+        "outsideRate": 0.11705685618729098,
+        "logEvidence": -0.7878085714141768,
+        "adjustedPBound": 1.0,
+        "passed": false,
+        "reason": "Muestra insuficiente."
+      },
+      "audit": {
+        "passed": false,
+        "status": "not-tested",
+        "reason": "Descartada antes de abrir el tramo final."
+      }
+    },
+    {
+      "channel": "main",
+      "number": 12,
+      "conditions": [
+        {
+          "kind": "gap-equal",
+          "channel": "main",
+          "number": 5,
+          "gap": 4
+        },
+        {
+          "kind": "count",
+          "channel": "main",
+          "number": 38,
+          "window": 100,
+          "threshold": 15
+        },
+        {
+          "kind": "count",
+          "channel": "refund",
+          "number": 3,
+          "window": 50,
+          "threshold": 4
+        }
+      ],
+      "text": "la última aparición conocida del número 5 está a 4 sorteos del objetivo Y el número 38 apareció al menos 15 veces en 100 sorteos Y el reintegro 3 apareció al menos 4 veces en 50 sorteos",
+      "discovery": {
+        "support": 33,
+        "hits": 15,
+        "rate": 0.45454545454545453,
+        "outsideRate": 0.11750599520383694,
+        "score": 5.816390246345872,
+        "effect": 0.3370394593416176
+      },
+      "estimatedProbability": 0.4268707482993197,
+      "id": "f8166ac904889837",
+      "confirmation": {
+        "support": 2,
+        "hits": 0,
+        "rate": 0.0,
+        "outsideRate": 0.11705685618729098,
+        "logEvidence": -0.8520476702584019,
+        "adjustedPBound": 1.0,
+        "passed": false,
+        "reason": "Muestra insuficiente."
+      },
+      "audit": {
+        "passed": false,
+        "status": "not-tested",
+        "reason": "Descartada antes de abrir el tramo final."
+      }
+    },
+    {
+      "channel": "main",
+      "number": 2,
+      "conditions": [
+        {
+          "kind": "gap-equal",
+          "channel": "main",
+          "number": 46,
+          "gap": 3
+        },
+        {
+          "kind": "pair",
+          "numbers": [
+            28,
+            40
+          ],
+          "window": 30
+        }
+      ],
+      "text": "la última aparición conocida del número 46 está a 3 sorteos del objetivo Y la pareja 28–40 apareció en los 30 sorteos anteriores",
+      "discovery": {
+        "support": 57,
+        "hits": 21,
+        "rate": 0.3684210526315789,
+        "outsideRate": 0.11861313868613138,
+        "score": 5.568735385168924,
+        "effect": 0.24980791394544755
+      },
+      "estimatedProbability": 0.3561224489795919,
+      "id": "07c924fd3b92530a",
+      "confirmation": {
+        "support": 22,
+        "hits": 2,
+        "rate": 0.09090909090909091,
+        "outsideRate": 0.12802768166089964,
+        "logEvidence": -4.057370175286043,
+        "adjustedPBound": 1.0,
+        "passed": false,
+        "reason": "No conserva la dirección observada."
+      },
+      "audit": {
+        "passed": false,
+        "status": "not-tested",
+        "reason": "Descartada antes de abrir el tramo final."
+      }
+    },
+    {
+      "channel": "refund",
+      "number": 1,
+      "conditions": [
+        {
+          "kind": "count",
+          "channel": "main",
+          "number": 33,
+          "window": 20,
+          "threshold": 3
+        },
+        {
+          "kind": "pair",
+          "numbers": [
+            7,
+            35
+          ],
+          "window": 5
+        }
+      ],
+      "text": "el número 33 apareció al menos 3 veces en 20 sorteos Y la pareja 7–35 apareció en los 5 sorteos anteriores",
+      "discovery": {
+        "support": 41,
+        "hits": 14,
+        "rate": 0.34146341463414637,
+        "outsideRate": 0.08975903614457831,
+        "score": 5.408999354032785,
+        "effect": 0.25170437848956806
+      },
+      "estimatedProbability": 0.325,
+      "id": "134f59104bc8869d",
+      "confirmation": {
+        "support": 9,
+        "hits": 2,
+        "rate": 0.2222222222222222,
+        "outsideRate": 0.09813874788494077,
+        "logEvidence": 0.3435354855208259,
+        "adjustedPBound": 1.0,
+        "passed": false,
+        "reason": "Muestra insuficiente."
+      },
+      "audit": {
+        "passed": false,
+        "status": "not-tested",
+        "reason": "Descartada antes de abrir el tramo final."
+      }
+    },
+    {
+      "channel": "refund",
+      "number": 1,
+      "conditions": [
+        {
+          "kind": "count",
+          "channel": "main",
+          "number": 13,
+          "window": 30,
+          "threshold": 2
+        },
+        {
+          "kind": "count",
+          "channel": "refund",
+          "number": 2,
+          "window": 20,
+          "threshold": 2
+        },
+        {
+          "kind": "count",
+          "channel": "refund",
+          "number": 2,
+          "window": 50,
+          "threshold": 4
+        }
+      ],
+      "text": "el número 13 apareció al menos 2 veces en 30 sorteos Y el reintegro 2 apareció al menos 2 veces en 20 sorteos Y el reintegro 2 apareció al menos 4 veces en 50 sorteos",
+      "discovery": {
+        "support": 923,
+        "hits": 56,
+        "rate": 0.06067172264355363,
+        "outsideRate": 0.13753213367609254,
+        "score": 5.365047094006007,
+        "effect": -0.0768604110325389
+      },
+      "estimatedProbability": 0.06079913606911447,
+      "id": "a7162b9f68b2580a",
+      "confirmation": {
+        "support": 306,
+        "hits": 28,
+        "rate": 0.0915032679738562,
+        "outsideRate": 0.10884353741496598,
+        "logEvidence": -2.0802286233338556,
+        "adjustedPBound": 1.0,
+        "passed": false,
+        "reason": "No supera la evidencia exigida tras corregir las comparaciones."
+      },
+      "audit": {
+        "passed": false,
+        "status": "not-tested",
+        "reason": "Descartada antes de abrir el tramo final."
+      }
+    },
+    {
+      "channel": "main",
+      "number": 8,
+      "conditions": [
+        {
+          "kind": "count",
+          "channel": "main",
+          "number": 12,
+          "window": 10,
+          "threshold": 3
+        },
+        {
+          "kind": "count",
+          "channel": "main",
+          "number": 43,
+          "window": 100,
+          "threshold": 15
+        }
+      ],
+      "text": "el número 12 apareció al menos 3 veces en 10 sorteos Y el número 43 apareció al menos 15 veces en 100 sorteos",
+      "discovery": {
+        "support": 63,
+        "hits": 20,
+        "rate": 0.31746031746031744,
+        "outsideRate": 0.10378510378510379,
+        "score": 5.283533854425769,
+        "effect": 0.21367521367521364
+      },
+      "estimatedProbability": 0.30859616573902293,
+      "id": "66df1b349f284fad",
+      "confirmation": {
+        "support": 7,
+        "hits": 2,
+        "rate": 0.2857142857142857,
+        "outsideRate": 0.1163575042158516,
+        "logEvidence": 0.6566230128889763,
+        "adjustedPBound": 1.0,
+        "passed": false,
+        "reason": "Muestra insuficiente."
+      },
+      "audit": {
+        "passed": false,
+        "status": "not-tested",
+        "reason": "Descartada antes de abrir el tramo final."
+      }
+    },
+    {
+      "channel": "refund",
+      "number": 3,
+      "conditions": [
+        {
+          "kind": "lag",
+          "channel": "main",
+          "number": 12,
+          "lag": 14
+        },
+        {
+          "kind": "count",
+          "channel": "main",
+          "number": 29,
+          "window": 20,
+          "threshold": 1
+        },
+        {
+          "kind": "pair",
+          "numbers": [
+            23,
+            42
+          ],
+          "window": 30
+        }
+      ],
+      "text": "el número 12 salió hace 14 sorteos Y el número 29 apareció al menos 1 veces en 20 sorteos Y la pareja 23–42 apareció en los 30 sorteos anteriores",
+      "discovery": {
+        "support": 46,
+        "hits": 15,
+        "rate": 0.32608695652173914,
+        "outsideRate": 0.09305135951661632,
+        "score": 5.211702331552416,
+        "effect": 0.23303559700512283
+      },
+      "estimatedProbability": 0.3122448979591837,
+      "id": "feefe3c9d2eb3904",
+      "confirmation": {
+        "support": 21,
+        "hits": 3,
+        "rate": 0.14285714285714285,
+        "outsideRate": 0.10362694300518134,
+        "logEvidence": -1.425462141855291,
+        "adjustedPBound": 1.0,
+        "passed": false,
+        "reason": "No supera la evidencia exigida tras corregir las comparaciones."
+      },
+      "audit": {
+        "passed": false,
+        "status": "not-tested",
+        "reason": "Descartada antes de abrir el tramo final."
+      }
+    },
+    {
+      "channel": "main",
+      "number": 46,
+      "conditions": [
+        {
+          "kind": "count",
+          "channel": "main",
+          "number": 37,
+          "window": 10,
+          "threshold": 1
+        },
+        {
+          "kind": "count",
+          "channel": "refund",
+          "number": 6,
+          "window": 100,
+          "threshold": 8
+        }
+      ],
+      "text": "el número 37 apareció al menos 1 veces en 10 sorteos Y el reintegro 6 apareció al menos 8 veces en 100 sorteos",
+      "discovery": {
+        "support": 1055,
+        "hits": 101,
+        "rate": 0.09573459715639811,
+        "outsideRate": 0.1826625386996904,
+        "score": 5.19526711823905,
+        "effect": -0.0869279415432923
+      },
+      "estimatedProbability": 0.09581034682303924,
+      "id": "3317c5559c802a62",
+      "confirmation": {
+        "support": 243,
+        "hits": 27,
+        "rate": 0.1111111111111111,
+        "outsideRate": 0.11204481792717087,
+        "logEvidence": -0.16447010179616406,
+        "adjustedPBound": 1.0,
+        "passed": false,
+        "reason": "No supera la evidencia exigida tras corregir las comparaciones."
+      },
+      "audit": {
+        "passed": false,
+        "status": "not-tested",
+        "reason": "Descartada antes de abrir el tramo final."
+      }
+    }
+  ],
+  "traceFile": "data/auditoria-hipotesis.jsonl",
+  "rulesFile": "data/hipotesis-investigadas.jsonl",
+  "registeredExperiment": {
+    "target": "2026-10-19",
+    "created": "2026-10-17T22:56:36.951319+02:00",
+    "historyUntil": "2026-10-17",
+    "modelId": "fb1fbef0161884fbeca7b0d73942b042715953d4beb10ef3cf036f14368bbfea",
+    "algorithm": "rolling-pattern-logistic-v1",
+    "parameters": {
+      "algorithm": "rolling-pattern-logistic-v1",
+      "window": 30,
+      "learningRate": 0.12,
+      "l2": 0.002,
+      "features": [
+        "frequency",
+        "previous",
+        "gapShort",
+        "gapMedium",
+        "gapLong",
+        "returnHazard",
+        "intervalProximity",
+        "partners",
+        "transition",
+        "oddShape",
+        "lowShape",
+        "sumShape",
+        "consecutiveShape"
+      ],
+      "validationFraction": 0.2,
+      "minimumValidation": 30
+    },
+    "nums": [
+      12,
+      22,
+      28,
+      38,
+      40,
+      43
+    ],
+    "reintegro": 2,
+    "productionPrediction": false
+  },
+  "prospective": {
+    "registered": 1,
+    "settled": 0,
+    "mainHits": 0,
+    "hitHistogram": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "refundDraws": 0,
+    "refundHits": 0
+  }
+}
