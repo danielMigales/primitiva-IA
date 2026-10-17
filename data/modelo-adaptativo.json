@@ -257,7 +257,7 @@
   "evaluationType": "exploratory-chronological-replay-predict-before-update",
   "note": "Simulación histórica, no apuestas registradas antes de los sorteos. Aprende pesos; no demuestra ventaja predictiva. Histórico pendiente de auditoría completa.",
   "next": {
-    "target": "2026-10-17",
+    "target": "2026-10-19",
     "nums": [
       6,
       10,
@@ -266,37 +266,37 @@
       39,
       46
     ],
-    "reintegro": 9,
+    "reintegro": 0,
     "registered": false,
     "note": "Propuesta del entrenamiento, sin autorización para sustituir al modelo activo."
   },
   "numberEvidence": [
     {
       "number": 46,
-      "estimatedScore": 0.18242341579729862
-    },
-    {
-      "number": 39,
-      "estimatedScore": 0.16300463026625664
+      "estimatedScore": 0.17936897532096371
     },
     {
       "number": 6,
-      "estimatedScore": 0.15490117734824757
+      "estimatedScore": 0.1631770073726938
+    },
+    {
+      "number": 39,
+      "estimatedScore": 0.16179566083132577
     },
     {
       "number": 38,
-      "estimatedScore": 0.15268214112078166
+      "estimatedScore": 0.15135009437349217
     },
     {
       "number": 14,
-      "estimatedScore": 0.14845771896843452
+      "estimatedScore": 0.14922913449822064
     },
     {
       "number": 10,
-      "estimatedScore": 0.14491030607453445
+      "estimatedScore": 0.14381314602215414
     }
   ],
-  "refundScore": 0.11628511611595395,
+  "refundScore": 0.12233611042278296,
   "activeNext": {
     "nums": [
       6,
@@ -306,36 +306,36 @@
       39,
       46
     ],
-    "reintegro": 9,
+    "reintegro": 0,
     "numberEvidence": [
       {
         "number": 46,
-        "estimatedScore": 0.18242341579729862
-      },
-      {
-        "number": 39,
-        "estimatedScore": 0.16300463026625664
+        "estimatedScore": 0.17936897532096371
       },
       {
         "number": 6,
-        "estimatedScore": 0.15490117734824757
+        "estimatedScore": 0.1631770073726938
+      },
+      {
+        "number": 39,
+        "estimatedScore": 0.16179566083132577
       },
       {
         "number": 38,
-        "estimatedScore": 0.15268214112078166
+        "estimatedScore": 0.15135009437349217
       },
       {
         "number": 14,
-        "estimatedScore": 0.14845771896843452
+        "estimatedScore": 0.14922913449822064
       },
       {
         "number": 10,
-        "estimatedScore": 0.14491030607453445
+        "estimatedScore": 0.14381314602215414
       }
     ],
-    "refundScore": 0.11628511611595395,
+    "refundScore": 0.12233611042278296,
     "modelId": "9da70e6d8b40c392f30092749da0f3ff53f2e4508c254b010eb856bf1b745e3e",
-    "target": "2026-10-17",
-    "registered": false
+    "target": "2026-10-19",
+    "registered": true
   }
 }

@@ -1,12 +1,14 @@
 {
   "version": 1,
-  "checkedAt": "2026-10-17T20:53:00.325994+02:00",
+  "checkedAt": "2026-10-17T22:06:56.897015+02:00",
   "valid": true,
   "total": 3001,
   "latestDate": "2026-10-15",
   "errors": [],
   "missingRecentDates": [],
-  "pendingDates": [],
+  "pendingDates": [
+    "2026-10-17"
+  ],
   "refundMissing": 0,
   "fullyVerifiedDraws": 320,
   "calendarScope": "Huecos internos: últimos 90 días del histórico, calendario lunes/jueves/sábado.",

@@ -407,6 +407,58 @@
         },
         "interpretation": "Exploratory ranking, no confirmed predictive advantage; fair-draw probability 10 percent."
       }
+    },
+    {
+      "target": "2026-10-19",
+      "nums": [
+        6,
+        10,
+        14,
+        38,
+        39,
+        46
+      ],
+      "reintegro": 0,
+      "window": 99999,
+      "historyUntil": "2026-10-15",
+      "created": "2026-10-17T22:06:56.897015+02:00",
+      "algorithm": "guarded-online-logistic-v1",
+      "reintegroAlgorithm": "guarded-online-logistic-v1",
+      "strategyVersion": 4,
+      "strategyFile": "data/reto-estrategia-activa.json",
+      "modelId": "9da70e6d8b40c392f30092749da0f3ff53f2e4508c254b010eb856bf1b745e3e",
+      "weightsTrainedUntil": "2026-10-15",
+      "numberEvidence": [
+        {
+          "number": 46,
+          "estimatedScore": 0.17936897532096371
+        },
+        {
+          "number": 6,
+          "estimatedScore": 0.1631770073726938
+        },
+        {
+          "number": 39,
+          "estimatedScore": 0.16179566083132577
+        },
+        {
+          "number": 38,
+          "estimatedScore": 0.15135009437349217
+        },
+        {
+          "number": 14,
+          "estimatedScore": 0.14922913449822064
+        },
+        {
+          "number": 10,
+          "estimatedScore": 0.14381314602215414
+        }
+      ],
+      "reintegroEvidence": {
+        "estimatedScore": 0.12233611042278296
+      },
+      "goal": "maximize-main-and-reintegro-hits",
+      "recordedBy": "Modelo activo con pesos protegidos por evaluación prospectiva; commit de GitHub acredita publicación"
     }
   ],
   "revisions": [
