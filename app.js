@@ -244,7 +244,7 @@ function renderQuality(report){
  if(Array.isArray(report.pendingDates)&&report.pendingDates.length)root.appendChild(p('Pendientes de incorporar al archivo central: '+report.pendingDates.join(', ')+'. Este informe no determina si SELAE ya los ha publicado.'));
  root.appendChild(p('Cotejo completo con SELAE: '+report.fullyVerifiedDraws+' / '+report.total+' sorteos. La comprobación de huecos cubre los últimos 90 días del histórico.','muted'));
  if(report.refundMissing)root.appendChild(p(report.refundMissing+' sorteos carecen de reintegro: se excluyen del aprendizaje de ese dato.'));
- root.appendChild(p('Informe del archivo central: '+report.checkedAt+'. La consulta al abrir puede aportar resultados más recientes a esta sesión.','muted'));
+ root.appendChild(p('Informe del archivo central: '+report.checkedAt+'. Al abrir o actualizar se cargan los últimos archivos publicados.','muted'));
 }
 function renderDecisionHistory(control){
  const root=$('decision-history');if(!root)return;root.replaceChildren();
@@ -305,6 +305,24 @@ function renderModel(model,active){
  root.appendChild(p('El modelo aprende parámetros; esta simulación histórica no demuestra que prediga mejor. Las mejoras se comprueban con predicciones registradas antes de cada sorteo.','notice'));
 }
 
+
+function renderCentralStatus(report,latest){
+ const status=$('sync-status');if(!status)return;
+ let message='Mostrando los últimos resultados publicados'+(latest?' · Último sorteo: '+latest:'')+'.';
+ if(typeof report?.checkedAt==='string'&&Number.isFinite(Date.parse(report.checkedAt))){
+  const checked=new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',dateStyle:'short',timeStyle:'short'}).format(new Date(report.checkedAt));
+  message+=' Última comprobación central: '+checked+' (hora de Madrid).';
+ }else message+=' No se ha podido comprobar la fecha de la última revisión central.';
+ if(report?.status==='unavailable')message+=' La última comprobación no pudo obtener resultados oficiales.';
+ if(['conflict','invalid-history'].includes(report?.status))message+=' La actualización central está detenida para revisar los datos.';
+ if(latest){
+  let expected=madridToday();if(madridMinutes()<21*60+40)expected=shiftDay(expected,-1);
+  while(!drawDay(expected))expected=shiftDay(expected,-1);
+  if(latest<expected)message+=' El resultado del '+expected+' todavía no está incorporado. Se volverá a comprobar en las ejecuciones centrales previstas.';
+ }
+ status.textContent=message;
+}
+
 async function fetchJson(path){const r=await fetch(path+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 let loading=false;
 async function load(){
@@ -312,7 +330,7 @@ async function load(){
  try{await loadContent()}finally{loading=false}
 }
 async function loadContent(){
- if($('sync-status'))$('sync-status').textContent='Consultando los últimos resultados en SELAE…';
+ if($('sync-status'))$('sync-status').textContent='Cargando los últimos resultados publicados…';
  const [pred,history,active,verification,update,model,control,quality]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json'),fetchJson('./data/reto-estrategia-activa.json'),fetchJson('./data/verificacion-sorteos.json'),fetchJson('./data/estado-actualizacion.json'),fetchJson('./data/modelo-adaptativo.json'),fetchJson('./data/control-modelo.json'),fetchJson('./data/calidad-datos.json')]);
  let proofs=verification.status==='fulfilled'&&Array.isArray(verification.value?.draws)?verification.value.draws:[];
  const report=update.status==='fulfilled'?update.value:null;
@@ -326,13 +344,7 @@ async function loadContent(){
  const historyLoaded=history.status==='fulfilled'&&Array.isArray(history.value?.draws);
  if(historyLoaded){
   draws=history.value.draws.filter(r=>r&&validDate(r.date)&&validNumbers(r.nums)).sort((a,b)=>b.date.localeCompare(a.date));
-  if(globalThis.PrimitivaLive){
-   try{
-    const result=await PrimitivaLive.sync(globalThis.PRIMITIVA_RESULTS_ENDPOINT,draws,proofs);
-    draws=result.draws;proofs=result.proofs;
-    if($('sync-status'))$('sync-status').textContent=result.message;
-   }catch(error){if($('sync-status'))$('sync-status').textContent=error?.message?.startsWith('Discrepancia')?'Los nuevos resultados requieren revisión. Se mantienen los datos guardados.':'No se ha podido comprobar SELAE. Mostrando los últimos resultados guardados.';}
-  }
+  renderCentralStatus(report,draws[0]?.date);
   $('draws-status').textContent='Último resultado registrado: '+(draws[0]?.date||'ninguno')+'. Actualización del archivo: '+(history.value.updated_at||'no indicada')+'.';
   const root=$('recent-draws');root.replaceChildren();
   const recent=draws.slice(0,5);
@@ -363,7 +375,7 @@ async function loadContent(){
   if(!draws.length)root.appendChild(p('No hay sorteos válidos disponibles.'));
  }else {
   $('draws-status').textContent='No se ha podido cargar el histórico actualizado.';
-  if($('sync-status'))$('sync-status').textContent='No se ha podido cargar el histórico. No se puede comprobar la actualización con SELAE.';
+  if($('sync-status'))$('sync-status').textContent='No se ha podido cargar el histórico publicado. Vuelve a intentarlo.';
  }
  if(pred.status!=='fulfilled'||!Array.isArray(pred.value?.predictions)){renderIncidents([],draws,historyLoaded,false,report); $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';$('tracking').replaceChildren(p('No se pudo cargar el registro de predicciones.'));return}
  const entries=pred.value.predictions.filter(r=>r&&validDate(r.target)&&validNumbers(r.nums)).sort((a,b)=>b.target.localeCompare(a.target));

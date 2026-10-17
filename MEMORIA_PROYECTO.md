@@ -226,3 +226,13 @@ La app muestra calidad del histórico, fecha de revisión, cobertura oficial y p
 
 
 Canal adicional: RSS oficial de La Primitiva, validado localmente con siete resultados. Se prueba después del JSON y antes de PDF; ofrece enlace individual a cada escrutinio. Desde el servidor Sites la consulta siguió devolviendo 502 a las 20:46; no afirmar que la consulta directa esté reparada aunque el alojamiento ya esté publicado. Fuente Sites final 6af042754c07af7198672163c939e5e10461fa0e (versión 6). Pruebas finales: 50 Python y 45 Node, 95 en total. Completadas localmente, incluida conservación de resultados frente a fuentes parciales y controles de RSS. La app distingue el fallo de consulta de la ausencia de un resultado, y conserva el histórico central.
+
+
+## 26. Consulta directa retirada; actualizaciones centrales con reintentos (2026-10-17)
+Petición explícita del usuario después de explicar las consecuencias: retirar la consulta directa, conservar actualización central, añadir reintentos y mostrar última comprobación. La app ya no carga results-config.js/live-results.js ni llama a PrimitivaLive. results-config.js deja el endpoint en null. El servicio y el código histórico se conservan, sin usar desde la aplicación; no se elimina el Site ni se cambia su audiencia.
+
+Al abrir, volver a primer plano o pulsar “Actualizar resultados publicados” se descargan los archivos centrales sin caché. La cabecera muestra la última comprobación central en hora de Madrid usando checkedAt (intento, no garantía de éxito), el último sorteo guardado, fuentes no disponibles y resultados esperados aún no incorporados. No atribuye la falta de archivo a que SELAE no haya publicado. Un informe ausente/inválido no inventa hora de revisión. Se elimina la frase de calidad que prometía consulta directa de sesión.
+
+Workflow actualizar.yml: lunes/jueves/sábado a las 22:15, 22:30, 22:45 y 23:15, Europe/Madrid; recuperación martes/viernes/domingo a las 08:15. Son horas previstas, sujetas a las demoras de GitHub Actions. Cada intento conserva la cadena de cotejo, calidad, entrenamiento, control de candidatos y registro de la siguiente predicción; los registros existentes se preservan. No se modifican pesos ni predicciones al retirar la consulta.
+
+Pruebas del recorrido real: abrir no llama al servicio aunque esté disponible en globalThis; se usan los resultados publicados; hora de comprobación en Madrid; estado de fuente no disponible; informe ausente; sorteo esperado pendiente de incorporar; ausencia de scripts de consulta en HTML. Las pruebas de la lógica retirada se conservan para auditarla, sin activarla en la app.

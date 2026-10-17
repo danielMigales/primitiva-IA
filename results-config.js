@@ -1,1 +1,2 @@
-globalThis.PRIMITIVA_RESULTS_ENDPOINT = 'https://primitiva-resultados-daniel.wittyeel5.chatgpt.site/api/resultados';
+// Consulta directa retirada: la aplicación carga exclusivamente los datos centrales publicados.
+globalThis.PRIMITIVA_RESULTS_ENDPOINT = null;

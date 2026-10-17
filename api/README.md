@@ -1,3 +1,5 @@
+> Consulta directa retirada el 17/10/2026 por petición del usuario. La aplicación ya no carga el cliente ni llama al servicio. Se conserva el código y el historial técnico. Los resultados se leen del archivo central de GitHub, con reintentos después de las 22:15 y revisión al día siguiente.
+
 # Consulta oficial al abrir la aplicación
 
 Servicio público desplegado: https://primitiva-resultados-daniel.wittyeel5.chatgpt.site/api/resultados

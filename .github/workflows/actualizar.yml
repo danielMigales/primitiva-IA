@@ -3,7 +3,12 @@ name: Actualizar sorteos
 on:
   schedule:
     # Después del sorteo: lunes, jueves y sábado a las 22:15 en España peninsular.
-    - cron: '15 22 * * 1,4,6'
+    - cron: '15,30,45 22 * * 1,4,6'
+      timezone: 'Europe/Madrid'
+    - cron: '15 23 * * 1,4,6'
+      timezone: 'Europe/Madrid'
+    # Revisión de recuperación el día siguiente al sorteo.
+    - cron: '15 8 * * 0,2,5'
       timezone: 'Europe/Madrid'
   push:
     paths:

@@ -180,23 +180,39 @@ test('historical predictions highlight only actual matches',async()=>{
  assert.equal(predicted.children.filter(c=>c.className.split(' ').includes('hit')).length,2);
 });
 
-test('opening the app synchronizes results before recomputing predictions and recent draws',async()=>{
+test('opening reads published history without calling the direct service',async()=>{
  const actual={date:entry.target,nums:[6,17,24,35,39,47],reintegro:3};
  let calls=0;
- const live={sync:async()=>{calls++;return {draws:[actual,draw],proofs:[],message:'Resultados actualizados con SELAE.'}}};
- const {elements}=await render(undefined,undefined,'2026-10-15T20:15:00Z',undefined,undefined,live);
- assert.equal(calls,1);
- assert.match(elements['sync-status'].textContent,/Resultados actualizados con SELAE/);
+ const live={sync:async()=>{calls++;throw Error('Direct consultation must not run')}};
+ const report={status:'confirmed',checkedAt:'2026-10-15T20:16:00Z'};
+ const {elements}=await render(undefined,{draws:[actual,draw]},'2026-10-15T20:17:00Z',undefined,report,live);
+ assert.equal(calls,0);
+ assert.match(elements['sync-status'].textContent,/Última comprobación central/);
+ assert.match(elements['sync-status'].textContent,/22:16/);
  assert.match(elements.prediction.textContent,/0 de 6 números acertados/);
- assert.match(elements['draws-status'].textContent,/2026-10-15/);
  assert.equal(elements['recent-draws'].children.length,2);
 });
-test('failed live update preserves published history and shows a saved-results notice',async()=>{
- const live={sync:async()=>{throw Error('No se ha podido conectar con SELAE.')}};
- const {elements}=await render(undefined,undefined,undefined,undefined,undefined,live);
- assert.match(elements['sync-status'].textContent,/Mostrando los últimos resultados guardados/);
+test('a failed central check keeps published results and does not claim unpublished',async()=>{
+ const report={status:'unavailable',checkedAt:'2026-10-13T12:00:00Z'};
+ const {elements}=await render(undefined,undefined,undefined,undefined,report);
+ assert.match(elements['sync-status'].textContent,/Mostrando los últimos resultados publicados/);
+ assert.match(elements['sync-status'].textContent,/no pudo obtener resultados oficiales/);
  assert.equal(elements['recent-draws'].children.length,1);
  assert.doesNotMatch(elements['sync-status'].textContent,/aún no ha publicado/);
+});
+test('missing report timestamp does not invent a check date',async()=>{
+ const {elements}=await render();
+ assert.match(elements['sync-status'].textContent,/No se ha podido comprobar la fecha/);
+});
+test('a due draw missing from central data is shown as not incorporated',async()=>{
+ const {elements}=await render(undefined,undefined,'2026-10-17T20:30:00Z');
+ assert.match(elements['sync-status'].textContent,/2026-10-17 todavía no está incorporado/);
+ assert.doesNotMatch(elements['sync-status'].textContent,/SELAE.*no ha publicado/);
+});
+test('HTML no longer loads the retired direct-query client',()=>{
+ const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
+ assert.doesNotMatch(html,/<script[^>]+(?:live-results|results-config)/);
+ assert.match(html,/Actualizar resultados publicados/);
 });
 
 test('zero-hit review remains visible when the next prediction is displayed',async()=>{
