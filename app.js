@@ -108,6 +108,8 @@ function renderCompact(entries,draws,historyLoaded,predLoaded,proofs,analysis,di
   else if(!prediction)latestRoot.appendChild(p('Sin predicción registrada para este sorteo.'));
   else{
    const hits=prediction.nums.filter(n=>actual.nums.includes(n));
+   latestRoot.appendChild(p('Predicción registrada para este sorteo:'));
+   latestRoot.appendChild(combination(prediction.nums,prediction.reintegro,actual));
    latestRoot.appendChild(p('Predicción anterior: '+hits.length+' de 6 aciertos'+(validReintegro(prediction.reintegro)&&validReintegro(actual.reintegro)?' · Reintegro '+(prediction.reintegro===actual.reintegro?'acertado':'no acertado'):'')+'.'));
    latestRoot.appendChild(p('Números acertados: '+(hits.length?hits.join(', '):'ninguno')+'.','muted'));
   }
