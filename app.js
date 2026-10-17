@@ -94,12 +94,13 @@ function explain(r,draws,entries){
  root.appendChild(d);
 }
 function choose(n,k){let result=1;for(let i=1;i<=k;i++)result=result*(n-i+1)/i;return result}
-function renderLearning(entries,draws,active,proofs=[]){
+function renderLearning(entries,draws,active,proofs=[],training=null){
  const root=$('learning-review');if(!root)return;root.replaceChildren();
  const rows=trackingResults(entries,draws).filter(r=>r.actual).sort((a,b)=>b.record.target.localeCompare(a.record.target));
  const last=rows[0];
  if(!last){root.appendChild(p('Aún no hay una predicción con resultado disponible para evaluar.'));return}
  const {record,actual,hits,reintegro}=last;
+ const adjustment=Array.isArray(training?.lastUpdates)?training.lastUpdates.find(r=>r.date===actual.date):null;
  root.appendChild(p('Balance del '+record.target+': '+hits+' de 6 aciertos'+(reintegro===null?' · Reintegro no evaluable.':reintegro?' · Reintegro acertado.':' · Reintegro no acertado.')));
  root.appendChild(p('Predicción registrada: '+record.nums.join(', ')+'. Resultado: '+actual.nums.join(', ')+'.'));
  root.appendChild(p(verificationFor(actual,proofs)+'.','verification-note'));
@@ -112,6 +113,10 @@ function renderLearning(entries,draws,active,proofs=[]){
  const minimum=Number.isInteger(active?.minimumSettledDraws)?active.minimumSettledDraws:30;
  root.appendChild(p(!adaptive&&[3,4].includes(active?.version)?'Esta predicción pertenece a un motor anterior. Se conserva su resultado; el entrenamiento del nuevo modelo se muestra en su propio informe.':record.algorithm==='guarded-online-logistic-v1'?'El resultado sirve para evaluar candidatos y entrenar nuevas propuestas. Los pesos del modelo activo solo cambian al aprobar la evaluación prospectiva.':adaptive?'El resultado se incorpora al siguiente entrenamiento: el error entre estimación y resultado ajusta los pesos. El informe de entrenamiento muestra la última actualización disponible.':'Qué se ha aprendido: queda registrado este resultado para evaluar el método. No se ha demostrado una mejora predictiva ni se ha reentrenado el modelo a partir de este fallo. Se mantienen los pesos del método durante un mínimo de '+minimum+' sorteos evaluables de su versión.'));
  root.appendChild(p('Seguimiento de la versión activa: '+sample.length+' / '+minimum+' sorteos con predicción y resultado. Los registros anteriores sin esa versión se conservan por separado.','muted'));
+ if(adjustment&&Array.isArray(adjustment.weightsBefore)&&Array.isArray(adjustment.weightsAfter)&&adjustment.weightsBefore.length===4&&adjustment.weightsAfter.length===4&&[...adjustment.weightsBefore,...adjustment.weightsAfter].every(Number.isFinite)){
+  const delta=adjustment.weightsAfter.reduce((sum,w,i)=>sum+Math.abs(w-adjustment.weightsBefore[i]),0);
+  root.appendChild(p('Al incorporar este resultado al entrenamiento, el cambio total de los cuatro pesos fue '+delta.toFixed(5)+'. Este cálculo procede de la reproducción cronológica del entrenamiento. Los ajustes siguen sujetos al control de mejoras.'));
+ }
  const next=entries.filter(r=>r.target>actual.date&&!draws.some(d=>d.date===r.target)).sort((a,b)=>a.target.localeCompare(b.target))[0];
  if(next){
   root.appendChild(p('Siguiente predicción registrada: '+next.target+' · Histórico hasta '+next.historyUntil+'.'));
@@ -226,6 +231,38 @@ function renderTracking(entries,draws,historyLoaded,activeStrategy,proofs=[]){
 }
 
 
+
+function renderQuality(report){
+ const root=$('data-quality');if(!root)return;root.replaceChildren();
+ if(report?.version!==1||typeof report.valid!=='boolean'||!Number.isInteger(report.total)){
+  root.appendChild(p('No se ha podido cargar el informe de calidad del histórico.'));return;
+ }
+ root.appendChild(p(report.valid?'Histórico válido en los controles estructurales.':'Entrenamiento detenido: el histórico requiere revisión.',report.valid?'':'incident-warning'));
+ root.appendChild(p(report.total+' sorteos revisados · Último resultado guardado: '+report.latestDate+'.'));
+ if(Array.isArray(report.missingRecentDates)&&report.missingRecentDates.length)root.appendChild(p('Faltan sorteos dentro del histórico reciente: '+report.missingRecentDates.join(', ')+'.','incident-warning'));
+ if(Array.isArray(report.errors)&&report.errors.length)root.appendChild(p('Registros con errores: '+report.errors.length+'. Se conservan los pesos y predicciones anteriores.','incident-warning'));
+ if(Array.isArray(report.pendingDates)&&report.pendingDates.length)root.appendChild(p('Pendientes de incorporar al archivo central: '+report.pendingDates.join(', ')+'. Este informe no determina si SELAE ya los ha publicado.'));
+ root.appendChild(p('Cotejo completo con SELAE: '+report.fullyVerifiedDraws+' / '+report.total+' sorteos. La comprobación de huecos cubre los últimos 90 días del histórico.','muted'));
+ if(report.refundMissing)root.appendChild(p(report.refundMissing+' sorteos carecen de reintegro: se excluyen del aprendizaje de ese dato.'));
+ root.appendChild(p('Informe del archivo central: '+report.checkedAt+'. La consulta al abrir puede aportar resultados más recientes a esta sesión.','muted'));
+}
+function renderDecisionHistory(control){
+ const root=$('decision-history');if(!root)return;root.replaceChildren();
+ if(control?.version!==1||!Array.isArray(control.decisions)){root.appendChild(p('No se pudo cargar el historial de decisiones.'));return;}
+ if(!control.decisions.length){root.appendChild(p('Aún no hay cambios aceptados ni rechazados: los ensayos necesitan resultados de sorteos futuros.'));return;}
+ root.appendChild(p(control.decisions.length+' decisiones registradas. Se muestran las diez más recientes.'));
+ for(const d of [...control.decisions].reverse().slice(0,10)){
+  const item=document.createElement('details');
+  const title=document.createElement('summary');title.textContent=d.decidedAfter+' · Candidato '+d.epoch+' · '+(d.status==='accepted'?'Aceptado':'Rechazado');item.appendChild(title);
+  item.appendChild(p(d.reason||'Sin motivo registrado.'));
+  item.appendChild(p(d.draws+' sorteos evaluados después del entrenamiento.'));
+  for(const [key,label] of [['main','Números principales'],['refund','Reintegro']]){
+   const h=d.comparisons?.[key+'-hits'];if(h&&Number.isFinite(h.expectedUniform))item.appendChild(p(label+': candidato '+h.challenger+' aciertos · Activo '+h.champion+' · Referencia al azar '+h.expectedUniform.toFixed(2)+'.'));
+  }
+  item.appendChild(p('Modelo anterior: '+d.previousChampionId+' · Candidato: '+d.challengerId,'muted'));root.appendChild(item);
+ }
+}
+
 function renderControl(control,active){
  const root=$('model-control');if(!root)return;root.replaceChildren();
  if(active?.version!==4)return;
@@ -276,12 +313,14 @@ async function load(){
 }
 async function loadContent(){
  if($('sync-status'))$('sync-status').textContent='Consultando los últimos resultados en SELAE…';
- const [pred,history,active,verification,update,model,control]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json'),fetchJson('./data/reto-estrategia-activa.json'),fetchJson('./data/verificacion-sorteos.json'),fetchJson('./data/estado-actualizacion.json'),fetchJson('./data/modelo-adaptativo.json'),fetchJson('./data/control-modelo.json')]);
+ const [pred,history,active,verification,update,model,control,quality]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json'),fetchJson('./data/reto-estrategia-activa.json'),fetchJson('./data/verificacion-sorteos.json'),fetchJson('./data/estado-actualizacion.json'),fetchJson('./data/modelo-adaptativo.json'),fetchJson('./data/control-modelo.json'),fetchJson('./data/calidad-datos.json')]);
  let proofs=verification.status==='fulfilled'&&Array.isArray(verification.value?.draws)?verification.value.draws:[];
  const report=update.status==='fulfilled'?update.value:null;
  const activeStrategy=active.status==='fulfilled'?active.value:null;
  renderModel(model.status==='fulfilled'?model.value:null,activeStrategy);
  renderControl(control.status==='fulfilled'?control.value:null,activeStrategy);
+ renderDecisionHistory(control.status==='fulfilled'?control.value:null);
+ renderQuality(quality.status==='fulfilled'?quality.value:null);
  $('active-strategy').textContent=validActiveStrategy(activeStrategy)?(activeStrategy.version===4?'Motor con evaluación previa · Versión 4. Los pesos activos se mantienen hasta que un candidato supere las pruebas.':activeStrategy.version===3?'Motor activo: modelo que ajusta sus pesos tras cada sorteo · Versión 3. Las predicciones anteriores conservan su motor original.':'Motor activo: recencia 30/90/365 días · Versión '+activeStrategy.version+'. Su evaluación empieza con las nuevas predicciones de esta versión.'):'No se ha podido comprobar la estrategia activa.';
  let draws=[];
  const historyLoaded=history.status==='fulfilled'&&Array.isArray(history.value?.draws);
@@ -292,7 +331,7 @@ async function loadContent(){
     const result=await PrimitivaLive.sync(globalThis.PRIMITIVA_RESULTS_ENDPOINT,draws,proofs);
     draws=result.draws;proofs=result.proofs;
     if($('sync-status'))$('sync-status').textContent=result.message;
-   }catch(error){if($('sync-status'))$('sync-status').textContent=error?.message?.startsWith('Discrepancia')?'Los nuevos resultados requieren revisión. Se mantienen los datos guardados.':'Mostrando los últimos resultados guardados.';}
+   }catch(error){if($('sync-status'))$('sync-status').textContent=error?.message?.startsWith('Discrepancia')?'Los nuevos resultados requieren revisión. Se mantienen los datos guardados.':'No se ha podido comprobar SELAE. Mostrando los últimos resultados guardados.';}
   }
   $('draws-status').textContent='Último resultado registrado: '+(draws[0]?.date||'ninguno')+'. Actualización del archivo: '+(history.value.updated_at||'no indicada')+'.';
   const root=$('recent-draws');root.replaceChildren();
@@ -328,7 +367,7 @@ async function loadContent(){
  }
  if(pred.status!=='fulfilled'||!Array.isArray(pred.value?.predictions)){renderIncidents([],draws,historyLoaded,false,report); $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';$('tracking').replaceChildren(p('No se pudo cargar el registro de predicciones.'));return}
  const entries=pred.value.predictions.filter(r=>r&&validDate(r.target)&&validNumbers(r.nums)).sort((a,b)=>b.target.localeCompare(a.target));
- renderLearning(entries,draws,activeStrategy,proofs);
+ renderLearning(entries,draws,activeStrategy,proofs,model.status==='fulfilled'?model.value:null);
  renderIncidents(entries,draws,historyLoaded,true,report);
  renderTracking(entries,draws,historyLoaded,activeStrategy,proofs);
  const latest=entries[0];if(!latest){$('prediction-status').textContent='Aún no hay predicciones registradas.';return}

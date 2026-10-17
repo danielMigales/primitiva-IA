@@ -45,3 +45,23 @@ test('server parses published SELAE response, rejects other games and never inve
  assert.equal(response.status,502);
  assert.match((await response.json()).error,/No se puede determinar/);
 });
+
+test('worker uses edge-compatible redirect mode, validates dates and serves real JSON',async()=>{
+ const {default:worker}=await import('../api/resultados.mjs');
+ global.fetch=async(url,options)=>{
+  assert.equal(options.redirect,'manual');
+  assert.ok(options.signal instanceof AbortSignal);
+  return {ok:true,text:async()=>JSON.stringify([{game_id:'LAPR',fecha_sorteo:'2026-10-15',combinacion:'06 - 17 - 24 - 35 - 39 - 47 C(18) R(3)'}])};
+ };
+ const response=await worker.fetch(new Request('https://results.example/api/resultados?from=2026-10-01'));
+ assert.equal(response.status,200);
+ assert.equal(response.headers.get('Access-Control-Allow-Origin'),'https://danielmigales.github.io');
+ assert.deepEqual((await response.json()).draws,[row]);
+ const root=await worker.fetch(new Request('https://results.example/'));
+ assert.equal((await root.json()).status,'online');
+ const bad=await worker.fetch(new Request('https://results.example/api/resultados?from=2026-02-30'));
+ assert.equal(bad.status,400);
+ global.fetch=async()=>({ok:false,status:302});
+ const redirect=await worker.fetch(new Request('https://results.example/api/resultados?from=2026-10-01'));
+ assert.equal(redirect.status,502);
+});

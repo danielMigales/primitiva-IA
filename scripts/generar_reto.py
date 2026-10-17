@@ -6,6 +6,7 @@ from zoneinfo import ZoneInfo
 from modelo_adaptativo import PARAMETERS, train
 from validar_reto import validate_prediction
 from control_modelo import POLICY, update_control
+from calidad_datos import inspect_history
 
 config=json.loads(Path('data/reto-estrategia-activa.json').read_text())
 if config.get('version')!=4 or config.get('status')!='active' or config.get('strategy')!={'type':'guarded-online-logistic','window':99999,'algorithm':'guarded-online-logistic-v1','reintegroAlgorithm':'guarded-online-logistic-v1','parameters':PARAMETERS}:
@@ -20,6 +21,12 @@ while day.weekday() not in (0,3,5):
     day+=timedelta(days=1)
 target=day.isoformat()
 rows=sorted(json.loads(Path('data/sorteos.json').read_text())['draws'],key=lambda r:r['date'])
+proof_path=Path('data/verificacion-sorteos.json')
+proofs=json.loads(proof_path.read_text()).get('draws',[]) if proof_path.exists() else []
+quality=inspect_history(rows,now,proofs)
+Path('data/calidad-datos.json').write_text(json.dumps(quality,ensure_ascii=False,indent=2)+'\n')
+if not quality['valid']:
+    raise ValueError('Histórico inválido o con huecos recientes: entrenamiento detenido; revisar calidad-datos.json.')
 report=train(rows,target)
 control_path=Path('data/control-modelo.json')
 # Missing control state must stop generation, never silently approve new weights.

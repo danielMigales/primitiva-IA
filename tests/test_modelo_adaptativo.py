@@ -13,8 +13,11 @@ from modelo_adaptativo import train
 
 
 def history(count=150):
-    return [{'date':(date(2025,1,1)+timedelta(days=3*i)).isoformat(),
-             'nums':[1,2,3,4,5,6],'reintegro':2} for i in range(count)]
+    day=date(2026,10,15);days=[]
+    while len(days)<count:
+        if day.weekday() in (0,3,5):days.append(day)
+        day-=timedelta(days=1)
+    return [{'date':day.isoformat(),'nums':[1,2,3,4,5,6],'reintegro':2} for day in reversed(days)]
 
 
 class ModelTests(unittest.TestCase):

@@ -1,3 +1,5 @@
+import {RSS_SOURCE,rssResults} from './rss-results.mjs';
+import {PDF_SOURCE,pdfResults} from './pdf-results.mjs';
 // Fixed upstream: this service cannot proxy arbitrary URLs or write to GitHub.
 export const SOURCE = 'https://www.loteriasyapuestas.es/servicios/buscadorSorteos';
 export function madridDate(now = new Date()) {
@@ -24,6 +26,7 @@ export default {
     const respond = (data,status=200)=>new Response(JSON.stringify(data),{status,headers});
     if (request.method !== 'GET') return respond({error:'Método no permitido'},405);
     const url = new URL(request.url);
+    if (url.pathname === '/') return respond({service:'Primitiva IA · resultados SELAE',status:'online'});
     if (url.pathname !== '/api/resultados') return respond({error:'No encontrado'},404);
     const to = madridDate(), lower = new Date(Date.parse(to+'T00:00:00Z')-365*86400000).toISOString().slice(0,10);
     let from = url.searchParams.get('from') || new Date(Date.parse(to+'T00:00:00Z')-35*86400000).toISOString().slice(0,10);
@@ -32,15 +35,27 @@ export default {
     const upstream = new URL(SOURCE);
     for (const [key,value] of Object.entries({game_id:'LAPR',celebrados:'true',fechaInicioInclusiva:from.replaceAll('-',''),fechaFinInclusiva:to.replaceAll('-','')})) upstream.searchParams.set(key,value);
     upstream.searchParams.set('_',String(Math.floor(Date.now()/60000)));
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),12000);
     try {
-      const result = await fetch(upstream, {headers:{Accept:'application/json'},signal:AbortSignal.timeout(10000),redirect:'error',cache:'no-store'});
-      if (!result.ok) throw new Error('SELAE HTTP '+result.status);
-      const text = await result.text();
-      if (text.length>2000000) throw new Error('Respuesta demasiado grande');
-      const draws = parseResults(JSON.parse(text),from,to);
-      return respond({version:1,source:'SELAE',sourceUrl:upstream.href,checkedAt:new Date().toISOString(),from,to,draws});
-    } catch {
+      try {
+        const result=await fetch(upstream,{headers:{Accept:'application/json','User-Agent':'Mozilla/5.0 (compatible; PrimitivaIA/1.0)'},signal:controller.signal,redirect:'manual'});
+        if(!result.ok)throw Error('SELAE HTTP '+result.status);
+        const text=await result.text();if(text.length>2000000)throw Error('Respuesta demasiado grande');
+        const draws=parseResults(JSON.parse(text),from,to);
+        return respond({version:1,source:'SELAE',sourceUrl:upstream.href,checkedAt:new Date().toISOString(),from,to,draws});
+      } catch(error) {
+        console.warn('Servicio JSON SELAE no disponible:',error?.message);
+        try{
+          const rss=await rssResults(from,to,controller.signal);
+          return respond({version:1,source:'SELAE',sourceUrl:RSS_SOURCE,publicationStatus:'official-rss',checkedAt:new Date().toISOString(),from:rss.from,to,draws:rss.draws});
+        }catch(rssError){console.warn('Canal RSS SELAE no disponible:',rssError?.message)}
+        const official=await pdfResults(from,to,controller.signal);
+        return respond({version:1,source:'SELAE',sourceUrl:PDF_SOURCE,publicationStatus:'official-press-pdfs',checkedAt:new Date().toISOString(),from:official.from,to,draws:official.draws,unavailableDates:official.unavailableDates});
+      }
+    } catch(error) {
+      console.error('Consulta SELAE:',error?.name,error?.message);
       return respond({error:'No se ha podido consultar SELAE. No se puede determinar si los resultados están publicados.'},502);
-    }
+    } finally {clearTimeout(timer)}
   }
 };

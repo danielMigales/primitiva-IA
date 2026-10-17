@@ -21,13 +21,18 @@ jobs:
       - name: Comprobar registro del Reto Predictor
         run: python -m unittest discover -s tests -v
       - name: Generar prediccion antes del sorteo
+        id: modelo
+        continue-on-error: true
         run: python scripts/generar_reto.py
       - name: Guardar prediccion en GitHub
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/control-modelo.json data/modelo-adaptativo.json data/reto-predictor.json
+          git add data/calidad-datos.json data/control-modelo.json data/modelo-adaptativo.json data/reto-predictor.json
           if ! git diff --cached --quiet; then
             git commit -m 'Registrar prediccion previa al sorteo'
             git push
           fi
+      - name: Señalar entrenamiento detenido
+        if: steps.modelo.outcome == 'failure'
+        run: exit 1

@@ -19,11 +19,11 @@ class Element {
 const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10-12',reintegro:8};
 const draw = {date:'2026-10-12',nums:[2,5,26,40,42,45],reintegro:9};
 const activeConfig=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-v2.json'),'utf8'));
-async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null,config=activeConfig,model=null,control=null) {
- const elements=Object.fromEntries(['model-control','model-learning','learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
+async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null,config=activeConfig,model=null,control=null,quality=null) {
+ const elements=Object.fromEntries(['decision-history','data-quality','model-control','model-learning','learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
  class Clock extends Date { constructor(...args){super(...(args.length?args:[today]));} static now(){return Date.parse(today);} }
  const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,PrimitivaLive:live,PRIMITIVA_RESULTS_ENDPOINT:'https://results.example/api/resultados',
-  fetch:async url=>{const data=url.includes('control-modelo')?control:url.includes('modelo-adaptativo')?model:url.includes('estrategia-activa')?config:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
+  fetch:async url=>{const data=url.includes('calidad-datos')?quality:url.includes('control-modelo')?control:url.includes('modelo-adaptativo')?model:url.includes('estrategia-activa')?config:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
  vm.runInContext(source.replace('load().catch(', 'globalThis.loaded=load().catch('),context);
  await context.loaded;
  return {elements,context};
@@ -247,4 +247,29 @@ test('promotion control shows prospective progress and preserves active weights'
  const other=await render(undefined,undefined,undefined,undefined,undefined,null,config,null,collecting);
  assert.match(other.elements['model-control'].textContent,/12 \/ 60/);
  assert.match(other.elements['model-control'].textContent,/rechazado/);
+});
+
+test('data quality distinguishes missing internal draws from pending publications',async()=>{
+ const quality={version:1,valid:false,total:3001,latestDate:'2026-10-15',fullyVerifiedDraws:320,errors:[],missingRecentDates:['2026-10-12'],pendingDates:['2026-10-17'],checkedAt:'2026-10-17'};
+ const {elements}=await render(undefined,undefined,undefined,undefined,undefined,null,activeConfig,null,null,quality);
+ assert.match(elements['data-quality'].textContent,/Entrenamiento detenido/);
+ assert.match(elements['data-quality'].textContent,/2026-10-12/);
+ assert.match(elements['data-quality'].textContent,/no determina si SELAE/);
+ assert.match(elements['data-quality'].textContent,/320 \/ 3001/);
+});
+test('decision history retains accepted and rejected outcomes',async()=>{
+ const control={version:1,decisions:[{epoch:1,decidedAfter:'2026-10-15',status:'rejected',reason:'Sin mejora',draws:60},{epoch:2,decidedAfter:'2026-10-17',status:'accepted',reason:'Mejora consistente',draws:60}]};
+ const {elements}=await render(undefined,undefined,undefined,undefined,undefined,null,activeConfig,null,control);
+ assert.match(elements['decision-history'].textContent,/Aceptado/);
+ assert.match(elements['decision-history'].textContent,/Rechazado/);
+ assert.match(elements['decision-history'].textContent,/Sin mejora/);
+});
+
+test('latest draw balance shows only the matching training adjustment',async()=>{
+ const config=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json')));
+ const training={lastUpdates:[{date:'2026-10-15',weightsBefore:[0,0,0,0],weightsAfter:[.1,0,0,0]}]};
+ const {elements}=await render({predictions:[entry]},{draws:[{...draw,date:'2026-10-15'}]},undefined,undefined,undefined,null,config,training);
+ assert.match(elements['learning-review'].textContent,/0.10000/);
+ assert.match(elements['learning-review'].textContent,/reproducción cronológica/);
+ assert.match(elements['learning-review'].textContent,/sujetos al control/);
 });
