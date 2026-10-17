@@ -5,7 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
@@ -73,6 +73,9 @@ class ModelTests(unittest.TestCase):
             work=Path(temp);(work/'data').mkdir()
             (work/'data/reto-estrategia-activa.json').write_bytes((ROOT/'data/reto-estrategia-activa.json').read_bytes())
             (work/'data/sorteos.json').write_text(json.dumps({'draws':history()}))
+            from control_modelo import update_control
+            initial,_=update_control(train(history(),'2026-10-17'),history(),'2026-10-17',datetime(2026,10,16,tzinfo=timezone.utc))
+            (work/'data/control-modelo.json').write_text(json.dumps(initial))
             registry=work/'data/reto-predictor.json'
             registry.write_text(json.dumps({'predictions':[],'revisions':[{'preserve':True}]}))
             cmd=[sys.executable,str(ROOT/'scripts/generar_reto.py')]
@@ -80,8 +83,8 @@ class ModelTests(unittest.TestCase):
             self.assertEqual(result.returncode,0,result.stderr)
             saved=registry.read_bytes()
             entry=json.loads(saved)['predictions'][0]
-            self.assertEqual(entry['strategyVersion'],3)
-            self.assertEqual(entry['algorithm'],'online-logistic-v1')
+            self.assertEqual(entry['strategyVersion'],4)
+            self.assertEqual(entry['algorithm'],'guarded-online-logistic-v1')
             self.assertEqual(json.loads(saved)['revisions'],[{'preserve':True}])
             result=subprocess.run(cmd,cwd=work,capture_output=True,text=True)
             self.assertEqual(result.returncode,0,result.stderr)

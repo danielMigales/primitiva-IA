@@ -268,7 +268,7 @@
     ],
     "reintegro": 9,
     "registered": false,
-    "note": "Propuesta del modelo; se conserva la predicción existente para este sorteo."
+    "note": "Propuesta del entrenamiento, sin autorización para sustituir al modelo activo."
   },
   "numberEvidence": [
     {
@@ -296,5 +296,46 @@
       "estimatedScore": 0.14491030607453445
     }
   ],
-  "refundScore": 0.11628511611595395
+  "refundScore": 0.11628511611595395,
+  "activeNext": {
+    "nums": [
+      6,
+      10,
+      14,
+      38,
+      39,
+      46
+    ],
+    "reintegro": 9,
+    "numberEvidence": [
+      {
+        "number": 46,
+        "estimatedScore": 0.18242341579729862
+      },
+      {
+        "number": 39,
+        "estimatedScore": 0.16300463026625664
+      },
+      {
+        "number": 6,
+        "estimatedScore": 0.15490117734824757
+      },
+      {
+        "number": 38,
+        "estimatedScore": 0.15268214112078166
+      },
+      {
+        "number": 14,
+        "estimatedScore": 0.14845771896843452
+      },
+      {
+        "number": 10,
+        "estimatedScore": 0.14491030607453445
+      }
+    ],
+    "refundScore": 0.11628511611595395,
+    "modelId": "9da70e6d8b40c392f30092749da0f3ff53f2e4508c254b010eb856bf1b745e3e",
+    "target": "2026-10-17",
+    "registered": false
+  }
 }

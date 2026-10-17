@@ -42,7 +42,7 @@ function weeklyEvidence(r,draws,n,gold=false){
 }
 function explain(r,draws,entries){
  const root=$('reasoning');root.replaceChildren();
- if(r.algorithm==='online-logistic-v1'){
+ if(['online-logistic-v1','guarded-online-logistic-v1'].includes(r.algorithm)){
   root.appendChild(p('Modelo entrenado hasta '+r.historyUntil+'. Los seis números tienen las mayores puntuaciones del modelo; el reintegro se estima con un modelo separado.'));
   for(const e of r.numberEvidence||[])if(r.nums.includes(e?.number)&&Number.isFinite(e.estimatedScore))root.appendChild(p('Número '+e.number+' · puntuación estimada '+(100*e.estimatedScore).toFixed(2)+' %.'));
   root.appendChild(p('Son estimaciones del modelo, sin ventaja demostrada. Identificador de entrenamiento: '+(r.modelId||'no disponible')+'.','muted'));return;
@@ -104,20 +104,20 @@ function renderLearning(entries,draws,active,proofs=[]){
  root.appendChild(p('Predicción registrada: '+record.nums.join(', ')+'. Resultado: '+actual.nums.join(', ')+'.'));
  root.appendChild(p(verificationFor(actual,proofs)+'.','verification-note'));
  const sameMotor=record.algorithm===active?.strategy?.algorithm;
- const adaptive=record.algorithm==='online-logistic-v1';
+ const adaptive=['online-logistic-v1','guarded-online-logistic-v1'].includes(record.algorithm);
  root.appendChild(p(adaptive?'Por qué se eligieron: el modelo estimó sus puntuaciones con pesos aprendidos únicamente de sorteos anteriores.':sameMotor?'Por qué se eligieron: el método priorizó frecuencias recientes en ventanas de 30, 90 y 365 días. Esa clasificación describe el pasado y no garantiza coincidencias en el siguiente sorteo.':'La predicción usó el método registrado '+(record.algorithm||'sin identificador')+'. No se conserva una explicación causal verificable de su fallo.'));
  if(hits===0)root.appendChild(p('Ninguno de los seis números elegidos coincidió. En un sorteo uniforme de 6 entre 49, la probabilidad de obtener 0 aciertos con una combinación fija es '+(100*choose(43,6)/choose(49,6)).toFixed(2)+' %. El fallo, por sí solo, no identifica una causa especial ni demuestra que otro método prediga mejor.'));
  else root.appendChild(p('Los aciertos observados se incorporan al seguimiento. Un único sorteo no demuestra una ventaja predictiva ni permite atribuir el resultado a una causa concreta.'));
  const sample=rows.filter(r=>r.record.strategyVersion===active?.version&&r.record.algorithm===active?.strategy?.algorithm);
  const minimum=Number.isInteger(active?.minimumSettledDraws)?active.minimumSettledDraws:30;
- root.appendChild(p(!adaptive&&active?.version===3?'Esta predicción pertenece a un motor anterior. Se conserva su resultado; el entrenamiento del nuevo modelo se muestra en su propio informe.':adaptive?'El resultado se incorpora al siguiente entrenamiento: el error entre estimación y resultado ajusta los pesos. El informe de entrenamiento muestra la última actualización disponible.':'Qué se ha aprendido: queda registrado este resultado para evaluar el método. No se ha demostrado una mejora predictiva ni se ha reentrenado el modelo a partir de este fallo. Se mantienen los pesos del método durante un mínimo de '+minimum+' sorteos evaluables de su versión.'));
+ root.appendChild(p(!adaptive&&[3,4].includes(active?.version)?'Esta predicción pertenece a un motor anterior. Se conserva su resultado; el entrenamiento del nuevo modelo se muestra en su propio informe.':record.algorithm==='guarded-online-logistic-v1'?'El resultado sirve para evaluar candidatos y entrenar nuevas propuestas. Los pesos del modelo activo solo cambian al aprobar la evaluación prospectiva.':adaptive?'El resultado se incorpora al siguiente entrenamiento: el error entre estimación y resultado ajusta los pesos. El informe de entrenamiento muestra la última actualización disponible.':'Qué se ha aprendido: queda registrado este resultado para evaluar el método. No se ha demostrado una mejora predictiva ni se ha reentrenado el modelo a partir de este fallo. Se mantienen los pesos del método durante un mínimo de '+minimum+' sorteos evaluables de su versión.'));
  root.appendChild(p('Seguimiento de la versión activa: '+sample.length+' / '+minimum+' sorteos con predicción y resultado. Los registros anteriores sin esa versión se conservan por separado.','muted'));
  const next=entries.filter(r=>r.target>actual.date&&!draws.some(d=>d.date===r.target)).sort((a,b)=>a.target.localeCompare(b.target))[0];
  if(next){
   root.appendChild(p('Siguiente predicción registrada: '+next.target+' · Histórico hasta '+next.historyUntil+'.'));
   const added=next.nums.filter(n=>!record.nums.includes(n)),removed=record.nums.filter(n=>!next.nums.includes(n));
   root.appendChild(p(added.length?'Cambio en la combinación: entran '+added.join(', ')+'; salen '+removed.join(', ')+'.':'La nueva clasificación conserva los mismos seis números.'));
-  root.appendChild(p(next.algorithm==='online-logistic-v1'?'La siguiente propuesta usa el modelo adaptativo. Sus aciertos se evaluarán por separado de las versiones anteriores.':'La nueva propuesta recalcula las frecuencias del histórico indicado con el mismo método; un cambio de números no demuestra que haya aprendido a anticipar el sorteo.','muted'));
+  root.appendChild(p(['online-logistic-v1','guarded-online-logistic-v1'].includes(next.algorithm)?'La siguiente propuesta usa el modelo adaptativo. Sus aciertos se evaluarán por separado de las versiones anteriores.':'La nueva propuesta recalcula las frecuencias del histórico indicado con el mismo método; un cambio de números no demuestra que haya aprendido a anticipar el sorteo.','muted'));
  }else root.appendChild(p('Siguiente predicción pendiente de registro. Se generará al actualizar el histórico; no se modificará la predicción ya evaluada.','incident-warning'));
 }
 function trackingResults(entries,draws){
@@ -130,12 +130,13 @@ function trackingResults(entries,draws){
  });
 }
 function strategyLabel(record){
- if(record.algorithm==='online-logistic-v1')return 'Modelo adaptativo · Versión '+record.strategyVersion;
+ if(record.algorithm==='guarded-online-logistic-v1')return 'Modelo con evaluación previa · Versión 4';
+ if(['online-logistic-v1','guarded-online-logistic-v1'].includes(record.algorithm))return 'Modelo adaptativo · Versión '+record.strategyVersion;
  const algorithm=typeof record.algorithm==='string'?record.algorithm:'sin identificador';
  const version=Number.isInteger(record.strategyVersion)?'versión '+record.strategyVersion:'registro anterior sin versión de estrategia';
  return algorithm+' / ventana '+(record.window??'no indicada')+' / '+version;
 }
-function validActiveStrategy(config){return config?.status==='active'&&Number.isInteger(config.version)&&((config.version===2&&config.strategy?.type==='recency-z'&&config.strategy.window===365)||(config.version===3&&config.strategy?.type==='online-logistic'&&config.strategy.algorithm==='online-logistic-v1'))}
+function validActiveStrategy(config){return config?.status==='active'&&Number.isInteger(config.version)&&((config.version===2&&config.strategy?.type==='recency-z'&&config.strategy.window===365)||(config.version===3&&config.strategy?.type==='online-logistic'&&config.strategy.algorithm==='online-logistic-v1')||(config.version===4&&config.strategy?.type==='guarded-online-logistic'&&config.strategy.algorithm==='guarded-online-logistic-v1'))}
 function verificationFor(draw,proofs){
  const proof=proofs.find(r=>r?.date===draw.date&&r.source==='SELAE'&&/^https:\/\/www\.loteriasyapuestas\.es\//.test(r.url||'')&&typeof r.checkedAt==='string'&&Number.isFinite(Date.parse(r.checkedAt))&&validNumbers(r.nums));
  if(!proof)return 'Pendiente de cotejo SELAE';
@@ -197,7 +198,8 @@ function renderTracking(entries,draws,historyLoaded,activeStrategy,proofs=[]){
   const reintegros=resolved.filter(r=>r.reintegro!==null);
   const card=document.createElement('div');card.className='tracking-group';
   card.appendChild(p(label,'tracking-label'));
-  card.appendChild(p('Seguimiento: '+resolved.length+' / 30 sorteos con resultado'+(resolved.length>=30?' · Primer hito alcanzado; no demuestra ventaja.':'.')));
+  const milestone=label==='Modelo con evaluación previa · Versión 4'?60:30;
+  card.appendChild(p('Seguimiento: '+resolved.length+' / '+milestone+' sorteos con resultado'+(resolved.length>=milestone?' · Primer hito alcanzado; no demuestra ventaja.':'.')));
   if(resolved.length){
    card.appendChild(p('Aciertos principales: '+hits+' · Sorteos con 3 o más: '+three+'.'));
    card.appendChild(p('Referencia al azar para '+resolved.length+' sorteos: '+(resolved.length*36/49).toFixed(2)+' aciertos principales y '+(resolved.length*chanceThree).toFixed(2)+' sorteos con 3 o más, en promedio.','muted'));
@@ -223,9 +225,29 @@ function renderTracking(entries,draws,historyLoaded,activeStrategy,proofs=[]){
  root.appendChild(p('Se incluyen también los fallos. Cada algoritmo se evalúa por separado; las revisiones conservadas no cuentan como apuestas adicionales. La referencia al azar es matemática para sorteos uniformes de 6 entre 49 y reintegro de 0 a 9; no son apuestas generadas después del resultado. Las fechas de publicación se comprueban en los commits y los resultados pueden requerir cotejo oficial.','notice'));
 }
 
+
+function renderControl(control,active){
+ const root=$('model-control');if(!root)return;root.replaceChildren();
+ if(active?.version!==4)return;
+ if(control?.version!==1||!validDate(control.champion?.historyUntil)||!control.assessment||!Number.isInteger(control.assessment.draws)||!Number.isInteger(control.policy?.minimumDraws)){
+  root.appendChild(p('No se puede comprobar el control de mejoras. Se conserva el modelo activo.'));return;
+ }
+ root.appendChild(p('Pesos activos entrenados hasta '+control.champion.historyUntil+'. Se conservan hasta que otro modelo apruebe las pruebas.'));
+ const a=control.assessment;
+ root.appendChild(p(a.status==='waiting'?'Esperando un nuevo resultado para preparar un candidato distinto del modelo activo.':'Candidato en evaluación: '+a.draws+' / '+control.policy.minimumDraws+' sorteos posteriores al entrenamiento.'));
+ root.appendChild(p('Para aceptar un cambio: menor error de estimación de forma consistente frente al modelo activo y al azar, tanto en números como en reintegro, y sin reducir los aciertos. Se realiza una sola decisión por candidato.'));
+ const last=Array.isArray(control.decisions)?control.decisions.at(-1):null;
+ root.appendChild(p(last?'Última decisión: '+(last.status==='accepted'?'cambio aceptado. ':'cambio rechazado. ')+(last.reason||''):'Todavía no hay cambios aceptados: faltan comparaciones prospectivas.'));
+ if(last?.comparisons)for(const [key,label] of [['main','Números principales'],['refund','Reintegro']]){
+  const h=last.comparisons[key+'-hits'];
+  if(h&&Number.isFinite(h.expectedUniform))root.appendChild(p(label+': candidato '+h.challenger+' aciertos · Activo '+h.champion+' · Referencia al azar '+h.expectedUniform.toFixed(2)+'.'));
+ }
+ root.appendChild(p('Las simulaciones históricas no autorizan cambios. Las comparaciones se registran antes del sorteo y se guardan para poder revisarlas.'));
+}
+
 function renderModel(model,active){
  const root=$('model-learning');if(!root)return;root.replaceChildren();
- if(active?.version!==3)return;
+ if(![3,4].includes(active?.version))return;
  const metric=model?.evaluation;
  if(model?.version!==3||model.algorithm!=='online-logistic-v1'||!validDate(model.historyUntil)||!Number.isInteger(model.trainedDraws)||!metric||!Number.isFinite(metric.mainBrier)||!Number.isFinite(metric.uniformBrier)){
   root.appendChild(p('El informe de entrenamiento no está disponible. No se puede comprobar el último ajuste.'));return;
@@ -241,8 +263,9 @@ function renderModel(model,active){
  root.appendChild(p('Aciertos principales: modelo '+metric.mainHits+' · Recencia fija '+metric.recencyHits+' · Referencia al azar '+Number(metric.expectedRandomHits).toFixed(2)+'.'));
  root.appendChild(p('Error de estimación (Brier; menor es mejor): modelo '+metric.mainBrier.toFixed(5)+' · Probabilidad uniforme '+metric.uniformBrier.toFixed(5)+'.'));
  if(metric.refundDraws)root.appendChild(p('Reintegro: '+metric.refundHits+' aciertos en '+metric.refundDraws+' sorteos · Referencia al azar '+Number(metric.expectedRandomRefundHits).toFixed(2)+'.'));
- if(model.next?.registered===false)root.appendChild(p('La predicción ya registrada para '+model.next.target+' se conserva. El nuevo motor se aplicará a las siguientes predicciones.'));
- root.appendChild(p('El modelo aprende parámetros; esta simulación histórica no demuestra que prediga mejor. La comprobación real comienza con las nuevas predicciones de la versión 3.','notice'));
+ if(active?.version===4)root.appendChild(p('Estos pesos son del candidato entrenado. La combinación designada usa los pesos del modelo activo, que solo cambian al aprobar la evaluación prospectiva.'));
+ if(active?.version===3&&model.next?.registered===false)root.appendChild(p('La predicción ya registrada para '+model.next.target+' se conserva. El nuevo motor se aplicará a las siguientes predicciones.'));
+ root.appendChild(p('El modelo aprende parámetros; esta simulación histórica no demuestra que prediga mejor. Las mejoras se comprueban con predicciones registradas antes de cada sorteo.','notice'));
 }
 
 async function fetchJson(path){const r=await fetch(path+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
@@ -253,12 +276,13 @@ async function load(){
 }
 async function loadContent(){
  if($('sync-status'))$('sync-status').textContent='Consultando los últimos resultados en SELAE…';
- const [pred,history,active,verification,update,model]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json'),fetchJson('./data/reto-estrategia-activa.json'),fetchJson('./data/verificacion-sorteos.json'),fetchJson('./data/estado-actualizacion.json'),fetchJson('./data/modelo-adaptativo.json')]);
+ const [pred,history,active,verification,update,model,control]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json'),fetchJson('./data/reto-estrategia-activa.json'),fetchJson('./data/verificacion-sorteos.json'),fetchJson('./data/estado-actualizacion.json'),fetchJson('./data/modelo-adaptativo.json'),fetchJson('./data/control-modelo.json')]);
  let proofs=verification.status==='fulfilled'&&Array.isArray(verification.value?.draws)?verification.value.draws:[];
  const report=update.status==='fulfilled'?update.value:null;
  const activeStrategy=active.status==='fulfilled'?active.value:null;
  renderModel(model.status==='fulfilled'?model.value:null,activeStrategy);
- $('active-strategy').textContent=validActiveStrategy(activeStrategy)?(activeStrategy.version===3?'Motor activo: modelo que ajusta sus pesos tras cada sorteo · Versión 3. Las predicciones anteriores conservan su motor original.':'Motor activo: recencia 30/90/365 días · Versión '+activeStrategy.version+'. Su evaluación empieza con las nuevas predicciones de esta versión.'):'No se ha podido comprobar la estrategia activa.';
+ renderControl(control.status==='fulfilled'?control.value:null,activeStrategy);
+ $('active-strategy').textContent=validActiveStrategy(activeStrategy)?(activeStrategy.version===4?'Motor con evaluación previa · Versión 4. Los pesos activos se mantienen hasta que un candidato supere las pruebas.':activeStrategy.version===3?'Motor activo: modelo que ajusta sus pesos tras cada sorteo · Versión 3. Las predicciones anteriores conservan su motor original.':'Motor activo: recencia 30/90/365 días · Versión '+activeStrategy.version+'. Su evaluación empieza con las nuevas predicciones de esta versión.'):'No se ha podido comprobar la estrategia activa.';
  let draws=[];
  const historyLoaded=history.status==='fulfilled'&&Array.isArray(history.value?.draws);
  if(historyLoaded){

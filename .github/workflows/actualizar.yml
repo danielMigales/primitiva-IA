@@ -42,7 +42,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/modelo-adaptativo.json data/sorteos.json data/verificacion-sorteos.json data/estado-actualizacion.json data/reto-predictor.json
+          git add data/control-modelo.json data/modelo-adaptativo.json data/sorteos.json data/verificacion-sorteos.json data/estado-actualizacion.json data/reto-predictor.json
           if ! git diff --cached --quiet; then
             git commit -m 'Actualizar sorteos'
             git pull --rebase origin main

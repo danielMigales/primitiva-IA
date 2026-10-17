@@ -19,11 +19,11 @@ class Element {
 const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10-12',reintegro:8};
 const draw = {date:'2026-10-12',nums:[2,5,26,40,42,45],reintegro:9};
 const activeConfig=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-v2.json'),'utf8'));
-async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null,config=activeConfig,model=null) {
- const elements=Object.fromEntries(['model-learning','learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
+async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null,config=activeConfig,model=null,control=null) {
+ const elements=Object.fromEntries(['model-control','model-learning','learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
  class Clock extends Date { constructor(...args){super(...(args.length?args:[today]));} static now(){return Date.parse(today);} }
  const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,PrimitivaLive:live,PRIMITIVA_RESULTS_ENDPOINT:'https://results.example/api/resultados',
-  fetch:async url=>{const data=url.includes('modelo-adaptativo')?model:url.includes('estrategia-activa')?config:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
+  fetch:async url=>{const data=url.includes('control-modelo')?control:url.includes('modelo-adaptativo')?model:url.includes('estrategia-activa')?config:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
  vm.runInContext(source.replace('load().catch(', 'globalThis.loaded=load().catch('),context);
  await context.loaded;
  return {elements,context};
@@ -223,7 +223,7 @@ test('adaptive training report distinguishes learned weights and historical eval
  const config=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json')));
  const model=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/modelo-adaptativo.json')));
  const {elements}=await render(undefined,undefined,undefined,undefined,undefined,null,config,model);
- assert.match(elements['active-strategy'].textContent,/ajusta sus pesos/);
+ assert.match(elements['active-strategy'].textContent,/evaluación previa/);
  assert.match(elements['model-learning'].textContent,/→/);
  assert.match(elements['model-learning'].textContent,/exploratoria/);
  assert.match(elements['model-learning'].textContent,/no demuestra/);
@@ -235,4 +235,16 @@ test('adaptive prediction explains model scores and safely handles missing repor
  const {elements}=await render({predictions:[adaptive]},undefined,undefined,undefined,undefined,null,config,{});
  assert.match(elements.reasoning.textContent,/13.00 %/);
  assert.match(elements['model-learning'].textContent,/no está disponible/);
+});
+
+test('promotion control shows prospective progress and preserves active weights',async()=>{
+ const config=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json')));
+ const control=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/control-modelo.json')));
+ const {elements}=await render(undefined,undefined,undefined,undefined,undefined,null,config,null,control);
+ assert.match(elements['model-control'].textContent,/Esperando un nuevo resultado/);
+ assert.match(elements['model-control'].textContent,/no autorizan cambios/);
+ const collecting={...control,assessment:{status:'collecting',draws:12},decisions:[{status:'rejected',reason:'No supera los controles.'}]};
+ const other=await render(undefined,undefined,undefined,undefined,undefined,null,config,null,collecting);
+ assert.match(other.elements['model-control'].textContent,/12 \/ 60/);
+ assert.match(other.elements['model-control'].textContent,/rechazado/);
 });

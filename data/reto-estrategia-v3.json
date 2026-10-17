@@ -1,0 +1,33 @@
+{
+  "version": 3,
+  "status": "active",
+  "activatedAt": "2026-10-17",
+  "strategy": {
+    "type": "online-logistic",
+    "window": 99999,
+    "algorithm": "online-logistic-v1",
+    "reintegroAlgorithm": "online-logistic-v1",
+    "parameters": {
+      "learningRate": 0.08,
+      "l2": 0.002,
+      "warmup": 120,
+      "windows": [
+        30,
+        90,
+        365
+      ],
+      "features": [
+        "z30",
+        "z90",
+        "z365",
+        "previous"
+      ]
+    }
+  },
+  "objective": "maximize-main-and-reintegro-hits",
+  "evaluation": "prospective-only; historical replay exploratory",
+  "minimumSettledDraws": 30,
+  "previousStrategyFile": "data/reto-estrategia-v2.json",
+  "rule": "Pesos aprendidos después de cada sorteo; hiperparámetros fijos. Preservar predicciones previas. Evaluar versión 3 por separado.",
+  "historicalDataVerifiedOfficially": false
+}

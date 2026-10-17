@@ -1,12 +1,12 @@
 {
-  "version": 3,
+  "version": 4,
   "status": "active",
   "activatedAt": "2026-10-17",
   "strategy": {
-    "type": "online-logistic",
+    "type": "guarded-online-logistic",
     "window": 99999,
-    "algorithm": "online-logistic-v1",
-    "reintegroAlgorithm": "online-logistic-v1",
+    "algorithm": "guarded-online-logistic-v1",
+    "reintegroAlgorithm": "guarded-online-logistic-v1",
     "parameters": {
       "learningRate": 0.08,
       "l2": 0.002,
@@ -26,8 +26,15 @@
   },
   "objective": "maximize-main-and-reintegro-hits",
   "evaluation": "prospective-only; historical replay exploratory",
-  "minimumSettledDraws": 30,
-  "previousStrategyFile": "data/reto-estrategia-v2.json",
-  "rule": "Pesos aprendidos después de cada sorteo; hiperparámetros fijos. Preservar predicciones previas. Evaluar versión 3 por separado.",
-  "historicalDataVerifiedOfficially": false
+  "minimumSettledDraws": 60,
+  "previousStrategyFile": "data/reto-estrategia-v3.json",
+  "rule": "Entrenar aspirantes; mantener pesos activos congelados hasta superar comparación prospectiva de 60 sorteos. Sin sustituciones retrospectivas.",
+  "historicalDataVerifiedOfficially": false,
+  "promotionPolicy": {
+    "minimumDraws": 60,
+    "familyAlpha": 0.05,
+    "metric": "mean-brier-and-paired-one-sided-sign-test",
+    "multipleTesting": "alpha/(4*epoch*(epoch+1)); one decision per epoch",
+    "requireHitsNotWorse": true
+  }
 }
