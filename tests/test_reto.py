@@ -21,7 +21,7 @@ class RetoTests(unittest.TestCase):
         self.work = Path(self.temp.name)
         (self.work / "data").mkdir()
         (self.work / "data/reto-estrategia-activa.json").write_bytes(
-            (ROOT / "data/reto-estrategia-activa.json").read_bytes())
+            (ROOT / "data/reto-estrategia-v2.json").read_bytes())
         self.existing = {
             "version": 1,
             "predictions": [
@@ -98,9 +98,9 @@ class RetoTests(unittest.TestCase):
             with patch("datetime.datetime", Clock), patch("validar_reto.datetime", Clock):
                 if reject:
                     with patch("validar_reto.validate_prediction", side_effect=ValueError("blocked")):
-                        runpy.run_path(str(ROOT / "scripts/generar_reto.py"), run_name="__main__")
+                        runpy.run_path(str(ROOT / "scripts/generar_reto_v2.py"), run_name="__main__")
                 else:
-                    runpy.run_path(str(ROOT / "scripts/generar_reto.py"), run_name="__main__")
+                    runpy.run_path(str(ROOT / "scripts/generar_reto_v2.py"), run_name="__main__")
         finally:
             os.chdir(previous)
 

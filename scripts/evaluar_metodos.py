@@ -51,11 +51,11 @@ def knn_prediction(history, neighbors=20, training_pairs=500):
 
 def load_current_recency():
     # Compile only the pure ranking function; importing the generator itself
-    # would register a prediction. This uses the exact current implementation.
-    source = (ROOT / "scripts/generar_reto.py").read_text(encoding="utf-8")
+    # would register a prediction. This uses the exact archived version 2 implementation.
+    source = (ROOT / "scripts/generar_reto_v2.py").read_text(encoding="utf-8")
     parsed = ast.parse(source)
     node = next(n for n in parsed.body if isinstance(n, ast.FunctionDef) and n.name == "rank_numbers")
-    active = json.loads((ROOT / "data/reto-estrategia-activa.json").read_text())
+    active = json.loads((ROOT / "data/reto-estrategia-v2.json").read_text())
     if active["version"] != 2:
         raise ValueError("This experiment compares the approved version 2")
     weights = tuple((w["days"], w["weight"]) for w in active["strategy"]["windows"])
@@ -151,7 +151,7 @@ def main():
     trace = result.pop("trace")
     TRACE.write_text("".join(json.dumps(row, separators=(",", ":"))+"\n" for row in trace), encoding="utf-8")
     result["traceFile"] = "data/evaluacion-metodos-detalle.jsonl"
-    result["activeStrategySha256"] = hashlib.sha256((ROOT / "data/reto-estrategia-activa.json").read_bytes()).hexdigest()
+    result["activeStrategySha256"] = hashlib.sha256((ROOT / "data/reto-estrategia-v2.json").read_bytes()).hexdigest()
     DEST.write_text(json.dumps(result, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     print(json.dumps({k:v for k,v in result.items() if k not in ("trace", "limitations", "config")}, ensure_ascii=False, indent=2))
 

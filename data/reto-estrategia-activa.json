@@ -1,26 +1,33 @@
 {
-  "version": 2,
+  "version": 3,
   "status": "active",
-  "activatedAt": "2026-10-13T22:15:59+02:00",
-  "previousStrategyFile": "data/reto-estrategia-congelada.json",
+  "activatedAt": "2026-10-17",
   "strategy": {
-    "type": "recency-z",
-    "window": 365,
-    "windows": [
-      {"days": 30, "weight": 0.45},
-      {"days": 90, "weight": 0.35},
-      {"days": 365, "weight": 0.20}
-    ],
-    "zClip": 3,
-    "scorePrecision": 5,
-    "tieBreak": "number-ascending",
-    "algorithm": "unified-recency-z-30-90-365-v1",
-    "reintegroAlgorithm": "recency-z-30-90-365-v1"
+    "type": "online-logistic",
+    "window": 99999,
+    "algorithm": "online-logistic-v1",
+    "reintegroAlgorithm": "online-logistic-v1",
+    "parameters": {
+      "learningRate": 0.08,
+      "l2": 0.002,
+      "warmup": 120,
+      "windows": [
+        30,
+        90,
+        365
+      ],
+      "features": [
+        "z30",
+        "z90",
+        "z365",
+        "previous"
+      ]
+    }
   },
   "objective": "maximize-main-and-reintegro-hits",
-  "evaluation": "prospective-only",
+  "evaluation": "prospective-only; historical replay exploratory",
   "minimumSettledDraws": 30,
-  "selectionReason": "User explicitly chose to retain the current recency motor as a new strategy version; no claim of predictive advantage.",
-  "rule": "Keep this method unchanged for at least 30 prospectively registered and settled draws of version 2; any later method change requires a new version. Earlier predictions are preserved and excluded from this version's sample.",
+  "previousStrategyFile": "data/reto-estrategia-v2.json",
+  "rule": "Pesos aprendidos después de cada sorteo; hiperparámetros fijos. Preservar predicciones previas. Evaluar versión 3 por separado.",
   "historicalDataVerifiedOfficially": false
 }

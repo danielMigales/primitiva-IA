@@ -18,12 +18,12 @@ class Element {
 }
 const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10-12',reintegro:8};
 const draw = {date:'2026-10-12',nums:[2,5,26,40,42,45],reintegro:9};
-const activeConfig=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json'),'utf8'));
-async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null) {
- const elements=Object.fromEntries(['learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
+const activeConfig=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-v2.json'),'utf8'));
+async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null,config=activeConfig,model=null) {
+ const elements=Object.fromEntries(['model-learning','learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
  class Clock extends Date { constructor(...args){super(...(args.length?args:[today]));} static now(){return Date.parse(today);} }
  const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,PrimitivaLive:live,PRIMITIVA_RESULTS_ENDPOINT:'https://results.example/api/resultados',
-  fetch:async url=>{const data=url.includes('estrategia-activa')?activeConfig:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
+  fetch:async url=>{const data=url.includes('modelo-adaptativo')?model:url.includes('estrategia-activa')?config:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
  vm.runInContext(source.replace('load().catch(', 'globalThis.loaded=load().catch('),context);
  await context.loaded;
  return {elements,context};
@@ -217,4 +217,22 @@ test('unversioned results are reviewed without being added to the active sample'
  assert.match(elements['learning-review'].textContent,/0 \/ 30/);
  assert.doesNotMatch(elements['learning-review'].textContent,/43.60/);
  assert.match(elements['learning-review'].textContent,/Siguiente predicción pendiente/);
+});
+
+test('adaptive training report distinguishes learned weights and historical evaluation',async()=>{
+ const config=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json')));
+ const model=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/modelo-adaptativo.json')));
+ const {elements}=await render(undefined,undefined,undefined,undefined,undefined,null,config,model);
+ assert.match(elements['active-strategy'].textContent,/ajusta sus pesos/);
+ assert.match(elements['model-learning'].textContent,/→/);
+ assert.match(elements['model-learning'].textContent,/exploratoria/);
+ assert.match(elements['model-learning'].textContent,/no demuestra/);
+ assert.doesNotMatch(elements['prediction-status'].textContent,/No se ha podido cargar/);
+});
+test('adaptive prediction explains model scores and safely handles missing report',async()=>{
+ const config=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json')));
+ const adaptive={...entry,algorithm:'online-logistic-v1',strategyVersion:3,numberEvidence:[{number:4,estimatedScore:.13}]};
+ const {elements}=await render({predictions:[adaptive]},undefined,undefined,undefined,undefined,null,config,{});
+ assert.match(elements.reasoning.textContent,/13.00 %/);
+ assert.match(elements['model-learning'].textContent,/no está disponible/);
 });
