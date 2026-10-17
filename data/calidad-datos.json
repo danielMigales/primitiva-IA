@@ -1,16 +1,14 @@
 {
   "version": 1,
-  "checkedAt": "2026-10-17T22:06:56.897015+02:00",
+  "checkedAt": "2026-10-17T22:25:19.533807+02:00",
   "valid": true,
-  "total": 3001,
-  "latestDate": "2026-10-15",
+  "total": 3002,
+  "latestDate": "2026-10-17",
   "errors": [],
   "missingRecentDates": [],
-  "pendingDates": [
-    "2026-10-17"
-  ],
+  "pendingDates": [],
   "refundMissing": 0,
-  "fullyVerifiedDraws": 320,
+  "fullyVerifiedDraws": 321,
   "calendarScope": "Huecos internos: últimos 90 días del histórico, calendario lunes/jueves/sábado.",
   "note": "Validez estructural no demuestra veracidad ni auditoría oficial completa. Los resultados pendientes se distinguen de huecos internos."
 }
