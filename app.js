@@ -94,6 +94,48 @@ function explain(r,draws,entries){
  root.appendChild(d);
 }
 function choose(n,k){let result=1;for(let i=1;i<=k;i++)result=result*(n-i+1)/i;return result}
+function renderCompact(entries,draws,historyLoaded,predLoaded,proofs,analysis,discovery,learning){
+ const latestRoot=$('latest-summary'),findings=$('findings-summary'),nextRoot=$('next-summary');
+ if(!latestRoot||!findings||!nextRoot)return;
+ latestRoot.replaceChildren();findings.replaceChildren();nextRoot.replaceChildren();
+ const actual=draws[0];
+ if(!historyLoaded)latestRoot.appendChild(p('No se ha podido cargar el último resultado.'));
+ else if(!actual)latestRoot.appendChild(p('No hay resultados disponibles.'));
+ else{
+  latestRoot.appendChild(p('Sorteo del '+actual.date));latestRoot.appendChild(combination(actual.nums,actual.reintegro));
+  const prediction=entries.find(r=>r.target===actual.date);
+  if(!predLoaded)latestRoot.appendChild(p('No se ha podido comprobar la predicción anterior.'));
+  else if(!prediction)latestRoot.appendChild(p('Sin predicción registrada para este sorteo.'));
+  else{
+   const hits=prediction.nums.filter(n=>actual.nums.includes(n));
+   latestRoot.appendChild(p('Predicción anterior: '+hits.length+' de 6 aciertos'+(validReintegro(prediction.reintegro)&&validReintegro(actual.reintegro)?' · Reintegro '+(prediction.reintegro===actual.reintegro?'acertado':'no acertado'):'')+'.'));
+   latestRoot.appendChild(p('Números acertados: '+(hits.length?hits.join(', '):'ninguno')+'.','muted'));
+  }
+  latestRoot.appendChild(p(verificationFor(actual,proofs)+'.','verification-note'));
+ }
+ if(analysis&&analysis.status!=='analyzed')findings.appendChild(p(analysis.conclusion||'Esperando el último resultado antes de continuar el análisis.'));
+ else if(!historyLoaded||!actual)findings.appendChild(p('No se puede comprobar si el análisis está actualizado.'));
+ else{
+  const current=discovery?.status==='searched'&&discovery.historyUntil===actual.date;
+  if(current&&Number.isInteger(discovery.totalDraws)&&Number.isInteger(discovery.search?.survivedFinalAudit)){
+   findings.appendChild(p(discovery.totalDraws.toLocaleString('es-ES')+' sorteos analizados · '+discovery.search.survivedFinalAudit+' hipótesis superan los contrastes.'));
+   findings.appendChild(p(discovery.search.survivedFinalAudit?'Las hipótesis encontradas aún necesitan comprobarse con sorteos futuros.':'No se ha encontrado una regla con ventaja predictiva demostrada.'));
+  }else findings.appendChild(p('El informe de búsqueda no está disponible o está pendiente de actualización.'));
+  const histogram=learning?.simulation?.hitHistogram;
+  if(learning?.historyUntil===actual.date&&Number.isInteger(learning.simulation.draws)&&Array.isArray(histogram)&&histogram.length===7&&histogram.every(n=>Number.isInteger(n)&&n>=0)){
+   findings.appendChild(p('Modelo de patrones: '+learning.simulation.draws.toLocaleString('es-ES')+' ensayos históricos.'));
+   findings.appendChild(p([3,4,5,6].map(hits=>hits+' aciertos: '+histogram[hits]+(histogram[hits]===1?' ensayo':' ensayos')).join(' · ')+'.'));
+   findings.appendChild(p('Estos aciertos aislados no han demostrado una mejora sostenida.','muted'));
+  }
+ }
+ if(!predLoaded){nextRoot.appendChild(p('No se ha podido cargar la próxima predicción.'));return;}
+ const next=entries.filter(r=>r.target>=madridToday()&&!draws.some(d=>d.date===r.target)).sort((a,b)=>a.target.localeCompare(b.target))[0];
+ if(!next){nextRoot.appendChild(p('Próxima predicción pendiente de registro.'));return;}
+ nextRoot.appendChild(p('Registrada para '+next.target));nextRoot.appendChild(combination(next.nums,next.reintegro));
+ nextRoot.appendChild(p('Histórico utilizado hasta '+(next.historyUntil||'fecha no indicada')+'.','muted'));
+ if(actual&&next.historyUntil&&next.historyUntil<actual.date)nextRoot.appendChild(p('Se conserva tal como se registró, antes del último resultado.','muted'));
+}
+
 function renderLearning(entries,draws,active,proofs=[],training=null){
  const root=$('learning-review');if(!root)return;root.replaceChildren();
  const rows=trackingResults(entries,draws).filter(r=>r.actual).sort((a,b)=>b.record.target.localeCompare(a.record.target));
@@ -494,8 +536,10 @@ async function loadContent(){
   $('draws-status').textContent='No se ha podido cargar el histórico actualizado.';
   if($('sync-status'))$('sync-status').textContent='No se ha podido cargar el histórico publicado. Vuelve a intentarlo.';
  }
- if(pred.status!=='fulfilled'||!Array.isArray(pred.value?.predictions)){renderIncidents([],draws,historyLoaded,false,report); $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';$('tracking').replaceChildren(p('No se pudo cargar el registro de predicciones.'));return}
- const entries=pred.value.predictions.filter(r=>r&&validDate(r.target)&&validNumbers(r.nums)).sort((a,b)=>b.target.localeCompare(a.target));
+ const predLoaded=pred.status==='fulfilled'&&Array.isArray(pred.value?.predictions);
+ const entries=predLoaded?pred.value.predictions.filter(r=>r&&validDate(r.target)&&validNumbers(r.nums)).sort((a,b)=>b.target.localeCompare(a.target)):[];
+ renderCompact(entries,draws,historyLoaded,predLoaded,proofs,patterns.status==='fulfilled'?patterns.value:null,discovery.status==='fulfilled'?discovery.value:null,patternLearning.status==='fulfilled'?patternLearning.value:null);
+ if(!predLoaded){renderIncidents([],draws,historyLoaded,false,report); $('prediction-status').textContent='No se pudo cargar el registro de predicciones.';$('tracking').replaceChildren(p('No se pudo cargar el registro de predicciones.'));return}
  renderLearning(entries,draws,activeStrategy,proofs,model.status==='fulfilled'?model.value:null);
  renderIncidents(entries,draws,historyLoaded,true,report);
  renderTracking(entries,draws,historyLoaded,activeStrategy,proofs);
@@ -513,7 +557,10 @@ async function loadContent(){
  }
  explain(latest,draws,entries);
 }
-load().catch(()=>{$('prediction-status').textContent='No se ha podido cargar la aplicación. Vuelve a intentarlo.'});
+load().catch(()=>{
+ $('prediction-status').textContent='No se ha podido cargar la aplicación. Vuelve a intentarlo.';
+ for(const id of ['latest-summary','findings-summary','next-summary'])if($(id))$(id).textContent='No se ha podido cargar la aplicación. Vuelve a intentarlo.';
+});
 
 
 if(typeof window!=='undefined'){

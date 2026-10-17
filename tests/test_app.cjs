@@ -20,7 +20,7 @@ const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10
 const draw = {date:'2026-10-12',nums:[2,5,26,40,42,45],reintegro:9};
 const activeConfig=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-v2.json'),'utf8'));
 async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null,config=activeConfig,model=null,control=null,quality=null,patterns=null,patternLearning=null,discovery=null) {
- const elements=Object.fromEntries(['pattern-learning','pattern-analysis','decision-history','data-quality','model-control','model-learning','learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
+ const elements=Object.fromEntries(['latest-summary','findings-summary','next-summary','pattern-learning','pattern-analysis','decision-history','data-quality','model-control','model-learning','learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
  class Clock extends Date { constructor(...args){super(...(args.length?args:[today]));} static now(){return Date.parse(today);} }
  const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,PrimitivaLive:live,PRIMITIVA_RESULTS_ENDPOINT:'https://results.example/api/resultados',
   fetch:async url=>{const data=url.includes('descubrimiento-hipotesis')?discovery:url.includes('aprendizaje-patrones')?patternLearning:url.includes('analisis-patrones')?patterns:url.includes('calidad-datos')?quality:url.includes('control-modelo')?control:url.includes('modelo-adaptativo')?model:url.includes('estrategia-activa')?config:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
@@ -359,4 +359,31 @@ test('a pending result does not display a stale discovery as current',async()=>{
  const {elements}=await render(...Array(10).fill(undefined),patterns,undefined,discovery);
  assert.match(elements['pattern-analysis'].textContent,/Falta incorporar/);
  assert.doesNotMatch(elements['pattern-analysis'].textContent,/Búsqueda automática/);
+});
+
+test('compact screen separates real hits from historical three- and four-hit simulations',async()=>{
+ const real={date:'2026-10-17',nums:[8,9,12,14,29,45],reintegro:4};
+ const registered={target:real.date,nums:[6,10,20,22,40,45],reintegro:4,historyUntil:'2026-10-15'};
+ const next={target:'2026-10-19',nums:[6,10,14,38,39,46],reintegro:0,historyUntil:'2026-10-15'};
+ const learning={historyUntil:real.date,simulation:{draws:2972,hitHistogram:[1307,1232,368,64,1,0,0]}};
+ const discovery={status:'searched',historyUntil:real.date,totalDraws:3002,search:{survivedFinalAudit:0}};
+ const {elements}=await render({predictions:[next,registered]},{draws:[real]},'2026-10-17T21:28:00Z',undefined,undefined,undefined,undefined,undefined,undefined,undefined,null,learning,discovery);
+ assert.match(elements['latest-summary'].textContent,/1 de 6 aciertos · Reintegro acertado/);
+ assert.match(elements['latest-summary'].textContent,/Números acertados: 45/);
+ assert.match(elements['findings-summary'].textContent,/3 aciertos: 64 ensayos · 4 aciertos: 1 ensayo/);
+ assert.match(elements['findings-summary'].textContent,/No se ha encontrado una regla/);
+ assert.match(elements['next-summary'].textContent,/2026-10-19/);
+ assert.match(elements['next-summary'].textContent,/Se conserva tal como se registró/);
+ assert.deepEqual(next.nums,[6,10,14,38,39,46]);
+});
+
+test('compact screen does not invent zero hits or reuse stale learning during an official wait',async()=>{
+ const waiting={status:'waiting-result',conclusion:'Se espera el último resultado antes de analizar.'};
+ const learning={historyUntil:draw.date,simulation:{draws:2972,hitHistogram:[1307,1232,368,64,1,0,0]}};
+ const {elements}=await render(null,new Error('offline'),undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,waiting,learning);
+ assert.match(elements['latest-summary'].textContent,/No se ha podido cargar/);
+ assert.match(elements['findings-summary'].textContent,/Se espera el último resultado/);
+ assert.doesNotMatch(elements['findings-summary'].textContent,/64 ensayos/);
+ assert.match(elements['next-summary'].textContent,/No se ha podido cargar/);
+ assert.doesNotMatch(elements['latest-summary'].textContent,/0 de 6/);
 });
