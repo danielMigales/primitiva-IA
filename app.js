@@ -402,5 +402,4 @@ load().catch(()=>{$('prediction-status').textContent='No se ha podido cargar la 
 if(typeof window!=='undefined'){
  window.addEventListener('pageshow',event=>{if(event.persisted)load().catch(()=>{})});
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load().catch(()=>{})});
- $('refresh-results')?.addEventListener('click',()=>load().catch(()=>{}));
 }

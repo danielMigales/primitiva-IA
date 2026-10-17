@@ -212,7 +212,7 @@ test('a due draw missing from central data is shown as not incorporated',async()
 test('HTML no longer loads the retired direct-query client',()=>{
  const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
  assert.doesNotMatch(html,/<script[^>]+(?:live-results|results-config)/);
- assert.match(html,/Actualizar resultados publicados/);
+ assert.doesNotMatch(html,/refresh-results/);
 });
 
 test('zero-hit review remains visible when the next prediction is displayed',async()=>{
