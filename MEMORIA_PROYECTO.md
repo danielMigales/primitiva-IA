@@ -293,3 +293,7 @@ La vista distingue los aciertos reales del último sorteo de los históricos sim
 
 ## 32. Comparación visual y últimos cinco sorteos (2026-10-17)
 Último resultado muestra primero la combinación real y debajo la combinación registrada para esa misma fecha. Se reutiliza combination con el resultado real para marcar con ✓ los números acertados y el reintegro cuando coincide; no se confunde con el pronóstico del siguiente sorteo. Se recupera el cuarto desplegable, Últimos 5 sorteos, cerrado inicialmente, moviendo los contenedores existentes fuera del bloque oculto. Se mantienen colores y contadores de repeticiones, incluido el reintegro. Cambio únicamente de presentación; sin alterar datos, entrenamiento ni predicciones.
+
+
+## 33. Retirar Qué ha encontrado de la pantalla (2026-10-18)
+Por petición del usuario se elimina el desplegable Qué ha encontrado. Su contenedor findings-summary se conserva dentro del bloque técnico oculto para mantener el renderizado de último resultado y próxima predicción. Quedan tres apartados visibles: Último resultado, Próxima predicción y Últimos 5 sorteos. Sin cambios al motor ni a las predicciones.

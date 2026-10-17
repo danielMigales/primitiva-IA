@@ -3,11 +3,12 @@
 .tracking-group{margin:12px 0;padding:12px;background:#10263b;border:1px solid #36546b;border-radius:12px}.tracking-group p{margin:7px 0}.tracking-label{font-weight:700;overflow-wrap:anywhere}.tracking-entry{padding:8px 0;border-bottom:1px solid #36546b}.tracking-entry p{margin:6px 0}.incident-warning{padding:10px 12px;border-left:3px solid #ffd278;background:#40382b;border-radius:5px}.verification-note{font-size:13px;color:#c7d7e4;margin:6px 0}.draw .verification-note{flex-basis:100%}.ball.hit{position:relative;overflow:visible;border:2px solid #fff7d7;box-shadow:0 0 0 3px #50c99955}.hit-mark{position:absolute;top:-9px;right:-9px;display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#174b34;color:#fff;border:1px solid #b1f3ce;font-size:14px;line-height:1;font-weight:900}.panel{background:#172b40;border:1px solid #29465c;border-radius:14px;padding:0;margin:12px 0}.panel>summary{padding:16px;font-size:18px;line-height:1.4}.panel>summary::marker{color:#6ee0b8}.panel>summary h2{display:inline;font-size:18px;margin:0}.panel[open]>summary{border-bottom:1px solid #36546b}.panel>summary:focus-visible{outline:2px solid #9be5ff;outline-offset:3px;border-radius:12px}.panel-content{padding:0 16px 16px}</style></head><body><main>
 <h1>PRIMITIVA IA</h1>
 <details class="panel"><summary><h2>Último resultado</h2></summary><div class="panel-content"><div id="latest-summary" aria-live="polite">Cargando resultado…</div></div></details>
-<details class="panel"><summary><h2>Qué ha encontrado</h2></summary><div class="panel-content"><div id="findings-summary" aria-live="polite">Cargando análisis…</div></div></details>
+
 <details class="panel"><summary><h2>Próxima predicción</h2></summary><div class="panel-content"><div id="next-summary" aria-live="polite">Cargando predicción…</div></div></details>
 <details class="panel"><summary><h2>Últimos 5 sorteos</h2></summary><div class="panel-content"><p id="draws-status" class="muted">Cargando sorteos…</p><div id="recent-draws"></div></div></details>
 <p class="muted notice">Actualización automática programada.</p>
 <div id="technical-reports" hidden>
+<div id="findings-summary" aria-live="polite"></div>
 <div id="sync-status"></div>
 <div id="incidents"></div>
 <div id="learning-review"></div>
