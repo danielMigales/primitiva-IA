@@ -28,7 +28,7 @@
   "evaluation": "prospective-only; historical replay exploratory",
   "minimumSettledDraws": 60,
   "previousStrategyFile": "data/reto-estrategia-v3.json",
-  "rule": "Entrenar aspirantes; mantener pesos activos congelados hasta superar comparación prospectiva de 60 sorteos. Sin sustituciones retrospectivas.",
+  "rule": "Entrenar con ventanas de 30 sorteos, predecir antes de revelar cada resultado y ajustar después. Conservar campeón y ensayo prospectivo actual; los siguientes candidatos usan patrones e intervalos y deben superar la política de promoción.",
   "historicalDataVerifiedOfficially": false,
   "promotionPolicy": {
     "minimumDraws": 60,
@@ -36,5 +36,32 @@
     "metric": "mean-brier-and-paired-one-sided-sign-test",
     "multipleTesting": "alpha/(4*epoch*(epoch+1)); one decision per epoch",
     "requireHitsNotWorse": true
+  },
+  "candidateTraining": {
+    "algorithm": "rolling-pattern-logistic-v1",
+    "parameters": {
+      "algorithm": "rolling-pattern-logistic-v1",
+      "window": 30,
+      "learningRate": 0.12,
+      "l2": 0.002,
+      "features": [
+        "frequency",
+        "previous",
+        "gapShort",
+        "gapMedium",
+        "gapLong",
+        "returnHazard",
+        "intervalProximity",
+        "partners",
+        "transition",
+        "oddShape",
+        "lowShape",
+        "sumShape",
+        "consecutiveShape"
+      ],
+      "validationFraction": 0.2,
+      "minimumValidation": 30
+    },
+    "status": "historical-training-and-prospective-gate"
   }
 }

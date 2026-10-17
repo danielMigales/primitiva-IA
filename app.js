@@ -262,6 +262,57 @@ function renderPatterns(report){
  root.appendChild(p('El estudio histórico no autoriza cambios automáticos: cualquier nuevo método debe superar la evaluación de sorteos futuros antes de sustituir al modelo activo.','notice'));
 }
 
+function renderPatternLearning(report,analysis){
+ const root=$('pattern-learning');if(!root)return;root.replaceChildren();
+ if(analysis&&analysis.status!=='analyzed'){
+  root.appendChild(p(analysis.conclusion||'Esperando el último resultado antes de simular.'));return;
+ }
+ if(report?.version!==1||report.algorithm!=='rolling-pattern-logistic-v1'||!validDate(report.historyUntil)||!report.protocol||!report.simulation||!report.validation||!report.frozenValidation){
+  root.appendChild(p('Las simulaciones de aprendizaje aún no están disponibles.'));return;
+ }
+ if(validDate(analysis?.historyUntil)&&analysis.historyUntil!==report.historyUntil){root.appendChild(p('El informe de aprendizaje del '+report.historyUntil+' está pendiente de actualizar al resultado del '+analysis.historyUntil+'.'));return;}
+ root.appendChild(p('Aprendizaje con ventanas de '+report.protocol.window+' sorteos · Histórico hasta '+report.historyUntil+'.'));
+ root.appendChild(p('Una combinación por ensayo, antes de descubrir el resultado. Después se puntúan los aciertos y se ajustan los pesos de intervalos, repeticiones, parejas y transiciones entre tipos de combinación.'));
+ const all=report.simulation,online=report.validation,frozen=report.frozenValidation;
+ root.appendChild(p(all.draws+' ensayos históricos · '+all.mainHits+' aciertos acumulados · Mejor ensayo: '+report.bestHits+' de 6.'));
+ if(Array.isArray(all.hitHistogram)&&all.hitHistogram.length===7)root.appendChild(p('Distribución completa: '+all.hitHistogram.map((count,hits)=>hits+' aciertos: '+count+' sorteos').join(' · ')+'.'));
+ root.appendChild(p('Validación del '+report.protocol.validationFrom+' al '+report.protocol.validationThrough+' ('+online.draws+' sorteos), posterior al aprendizaje inicial.'));
+ if(Number.isFinite(online.expectedRandomHits))root.appendChild(p('Aprendiendo después de cada resultado: '+online.mainHits+' aciertos · Solo frecuencias de 30 sorteos: '+online.frequencyHits+' · Referencia al azar: '+online.expectedRandomHits.toFixed(2)+'.'));
+ root.appendChild(p('Con pesos congelados antes de la validación: '+frozen.mainHits+' aciertos. Este modelo no se ajusta con los resultados del tramo reservado.'));
+ if(Number.isFinite(online.mainBrier)&&Number.isFinite(frozen.mainBrier))root.appendChild(p('Error de estimación (menor es mejor): aprendizaje continuo '+online.mainBrier.toFixed(5)+' · Pesos congelados '+frozen.mainBrier.toFixed(5)+' · Uniforme '+Number(online.uniformMainBrier).toFixed(5)+'.','muted'));
+ if(online.refundDraws)root.appendChild(p('Reintegro en validación: '+online.refundHits+' / '+online.refundDraws+' aprendiendo · '+frozen.refundHits+' con pesos congelados.'));
+ if(Number.isInteger(report.prospective?.registered))root.appendChild(p('Seguimiento fuera de la simulación: '+report.prospective.registered+' pronósticos experimentales registrados antes del sorteo · '+report.prospective.settled+' con resultado · '+report.prospective.mainHits+' aciertos principales.'));
+ const updates=document.createElement('details'),title=document.createElement('summary');title.textContent='Últimos cinco ensayos: predicción, resultado y ajuste';updates.appendChild(title);
+ for(const r of Array.isArray(report.lastUpdates)?report.lastUpdates:[]){
+  if(!validNumbers(r.nums)||!validNumbers(r.actualNums))continue;
+  const item=document.createElement('div');item.className='tracking-entry';
+  item.appendChild(p(r.date+' · '+r.hits+' de 6 aciertos · Datos previos: '+r.historyFrom+' a '+r.historyUntil+'.'));
+  item.appendChild(p('Predicción simulada:'));item.appendChild(combination(r.nums,r.reintegro,{nums:r.actualNums,reintegro:r.actualReintegro}));
+  item.appendChild(p('Resultado real:'));item.appendChild(combination(r.actualNums,r.actualReintegro));
+  item.appendChild(p('Acertados: '+(r.matched?.join(', ')||'ninguno')+' · Faltaron: '+(r.missed?.join(', ')||'ninguno')+'.'));
+  const adjustments=(Array.isArray(r.adjustments)?r.adjustments:[]).filter(a=>Number.isFinite(a.delta));
+  item.appendChild(p('Ajustes de mayor magnitud después del resultado: '+adjustments.map(a=>a.label+' '+(a.delta>=0?'+':'')+a.delta.toFixed(5)).join('; ')+'.','muted'));
+  updates.appendChild(item);
+ }
+ root.appendChild(updates);
+ const intervals=document.createElement('details'),ititle=document.createElement('summary');ititle.textContent='Intervalos, parejas y tipos de combinación en los últimos '+report.protocol.window+' sorteos';intervals.appendChild(ititle);
+ for(const r of Array.isArray(report.recentPatterns?.intervals)?report.recentPatterns.intervals:[])if(r.appearances>=2&&Array.isArray(r.observedGaps))intervals.appendChild(p(r.number+': '+r.appearances+' apariciones · Intervalos observados: '+r.observedGaps.join(', ')+' sorteos · Ausente desde hace '+r.drawsSinceLast+' sorteos.'));
+ intervals.appendChild(p('Parejas: '+(Array.isArray(report.recentPatterns?.pairs)?report.recentPatterns.pairs:[]).filter(r=>Array.isArray(r.nums)).map(r=>r.nums.join('–')+' ('+r.appearances+')').join(', ')+'.'));
+ for(const s of Array.isArray(report.recentPatterns?.shapes)?report.recentPatterns.shapes:[])intervals.appendChild(p('Tipo observado '+s.appearances+' veces: '+s.odd+' impares, '+(6-s.odd)+' pares; '+s.low+' números del 1 al 24; suma entre '+s.sumBandFrom+' y '+(s.sumBandFrom+39)+'; '+s.consecutivePairsCappedAt3+(s.consecutivePairsCappedAt3===3?' o más':'')+' parejas consecutivas.'));
+ root.appendChild(intervals);
+ const experimental=report.registeredExperiment||report.next;
+ if(validNumbers(experimental?.nums)){
+  const proposal=document.createElement('details'),ptitle=document.createElement('summary');ptitle.textContent=(report.registeredExperiment?'Pronóstico experimental registrado para ':'Propuesta simulada para ')+experimental.target;proposal.appendChild(ptitle);
+  proposal.appendChild(combination(experimental.nums,experimental.reintegro));
+  proposal.appendChild(p('No sustituye la combinación designada ni sus registros anteriores. '+(report.candidateStatus==='in-trial'?'Este candidato está en evaluación prospectiva.':'El entrenamiento alimenta el próximo candidato; la evaluación ya iniciada se conserva.')));
+  if(!report.registeredExperiment||report.registeredExperiment.modelId===report.modelId)for(const n of Array.isArray(report.numberEvidence)?report.numberEvidence:[])proposal.appendChild(p(n.number+': '+(Array.isArray(n.signals)?n.signals:[]).filter(s=>Number.isFinite(s.contribution)).map(s=>s.label+' ('+(s.contribution>=0?'+':'')+s.contribution.toFixed(4)+')').join('; ')+'.','muted'));
+  proposal.appendChild(p('Las contribuciones explican cómo el modelo eligió esos números; no explican por qué saldrían en el sorteo.','muted'));root.appendChild(proposal);
+ }
+ root.appendChild(p('Se incluyen todos los ensayos y fallos. Acertar seis en una simulación aislada no prueba una regla general. No se vuelve a intentar el mismo resultado hasta acertarlo.','notice'));
+ const audit=document.createElement('a');audit.href='./data/simulaciones-patrones.jsonl';audit.textContent='Consultar todos los ensayos históricos';root.appendChild(audit);
+ if(!analysis)root.appendChild(p('No se pudo comprobar si hay un resultado más reciente pendiente. Fecha del informe: '+report.historyUntil+'.','muted'));
+}
+
 function renderQuality(report){
  const root=$('data-quality');if(!root)return;root.replaceChildren();
  if(report?.version!==1||typeof report.valid!=='boolean'||!Number.isInteger(report.total)){
@@ -310,6 +361,7 @@ function renderControl(control,active){
   if(h&&Number.isFinite(h.expectedUniform))root.appendChild(p(label+': candidato '+h.challenger+' aciertos · Activo '+h.champion+' · Referencia al azar '+h.expectedUniform.toFixed(2)+'.'));
  }
  root.appendChild(p('Las simulaciones históricas no autorizan cambios. Las comparaciones se registran antes del sorteo y se guardan para poder revisarlas.'));
+ if(control.nextTrainingCandidate?.algorithm==='rolling-pattern-logistic-v1')root.appendChild(p('Siguiente entrenamiento: patrones e intervalos con ventanas de '+control.nextTrainingCandidate.window+' sorteos. El ensayo ya iniciado conserva su candidato y sus resultados.'));
 }
 
 function renderModel(model,active){
@@ -361,7 +413,7 @@ async function load(){
 }
 async function loadContent(){
  if($('sync-status'))$('sync-status').textContent='Cargando los últimos resultados publicados…';
- const [pred,history,active,verification,update,model,control,quality,patterns]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json'),fetchJson('./data/reto-estrategia-activa.json'),fetchJson('./data/verificacion-sorteos.json'),fetchJson('./data/estado-actualizacion.json'),fetchJson('./data/modelo-adaptativo.json'),fetchJson('./data/control-modelo.json'),fetchJson('./data/calidad-datos.json'),fetchJson('./data/analisis-patrones.json')]);
+ const [pred,history,active,verification,update,model,control,quality,patterns,patternLearning]=await Promise.allSettled([fetchJson('./data/reto-predictor.json'),fetchJson('./data/sorteos.json'),fetchJson('./data/reto-estrategia-activa.json'),fetchJson('./data/verificacion-sorteos.json'),fetchJson('./data/estado-actualizacion.json'),fetchJson('./data/modelo-adaptativo.json'),fetchJson('./data/control-modelo.json'),fetchJson('./data/calidad-datos.json'),fetchJson('./data/analisis-patrones.json'),fetchJson('./data/aprendizaje-patrones.json')]);
  let proofs=verification.status==='fulfilled'&&Array.isArray(verification.value?.draws)?verification.value.draws:[];
  const report=update.status==='fulfilled'?update.value:null;
  const activeStrategy=active.status==='fulfilled'?active.value:null;
@@ -370,6 +422,7 @@ async function loadContent(){
  renderDecisionHistory(control.status==='fulfilled'?control.value:null);
  renderQuality(quality.status==='fulfilled'?quality.value:null);
  renderPatterns(patterns.status==='fulfilled'?patterns.value:null);
+ renderPatternLearning(patternLearning.status==='fulfilled'?patternLearning.value:null,patterns.status==='fulfilled'?patterns.value:null);
  $('active-strategy').textContent=validActiveStrategy(activeStrategy)?(activeStrategy.version===4?'Motor con evaluación previa · Versión 4. Los pesos activos se mantienen hasta que un candidato supere las pruebas.':activeStrategy.version===3?'Motor activo: modelo que ajusta sus pesos tras cada sorteo · Versión 3. Las predicciones anteriores conservan su motor original.':'Motor activo: recencia 30/90/365 días · Versión '+activeStrategy.version+'. Su evaluación empieza con las nuevas predicciones de esta versión.'):'No se ha podido comprobar la estrategia activa.';
  let draws=[];
  const historyLoaded=history.status==='fulfilled'&&Array.isArray(history.value?.draws);

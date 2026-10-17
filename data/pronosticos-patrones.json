@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "note": "Pronósticos experimentales registrados antes del sorteo. Separados de la combinación designada; no se reemplazan después de conocer el resultado.",
+  "predictions": [
+    {
+      "target": "2026-10-19",
+      "created": "2026-10-17T22:56:36.951319+02:00",
+      "historyUntil": "2026-10-17",
+      "modelId": "fb1fbef0161884fbeca7b0d73942b042715953d4beb10ef3cf036f14368bbfea",
+      "algorithm": "rolling-pattern-logistic-v1",
+      "parameters": {
+        "algorithm": "rolling-pattern-logistic-v1",
+        "window": 30,
+        "learningRate": 0.12,
+        "l2": 0.002,
+        "features": [
+          "frequency",
+          "previous",
+          "gapShort",
+          "gapMedium",
+          "gapLong",
+          "returnHazard",
+          "intervalProximity",
+          "partners",
+          "transition",
+          "oddShape",
+          "lowShape",
+          "sumShape",
+          "consecutiveShape"
+        ],
+        "validationFraction": 0.2,
+        "minimumValidation": 30
+      },
+      "nums": [
+        12,
+        22,
+        28,
+        38,
+        40,
+        43
+      ],
+      "reintegro": 2,
+      "productionPrediction": false
+    }
+  ]
+}

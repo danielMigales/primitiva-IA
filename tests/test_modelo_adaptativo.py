@@ -75,6 +75,7 @@ class ModelTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             work=Path(temp);(work/'data').mkdir()
             (work/'data/reto-estrategia-activa.json').write_bytes((ROOT/'data/reto-estrategia-activa.json').read_bytes())
+            (work/'data/pronosticos-patrones.json').write_text('{"version":1,"predictions":[]}')
             (work/'data/sorteos.json').write_text(json.dumps({'draws':history()}))
             (work/'data/verificacion-sorteos.json').write_text(json.dumps({'draws':[{**history()[-1],'source':'SELAE','url':'https://www.loteriasyapuestas.es/official.pdf'}]}))
             from control_modelo import update_control

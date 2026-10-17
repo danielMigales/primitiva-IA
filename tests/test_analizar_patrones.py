@@ -74,6 +74,7 @@ class PipelineTests(unittest.TestCase):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
         self.work=Path(self.temp.name);(self.work/'data').mkdir()
         (self.work/'data/reto-estrategia-activa.json').write_bytes((ROOT/'data/reto-estrategia-activa.json').read_bytes())
+        (self.work/'data/pronosticos-patrones.json').write_text('{"version":1,"predictions":[]}')
         self.history=rows(150)
         self.registry=self.work/'data/reto-predictor.json';self.registry.write_text(json.dumps({'predictions':[],'revisions':[{'preserve':True}]}))
         self.write_history(self.history)

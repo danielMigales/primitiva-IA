@@ -8,12 +8,15 @@ from validar_reto import validate_prediction
 from control_modelo import POLICY, update_control
 from calidad_datos import inspect_history
 from analizar_patrones import analyze
+from aprender_patrones import train_patterns, register_experiment, PARAMETERS as PATTERN_PARAMETERS
 
 config=json.loads(Path('data/reto-estrategia-activa.json').read_text())
 if config.get('version')!=4 or config.get('status')!='active' or config.get('strategy')!={'type':'guarded-online-logistic','window':99999,'algorithm':'guarded-online-logistic-v1','reintegroAlgorithm':'guarded-online-logistic-v1','parameters':PARAMETERS}:
     raise ValueError('La estrategia activa no coincide con la versión 4 aprobada.')
 if config.get('promotionPolicy')!=POLICY:
     raise ValueError('La política de evaluación no coincide con la aprobada.')
+if config.get('candidateTraining')!={'algorithm':PATTERN_PARAMETERS['algorithm'], 'parameters':PATTERN_PARAMETERS, 'status':'historical-training-and-prospective-gate'}:
+    raise ValueError('La configuración del aprendizaje de patrones no coincide con la aprobada.')
 now=datetime.now(ZoneInfo('Europe/Madrid'))
 day=now.date()
 if (now.hour,now.minute)>=(21,40):
@@ -52,10 +55,25 @@ Path('data/validacion-patrones.jsonl').write_text(''.join(json.dumps(row,ensure_
 analysis['ruleEvaluation']['traceFile']='data/validacion-patrones.jsonl'
 analysis_path.write_text(json.dumps(analysis,ensure_ascii=False,indent=2)+'\n')
 report=train(rows,target)
+pattern_report=train_patterns(rows,target)
+pattern_trace=pattern_report.pop('trace')
+Path('data/simulaciones-patrones.jsonl').write_text(''.join(json.dumps(r,ensure_ascii=False,separators=(',',':'))+'\n' for r in pattern_trace))
+pattern_report['traceFile']='data/simulaciones-patrones.jsonl'
+research_path=Path('data/pronosticos-patrones.json')
+research,current_experiment,prospective=register_experiment(pattern_report,rows,now,json.loads(research_path.read_text()))
+pattern_report['registeredExperiment']=current_experiment
+pattern_report['prospective']=prospective
 control_path=Path('data/control-modelo.json')
 # Missing control state must stop generation, never silently approve new weights.
 previous=json.loads(control_path.read_text())
-control,selected=update_control(report,rows,target,now,previous)
+control,selected=update_control(pattern_report,rows,target,now,previous)
+pattern_report['candidateStatus']='in-trial' if (control.get('challenger') or {}).get('modelId')==pattern_report['modelId'] else 'queued'
+if control['champion']['modelId']==pattern_report['modelId']:
+    pattern_report['candidateStatus']='active'
+control['nextTrainingCandidate']={'modelId':pattern_report['modelId'],'historyUntil':pattern_report['historyUntil'],
+    'algorithm':pattern_report['algorithm'],'window':pattern_report['parameters']['window'],
+    'status':pattern_report['candidateStatus']}
+Path('data/aprendizaje-patrones.json').write_text(json.dumps(pattern_report,ensure_ascii=False,indent=2)+'\n')
 existing=any(r['target']==target for r in registry['predictions'])
 entry={'target':target,'nums':selected['nums'],'reintegro':selected['reintegro'],
        'window':99999,'historyUntil':rows[-1]['date'],'created':now.isoformat(),
@@ -70,6 +88,7 @@ report['activeNext']={**selected,'modelId':control['champion']['modelId'],'targe
 report['next']['note']='Propuesta del entrenamiento, sin autorización para sustituir al modelo activo.'
 control_path.write_text(json.dumps(control,ensure_ascii=False,indent=2)+'\n')
 Path('data/modelo-adaptativo.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+research_path.write_text(json.dumps(research,ensure_ascii=False,indent=2)+'\n')
 if existing:
     print('Already recorded',target,'; modelo entrenado sin sustituir la predicción.')
     raise SystemExit(0)
