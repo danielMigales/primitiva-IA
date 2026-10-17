@@ -357,5 +357,12 @@
     "draws": 0,
     "required": 60
   },
-  "updatedThrough": "2026-10-17"
+  "updatedThrough": "2026-10-17",
+  "nextTrainingCandidate": {
+    "modelId": "fb1fbef0161884fbeca7b0d73942b042715953d4beb10ef3cf036f14368bbfea",
+    "historyUntil": "2026-10-17",
+    "algorithm": "rolling-pattern-logistic-v1",
+    "window": 30,
+    "status": "queued"
+  }
 }

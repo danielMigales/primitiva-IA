@@ -1,0 +1,1996 @@
+{
+  "version": 1,
+  "algorithm": "rolling-pattern-logistic-v1",
+  "parameters": {
+    "algorithm": "rolling-pattern-logistic-v1",
+    "window": 30,
+    "learningRate": 0.12,
+    "l2": 0.002,
+    "features": [
+      "frequency",
+      "previous",
+      "gapShort",
+      "gapMedium",
+      "gapLong",
+      "returnHazard",
+      "intervalProximity",
+      "partners",
+      "transition",
+      "oddShape",
+      "lowShape",
+      "sumShape",
+      "consecutiveShape"
+    ],
+    "validationFraction": 0.2,
+    "minimumValidation": 30
+  },
+  "modelId": "fb1fbef0161884fbeca7b0d73942b042715953d4beb10ef3cf036f14368bbfea",
+  "historyUntil": "2026-10-17",
+  "trainedDraws": 3002,
+  "main": {
+    "featureWeights": [
+      -0.19112036705220653,
+      -0.020983211419702615,
+      0.006164928120494218,
+      0.029702031373322668,
+      -0.043621073618850835,
+      -0.027312876803617905,
+      -0.0310332935957364,
+      0.000910934820771985,
+      -0.016269451690463874,
+      -0.012365096566673029,
+      -0.02216256681120203,
+      -0.010026589383306965,
+      -0.0438997460582475
+    ],
+    "numberBiases": [
+      -0.3707569838610111,
+      -0.08428192011166777,
+      -0.07828999240275164,
+      0.0991773540702951,
+      -0.12223992719276647,
+      0.2603570529089868,
+      -0.022753479947511375,
+      -0.22263564637417657,
+      -0.08324907360037237,
+      0.14272930119306193,
+      -0.4167108123932199,
+      0.5049717420353815,
+      -0.3343334429284288,
+      -0.011409779570183257,
+      -0.43057785350689787,
+      0.1680515068804641,
+      0.207120864269058,
+      -0.12918525091911265,
+      -0.3337553814829411,
+      0.6343715826189048,
+      -0.5144141721914188,
+      0.5542509471720688,
+      -0.0680721031402988,
+      -0.2719916928370812,
+      0.019124486657111778,
+      -0.25770589779092706,
+      -0.28136670288150145,
+      0.3394212812443576,
+      -0.2854931881384948,
+      0.009462787705318986,
+      -0.15840993749889495,
+      -0.25599423194724746,
+      0.4277213033117053,
+      0.3305654169370838,
+      -0.21760219960761754,
+      -0.03027702527344924,
+      -0.07826463679284971,
+      0.4264236927034841,
+      -0.07600577443458625,
+      0.7321256177671476,
+      -0.1458072939874033,
+      -0.5603551259446137,
+      0.3143864346982631,
+      -0.08677226972634317,
+      0.6476099410077667,
+      -0.0020469112799247294,
+      -0.13314036338394805,
+      -0.02370121912041976,
+      -0.11022261503905624
+    ],
+    "updates": 2972
+  },
+  "refund": {
+    "featureWeights": [
+      -0.19728563529633,
+      0.11325898752864597,
+      0.09669597511726079,
+      0.046712275407412907,
+      -0.14571874896428655,
+      -0.020076712869961672,
+      -0.045525963657049896,
+      0.0,
+      -0.07573223763446199,
+      0.04558635526505006,
+      -0.0013894298651670762,
+      0.007978071409085512,
+      -0.02750620613644146
+    ],
+    "numberBiases": [
+      -0.3038270657005558,
+      -0.1675176444445355,
+      0.20247261981857875,
+      0.20952102670852155,
+      0.0252142422954839,
+      0.1863709322704533,
+      -0.32551557636884565,
+      -0.4538649642990085,
+      0.36402431292281545,
+      0.24001713240096637
+    ],
+    "updates": 2972
+  },
+  "protocol": {
+    "window": 30,
+    "onePredictionPerDraw": true,
+    "retriesPerTarget": 0,
+    "trainingThrough": "2022-12-17",
+    "validationFrom": "2022-12-19",
+    "validationThrough": "2026-10-17",
+    "parametersSelectedUsingValidation": false,
+    "onlineValidation": "Predict first, then update after revealing each result.",
+    "frozenValidation": "Weights frozen before validation; features use only previous draws.",
+    "refundIntervals": "Only draws with known refund in the rolling window."
+  },
+  "simulation": {
+    "draws": 2972,
+    "mainHits": 2164,
+    "hitHistogram": [
+      1307,
+      1232,
+      368,
+      64,
+      1,
+      0,
+      0
+    ],
+    "mainBrier": 0.1081487492188112,
+    "frequencyHits": 2205,
+    "refundDraws": 2972,
+    "refundHits": 285,
+    "refundBrier": 0.09058071416393929,
+    "expectedRandomHits": 2183.5102040816328,
+    "expectedRandomRefundHits": 297.2,
+    "uniformMainBrier": 0.10745522698875468,
+    "uniformRefundBrier": 0.09
+  },
+  "validation": {
+    "draws": 600,
+    "mainHits": 451,
+    "hitHistogram": [
+      257,
+      245,
+      88,
+      10,
+      0,
+      0,
+      0
+    ],
+    "mainBrier": 0.10815850907235726,
+    "frequencyHits": 471,
+    "refundDraws": 600,
+    "refundHits": 59,
+    "refundBrier": 0.09046138948513507,
+    "expectedRandomHits": 440.81632653061223,
+    "expectedRandomRefundHits": 60.0,
+    "uniformMainBrier": 0.10745522698875468,
+    "uniformRefundBrier": 0.09
+  },
+  "frozenValidation": {
+    "draws": 600,
+    "mainHits": 439,
+    "hitHistogram": [
+      267,
+      238,
+      85,
+      9,
+      1,
+      0,
+      0
+    ],
+    "mainBrier": 0.10878048827037236,
+    "frequencyHits": 471,
+    "refundDraws": 600,
+    "refundHits": 68,
+    "refundBrier": 0.09078245183085686,
+    "expectedRandomHits": 440.81632653061223,
+    "expectedRandomRefundHits": 60.0,
+    "uniformMainBrier": 0.10745522698875468,
+    "uniformRefundBrier": 0.09
+  },
+  "frozenValidationState": {
+    "historyUntil": "2022-12-17",
+    "main": {
+      "featureWeights": [
+        -0.17694660252213118,
+        0.00023153120461095198,
+        0.027602106073736993,
+        -0.04001007549114586,
+        -0.0049170034877984905,
+        -0.0062954348565354016,
+        0.010530991517326848,
+        0.0010790702546729404,
+        -0.018461276128134863,
+        -0.009875577891436836,
+        -0.02295812141947181,
+        0.006830996592778486,
+        -0.04453498780591113
+      ],
+      "numberBiases": [
+        0.4719179606470977,
+        0.0007251010000944337,
+        -0.39200820635898254,
+        -0.2033051757195069,
+        0.4057200572690512,
+        0.056429491125335546,
+        -0.4081107183497071,
+        0.36684951099862523,
+        -0.5981636590205973,
+        -0.2918554425225928,
+        0.3424144459434514,
+        0.004764556261997274,
+        -0.23963935967626496,
+        0.22254419603256048,
+        -0.06432166862463647,
+        0.2815768555081784,
+        -0.3831328250127018,
+        -0.05696805376518378,
+        0.3527495811280992,
+        0.02979901696369555,
+        -0.2732716972972779,
+        0.021137042218567624,
+        -0.025911213768944154,
+        -0.17675173940737735,
+        -0.017725948707504012,
+        -0.2269186396030058,
+        -0.29985022403712286,
+        0.7316355134388487,
+        0.5321425662334076,
+        0.3669568697912957,
+        -0.4914309330138569,
+        0.03675901831907263,
+        -0.5096104390667948,
+        -0.1765700638374162,
+        -0.09682540355423504,
+        -0.4289377875751562,
+        -0.3246640974998556,
+        0.11868855033652295,
+        0.15440347337968496,
+        0.2887809538917517,
+        -0.05496392235870236,
+        -0.3181835280874378,
+        0.42252874888009273,
+        -0.15926642108748304,
+        0.1411702939647799,
+        0.02867325693378695,
+        0.3212109402387735,
+        0.026202221576156134,
+        -0.35631672648373913
+      ],
+      "updates": 2372
+    },
+    "refund": {
+      "featureWeights": [
+        -0.20567286103002827,
+        -0.025778902673939667,
+        0.024077337170154166,
+        -0.020172025433661284,
+        -0.019329524220249583,
+        -0.011760639184729103,
+        -0.02315056912042763,
+        0.0,
+        -0.06272502541711879,
+        0.06228036443915262,
+        0.001755944299123922,
+        0.004291925737802116,
+        -0.016245371550618188
+      ],
+      "numberBiases": [
+        -0.3835591957691877,
+        -0.14962226830227057,
+        -0.3181368096934583,
+        0.2932137501363043,
+        -0.014667028657051492,
+        0.4530754226261218,
+        -0.5996589584564415,
+        -0.21418482099380048,
+        0.5965105549523501,
+        0.1827872293198674
+      ],
+      "updates": 2372
+    }
+  },
+  "bestHits": 4,
+  "bestExamples": [
+    {
+      "date": "2013-11-16",
+      "nums": [
+        1,
+        10,
+        26,
+        31,
+        38,
+        45
+      ],
+      "actualNums": [
+        1,
+        10,
+        31,
+        32,
+        34,
+        45
+      ],
+      "matched": [
+        1,
+        10,
+        31,
+        45
+      ],
+      "hits": 4,
+      "phase": "training"
+    }
+  ],
+  "lastUpdates": [
+    {
+      "date": "2026-10-08",
+      "phase": "validation",
+      "historyFrom": "2026-07-30",
+      "historyUntil": "2026-10-05",
+      "historyDraws": 30,
+      "nums": [
+        12,
+        22,
+        33,
+        38,
+        40,
+        43
+      ],
+      "reintegro": 5,
+      "actualNums": [
+        6,
+        7,
+        14,
+        16,
+        21,
+        37
+      ],
+      "actualReintegro": 2,
+      "matched": [],
+      "hits": 0,
+      "missed": [
+        6,
+        7,
+        14,
+        16,
+        21,
+        37
+      ],
+      "refundHit": false,
+      "stateBefore": "d81d2688aa5ae2e83fa75936d48998f51084b094b96295d6698bed0cb633e320",
+      "stateAfter": "1670618394b16dd03e62dc06ec74718d7ba6ee2ed5674cf05d2a984c7b7f25af",
+      "adjustments": [
+        {
+          "feature": "frequency",
+          "label": "Frecuencia reciente",
+          "delta": -0.008520330928646153
+        },
+        {
+          "feature": "gapLong",
+          "label": "Ausencia de 9 o más sorteos",
+          "delta": -0.005844136446688325
+        },
+        {
+          "feature": "gapMedium",
+          "label": "Ausencia de 4–8 sorteos",
+          "delta": 0.0032147059941048245
+        }
+      ],
+      "biasChangeL1": 1.2639947712261024,
+      "frozenNums": [
+        1,
+        11,
+        28,
+        29,
+        43,
+        47
+      ],
+      "frozenReintegro": 5,
+      "weightsBefore": [
+        -0.18615430067742975,
+        -0.014360061555463835,
+        0.006311388297051052,
+        0.02642532735817432,
+        -0.04063401410804163,
+        -0.026624953883846468,
+        -0.03261180750877898,
+        0.0009908357428357799,
+        -0.01592842722036796,
+        -0.012966217840361395,
+        -0.02183555815665651,
+        -0.00839636922654011,
+        -0.04357611125455734
+      ],
+      "weightsAfter": [
+        -0.1946746316060759,
+        -0.016311417896862662,
+        0.008945332157127468,
+        0.029640033352279143,
+        -0.04647815055472995,
+        -0.027070117750603726,
+        -0.03394297558946154,
+        0.000882894070976459,
+        -0.01599066725575849,
+        -0.012835503156630623,
+        -0.021948616305311985,
+        -0.00867980918500446,
+        -0.04385616670647898
+      ],
+      "missedScoresBefore": [
+        {
+          "number": 6,
+          "score": 0.14288697800869435
+        },
+        {
+          "number": 7,
+          "score": 0.12710692902163737
+        },
+        {
+          "number": 14,
+          "score": 0.12272006889773088
+        },
+        {
+          "number": 16,
+          "score": 0.1315975328951369
+        },
+        {
+          "number": 21,
+          "score": 0.07832132734079199
+        },
+        {
+          "number": 37,
+          "score": 0.13145067090971127
+        }
+      ],
+      "falsePositiveScoresBefore": [
+        {
+          "number": 12,
+          "score": 0.19090492534559012
+        },
+        {
+          "number": 22,
+          "score": 0.15418986924921088
+        },
+        {
+          "number": 33,
+          "score": 0.15416954036514888
+        },
+        {
+          "number": 38,
+          "score": 0.17395371399130705
+        },
+        {
+          "number": 40,
+          "score": 0.1799456325953241
+        },
+        {
+          "number": 43,
+          "score": 0.18060027597663283
+        }
+      ]
+    },
+    {
+      "date": "2026-10-10",
+      "phase": "validation",
+      "historyFrom": "2026-08-01",
+      "historyUntil": "2026-10-08",
+      "historyDraws": 30,
+      "nums": [
+        12,
+        22,
+        28,
+        38,
+        40,
+        43
+      ],
+      "reintegro": 5,
+      "actualNums": [
+        10,
+        16,
+        18,
+        20,
+        22,
+        29
+      ],
+      "actualReintegro": 7,
+      "matched": [
+        22
+      ],
+      "hits": 1,
+      "missed": [
+        10,
+        16,
+        18,
+        20,
+        29
+      ],
+      "refundHit": false,
+      "stateBefore": "1670618394b16dd03e62dc06ec74718d7ba6ee2ed5674cf05d2a984c7b7f25af",
+      "stateAfter": "402fa5b349e1a4d7c1823245dc03705c7869eecb71161e5ed23236aa47192043",
+      "adjustments": [
+        {
+          "feature": "frequency",
+          "label": "Frecuencia reciente",
+          "delta": 0.0038838244912908493
+        },
+        {
+          "feature": "gapLong",
+          "label": "Ausencia de 9 o más sorteos",
+          "delta": -0.0036543338578803597
+        },
+        {
+          "feature": "gapShort",
+          "label": "Ausencia de 1–3 sorteos",
+          "delta": 0.0025665919536947465
+        }
+      ],
+      "biasChangeL1": 1.2527177407702228,
+      "frozenNums": [
+        1,
+        11,
+        28,
+        29,
+        43,
+        47
+      ],
+      "frozenReintegro": 5,
+      "weightsBefore": [
+        -0.1946746316060759,
+        -0.016311417896862662,
+        0.008945332157127468,
+        0.029640033352279143,
+        -0.04647815055472995,
+        -0.027070117750603726,
+        -0.03394297558946154,
+        0.000882894070976459,
+        -0.01599066725575849,
+        -0.012835503156630623,
+        -0.021948616305311985,
+        -0.00867980918500446,
+        -0.04385616670647898
+      ],
+      "weightsAfter": [
+        -0.19079080711478505,
+        -0.01568525146569577,
+        0.011511924110822214,
+        0.030759405193851834,
+        -0.05013248441261031,
+        -0.027158924631532987,
+        -0.031671151183788514,
+        0.0009165328543306292,
+        -0.015898464144781025,
+        -0.012407124917910772,
+        -0.02231249601115617,
+        -0.00904687340455752,
+        -0.04396753246316176
+      ],
+      "missedScoresBefore": [
+        {
+          "number": 10,
+          "score": 0.1260248604667943
+        },
+        {
+          "number": 16,
+          "score": 0.14356341913287937
+        },
+        {
+          "number": 18,
+          "score": 0.1295706872751472
+        },
+        {
+          "number": 20,
+          "score": 0.13210612788518783
+        },
+        {
+          "number": 29,
+          "score": 0.08627890333646976
+        }
+      ],
+      "falsePositiveScoresBefore": [
+        {
+          "number": 12,
+          "score": 0.18549662753765012
+        },
+        {
+          "number": 28,
+          "score": 0.1639589639382346
+        },
+        {
+          "number": 38,
+          "score": 0.16987268307679493
+        },
+        {
+          "number": 40,
+          "score": 0.17665050312118255
+        },
+        {
+          "number": 43,
+          "score": 0.17597172382444204
+        }
+      ]
+    },
+    {
+      "date": "2026-10-12",
+      "phase": "validation",
+      "historyFrom": "2026-08-03",
+      "historyUntil": "2026-10-10",
+      "historyDraws": 30,
+      "nums": [
+        12,
+        28,
+        34,
+        38,
+        40,
+        43
+      ],
+      "reintegro": 5,
+      "actualNums": [
+        2,
+        5,
+        26,
+        40,
+        42,
+        45
+      ],
+      "actualReintegro": 9,
+      "matched": [
+        40
+      ],
+      "hits": 1,
+      "missed": [
+        2,
+        5,
+        26,
+        42,
+        45
+      ],
+      "refundHit": false,
+      "stateBefore": "402fa5b349e1a4d7c1823245dc03705c7869eecb71161e5ed23236aa47192043",
+      "stateAfter": "3f09383121ccdbceb8f42976b611c899a0ae3f8fc41c47aea6a692c294769676",
+      "adjustments": [
+        {
+          "feature": "frequency",
+          "label": "Frecuencia reciente",
+          "delta": 0.003907633547487549
+        },
+        {
+          "feature": "gapShort",
+          "label": "Ausencia de 1–3 sorteos",
+          "delta": -0.0022394277528113918
+        },
+        {
+          "feature": "previous",
+          "label": "Presencia anterior",
+          "delta": -0.0018627564730389727
+        }
+      ],
+      "biasChangeL1": 1.2746433273237319,
+      "frozenNums": [
+        1,
+        11,
+        28,
+        29,
+        43,
+        47
+      ],
+      "frozenReintegro": 5,
+      "weightsBefore": [
+        -0.19079080711478505,
+        -0.01568525146569577,
+        0.011511924110822214,
+        0.030759405193851834,
+        -0.05013248441261031,
+        -0.027158924631532987,
+        -0.031671151183788514,
+        0.0009165328543306292,
+        -0.015898464144781025,
+        -0.012407124917910772,
+        -0.02231249601115617,
+        -0.00904687340455752,
+        -0.04396753246316176
+      ],
+      "weightsAfter": [
+        -0.1868831735672975,
+        -0.017548007938734744,
+        0.009272496358010822,
+        0.03171052181682728,
+        -0.04881172188227061,
+        -0.027263327048047653,
+        -0.0316716520877062,
+        0.0009669864039403041,
+        -0.015351167908735362,
+        -0.012181841561078191,
+        -0.022524748365606816,
+        -0.009262309508433748,
+        -0.0437081261468845
+      ],
+      "missedScoresBefore": [
+        {
+          "number": 2,
+          "score": 0.11588398519673035
+        },
+        {
+          "number": 5,
+          "score": 0.10393874204061991
+        },
+        {
+          "number": 26,
+          "score": 0.08238102736573574
+        },
+        {
+          "number": 42,
+          "score": 0.09384197487978498
+        },
+        {
+          "number": 45,
+          "score": 0.1101097805001316
+        }
+      ],
+      "falsePositiveScoresBefore": [
+        {
+          "number": 12,
+          "score": 0.18227868574943967
+        },
+        {
+          "number": 28,
+          "score": 0.16047559547035656
+        },
+        {
+          "number": 34,
+          "score": 0.15340688486217285
+        },
+        {
+          "number": 38,
+          "score": 0.16873655762662695
+        },
+        {
+          "number": 43,
+          "score": 0.18818814488865201
+        }
+      ]
+    },
+    {
+      "date": "2026-10-15",
+      "phase": "validation",
+      "historyFrom": "2026-08-06",
+      "historyUntil": "2026-10-12",
+      "historyDraws": 30,
+      "nums": [
+        12,
+        28,
+        33,
+        38,
+        40,
+        43
+      ],
+      "reintegro": 9,
+      "actualNums": [
+        6,
+        17,
+        24,
+        35,
+        39,
+        47
+      ],
+      "actualReintegro": 3,
+      "matched": [],
+      "hits": 0,
+      "missed": [
+        6,
+        17,
+        24,
+        35,
+        39,
+        47
+      ],
+      "refundHit": false,
+      "stateBefore": "3f09383121ccdbceb8f42976b611c899a0ae3f8fc41c47aea6a692c294769676",
+      "stateAfter": "d4ad11cca06b0a537973fb3587119b2ff7a54a8380ac1dc6181d35db22bc253b",
+      "adjustments": [
+        {
+          "feature": "frequency",
+          "label": "Frecuencia reciente",
+          "delta": -0.008297338852739367
+        },
+        {
+          "feature": "gapLong",
+          "label": "Ausencia de 9 o más sorteos",
+          "delta": 0.0038087268075359393
+        },
+        {
+          "feature": "gapShort",
+          "label": "Ausencia de 1–3 sorteos",
+          "delta": -0.002656079478120274
+        }
+      ],
+      "biasChangeL1": 1.269487627274963,
+      "frozenNums": [
+        1,
+        11,
+        28,
+        29,
+        43,
+        47
+      ],
+      "frozenReintegro": 5,
+      "weightsBefore": [
+        -0.1868831735672975,
+        -0.017548007938734744,
+        0.009272496358010822,
+        0.03171052181682728,
+        -0.04881172188227061,
+        -0.027263327048047653,
+        -0.0316716520877062,
+        0.0009669864039403041,
+        -0.015351167908735362,
+        -0.012181841561078191,
+        -0.022524748365606816,
+        -0.009262309508433748,
+        -0.0437081261468845
+      ],
+      "weightsAfter": [
+        -0.19518051242003687,
+        -0.019234056426776478,
+        0.006616416879890548,
+        0.030581830076949673,
+        -0.045002995074734674,
+        -0.027549881276086013,
+        -0.03199821612181335,
+        0.0009010249940135824,
+        -0.01591999338839453,
+        -0.012250239765429334,
+        -0.0226462496431113,
+        -0.009779343348982839,
+        -0.044286096079729234
+      ],
+      "missedScoresBefore": [
+        {
+          "number": 6,
+          "score": 0.15038429792825722
+        },
+        {
+          "number": 17,
+          "score": 0.12618785564453425
+        },
+        {
+          "number": 24,
+          "score": 0.09512926464686967
+        },
+        {
+          "number": 35,
+          "score": 0.10441300921444771
+        },
+        {
+          "number": 39,
+          "score": 0.11852120432551101
+        },
+        {
+          "number": 47,
+          "score": 0.1125030409408942
+        }
+      ],
+      "falsePositiveScoresBefore": [
+        {
+          "number": 12,
+          "score": 0.1791016104951298
+        },
+        {
+          "number": 28,
+          "score": 0.17219818883954688
+        },
+        {
+          "number": 33,
+          "score": 0.1649383249717376
+        },
+        {
+          "number": 38,
+          "score": 0.16955831386374431
+        },
+        {
+          "number": 40,
+          "score": 0.17254826908750426
+        },
+        {
+          "number": 43,
+          "score": 0.1847577530194982
+        }
+      ]
+    },
+    {
+      "date": "2026-10-17",
+      "phase": "validation",
+      "historyFrom": "2026-08-08",
+      "historyUntil": "2026-10-15",
+      "historyDraws": 30,
+      "nums": [
+        12,
+        28,
+        33,
+        38,
+        40,
+        43
+      ],
+      "reintegro": 9,
+      "actualNums": [
+        8,
+        9,
+        12,
+        14,
+        29,
+        45
+      ],
+      "actualReintegro": 4,
+      "matched": [
+        12
+      ],
+      "hits": 1,
+      "missed": [
+        8,
+        9,
+        14,
+        29,
+        45
+      ],
+      "refundHit": false,
+      "stateBefore": "d4ad11cca06b0a537973fb3587119b2ff7a54a8380ac1dc6181d35db22bc253b",
+      "stateAfter": "f9aaac422943cee5c8755e40c219bd8b5e4585c3b5c70b71e37b6f8c0f3d82f2",
+      "adjustments": [
+        {
+          "feature": "frequency",
+          "label": "Frecuencia reciente",
+          "delta": 0.004060145367830337
+        },
+        {
+          "feature": "previous",
+          "label": "Presencia anterior",
+          "delta": -0.0017491549929261364
+        },
+        {
+          "feature": "gapLong",
+          "label": "Ausencia de 9 o más sorteos",
+          "delta": 0.0013819214558838389
+        }
+      ],
+      "biasChangeL1": 1.2706322430320305,
+      "frozenNums": [
+        1,
+        8,
+        11,
+        28,
+        29,
+        43
+      ],
+      "frozenReintegro": 5,
+      "weightsBefore": [
+        -0.19518051242003687,
+        -0.019234056426776478,
+        0.006616416879890548,
+        0.030581830076949673,
+        -0.045002995074734674,
+        -0.027549881276086013,
+        -0.03199821612181335,
+        0.0009010249940135824,
+        -0.01591999338839453,
+        -0.012250239765429334,
+        -0.0226462496431113,
+        -0.009779343348982839,
+        -0.044286096079729234
+      ],
+      "weightsAfter": [
+        -0.19112036705220653,
+        -0.020983211419702615,
+        0.006164928120494218,
+        0.029702031373322668,
+        -0.043621073618850835,
+        -0.027312876803617905,
+        -0.0310332935957364,
+        0.000910934820771985,
+        -0.016269451690463874,
+        -0.012365096566673029,
+        -0.02216256681120203,
+        -0.010026589383306965,
+        -0.0438997460582475
+      ],
+      "missedScoresBefore": [
+        {
+          "number": 8,
+          "score": 0.09382718538007907
+        },
+        {
+          "number": 9,
+          "score": 0.09571012163185674
+        },
+        {
+          "number": 14,
+          "score": 0.13121913812343897
+        },
+        {
+          "number": 29,
+          "score": 0.08300291105097325
+        },
+        {
+          "number": 45,
+          "score": 0.11387445865645197
+        }
+      ],
+      "falsePositiveScoresBefore": [
+        {
+          "number": 28,
+          "score": 0.17026127556110318
+        },
+        {
+          "number": 33,
+          "score": 0.16126148280489686
+        },
+        {
+          "number": 38,
+          "score": 0.16698368276553938
+        },
+        {
+          "number": 40,
+          "score": 0.16861008162546778
+        },
+        {
+          "number": 43,
+          "score": 0.18326823157109362
+        }
+      ]
+    }
+  ],
+  "featureWeights": [
+    {
+      "feature": "frequency",
+      "label": "Frecuencia reciente",
+      "weight": -0.19112036705220653
+    },
+    {
+      "feature": "previous",
+      "label": "Presencia anterior",
+      "weight": -0.020983211419702615
+    },
+    {
+      "feature": "gapShort",
+      "label": "Ausencia de 1–3 sorteos",
+      "weight": 0.006164928120494218
+    },
+    {
+      "feature": "gapMedium",
+      "label": "Ausencia de 4–8 sorteos",
+      "weight": 0.029702031373322668
+    },
+    {
+      "feature": "gapLong",
+      "label": "Ausencia de 9 o más sorteos",
+      "weight": -0.043621073618850835
+    },
+    {
+      "feature": "returnHazard",
+      "label": "Retorno tras una ausencia similar",
+      "weight": -0.027312876803617905
+    },
+    {
+      "feature": "intervalProximity",
+      "label": "Proximidad a intervalos anteriores",
+      "weight": -0.0310332935957364
+    },
+    {
+      "feature": "partners",
+      "label": "Parejas con números del último resultado",
+      "weight": 0.000910934820771985
+    },
+    {
+      "feature": "transition",
+      "label": "Transiciones entre números",
+      "weight": -0.016269451690463874
+    },
+    {
+      "feature": "oddShape",
+      "label": "Transición de pares e impares",
+      "weight": -0.012365096566673029
+    },
+    {
+      "feature": "lowShape",
+      "label": "Transición de bajos y altos",
+      "weight": -0.02216256681120203
+    },
+    {
+      "feature": "sumShape",
+      "label": "Transición de sumas",
+      "weight": -0.010026589383306965
+    },
+    {
+      "feature": "consecutiveShape",
+      "label": "Transición de consecutivos",
+      "weight": -0.0438997460582475
+    }
+  ],
+  "recentPatterns": {
+    "intervals": [
+      {
+        "number": 1,
+        "appearances": 2,
+        "drawsSinceLast": 11,
+        "observedGaps": [
+          14
+        ],
+        "meanGap": 14.0
+      },
+      {
+        "number": 2,
+        "appearances": 4,
+        "drawsSinceLast": 2,
+        "observedGaps": [
+          4,
+          14,
+          6
+        ],
+        "meanGap": 8.0
+      },
+      {
+        "number": 3,
+        "appearances": 4,
+        "drawsSinceLast": 9,
+        "observedGaps": [
+          3,
+          1,
+          5
+        ],
+        "meanGap": 3.0
+      },
+      {
+        "number": 4,
+        "appearances": 5,
+        "drawsSinceLast": 5,
+        "observedGaps": [
+          11,
+          4,
+          4,
+          2
+        ],
+        "meanGap": 5.25
+      },
+      {
+        "number": 5,
+        "appearances": 4,
+        "drawsSinceLast": 2,
+        "observedGaps": [
+          1,
+          3,
+          18
+        ],
+        "meanGap": 7.333333333333333
+      },
+      {
+        "number": 6,
+        "appearances": 4,
+        "drawsSinceLast": 1,
+        "observedGaps": [
+          4,
+          2,
+          3
+        ],
+        "meanGap": 3.0
+      },
+      {
+        "number": 7,
+        "appearances": 2,
+        "drawsSinceLast": 4,
+        "observedGaps": [
+          8
+        ],
+        "meanGap": 8.0
+      },
+      {
+        "number": 8,
+        "appearances": 4,
+        "drawsSinceLast": 0,
+        "observedGaps": [
+          4,
+          1,
+          22
+        ],
+        "meanGap": 9.0
+      },
+      {
+        "number": 9,
+        "appearances": 5,
+        "drawsSinceLast": 0,
+        "observedGaps": [
+          3,
+          12,
+          1,
+          9
+        ],
+        "meanGap": 6.25
+      },
+      {
+        "number": 10,
+        "appearances": 5,
+        "drawsSinceLast": 3,
+        "observedGaps": [
+          3,
+          1,
+          3,
+          2
+        ],
+        "meanGap": 2.25
+      },
+      {
+        "number": 11,
+        "appearances": 1,
+        "drawsSinceLast": 21,
+        "observedGaps": [],
+        "meanGap": null
+      },
+      {
+        "number": 12,
+        "appearances": 3,
+        "drawsSinceLast": 0,
+        "observedGaps": [
+          11,
+          18
+        ],
+        "meanGap": 14.5
+      },
+      {
+        "number": 13,
+        "appearances": 1,
+        "drawsSinceLast": 27,
+        "observedGaps": [],
+        "meanGap": null
+      },
+      {
+        "number": 14,
+        "appearances": 3,
+        "drawsSinceLast": 0,
+        "observedGaps": [
+          3,
+          4
+        ],
+        "meanGap": 3.5
+      },
+      {
+        "number": 15,
+        "appearances": 1,
+        "drawsSinceLast": 14,
+        "observedGaps": [],
+        "meanGap": null
+      },
+      {
+        "number": 16,
+        "appearances": 3,
+        "drawsSinceLast": 3,
+        "observedGaps": [
+          3,
+          1
+        ],
+        "meanGap": 2.0
+      },
+      {
+        "number": 17,
+        "appearances": 5,
+        "drawsSinceLast": 1,
+        "observedGaps": [
+          2,
+          7,
+          4,
+          15
+        ],
+        "meanGap": 7.0
+      },
+      {
+        "number": 18,
+        "appearances": 2,
+        "drawsSinceLast": 3,
+        "observedGaps": [
+          14
+        ],
+        "meanGap": 14.0
+      },
+      {
+        "number": 19,
+        "appearances": 3,
+        "drawsSinceLast": 13,
+        "observedGaps": [
+          8,
+          5
+        ],
+        "meanGap": 6.5
+      },
+      {
+        "number": 20,
+        "appearances": 9,
+        "drawsSinceLast": 3,
+        "observedGaps": [
+          5,
+          1,
+          6,
+          2,
+          3,
+          2,
+          1,
+          2
+        ],
+        "meanGap": 2.75
+      },
+      {
+        "number": 21,
+        "appearances": 3,
+        "drawsSinceLast": 4,
+        "observedGaps": [
+          18,
+          6
+        ],
+        "meanGap": 12.0
+      },
+      {
+        "number": 22,
+        "appearances": 6,
+        "drawsSinceLast": 3,
+        "observedGaps": [
+          1,
+          3,
+          6,
+          8,
+          4
+        ],
+        "meanGap": 4.4
+      },
+      {
+        "number": 23,
+        "appearances": 4,
+        "drawsSinceLast": 20,
+        "observedGaps": [
+          2,
+          4,
+          3
+        ],
+        "meanGap": 3.0
+      },
+      {
+        "number": 24,
+        "appearances": 4,
+        "drawsSinceLast": 1,
+        "observedGaps": [
+          6,
+          7,
+          5
+        ],
+        "meanGap": 6.0
+      },
+      {
+        "number": 25,
+        "appearances": 2,
+        "drawsSinceLast": 5,
+        "observedGaps": [
+          8
+        ],
+        "meanGap": 8.0
+      },
+      {
+        "number": 26,
+        "appearances": 3,
+        "drawsSinceLast": 2,
+        "observedGaps": [
+          1,
+          13
+        ],
+        "meanGap": 7.0
+      },
+      {
+        "number": 27,
+        "appearances": 4,
+        "drawsSinceLast": 6,
+        "observedGaps": [
+          7,
+          4,
+          11
+        ],
+        "meanGap": 7.333333333333333
+      },
+      {
+        "number": 28,
+        "appearances": 3,
+        "drawsSinceLast": 17,
+        "observedGaps": [
+          3,
+          6
+        ],
+        "meanGap": 4.5
+      },
+      {
+        "number": 29,
+        "appearances": 5,
+        "drawsSinceLast": 0,
+        "observedGaps": [
+          4,
+          11,
+          5,
+          3
+        ],
+        "meanGap": 5.75
+      },
+      {
+        "number": 30,
+        "appearances": 3,
+        "drawsSinceLast": 9,
+        "observedGaps": [
+          3,
+          12
+        ],
+        "meanGap": 7.5
+      },
+      {
+        "number": 31,
+        "appearances": 2,
+        "drawsSinceLast": 18,
+        "observedGaps": [
+          2
+        ],
+        "meanGap": 2.0
+      },
+      {
+        "number": 32,
+        "appearances": 2,
+        "drawsSinceLast": 10,
+        "observedGaps": [
+          4
+        ],
+        "meanGap": 4.0
+      },
+      {
+        "number": 33,
+        "appearances": 5,
+        "drawsSinceLast": 7,
+        "observedGaps": [
+          1,
+          5,
+          5,
+          10
+        ],
+        "meanGap": 5.25
+      },
+      {
+        "number": 34,
+        "appearances": 5,
+        "drawsSinceLast": 8,
+        "observedGaps": [
+          5,
+          5,
+          8,
+          3
+        ],
+        "meanGap": 5.25
+      },
+      {
+        "number": 35,
+        "appearances": 3,
+        "drawsSinceLast": 1,
+        "observedGaps": [
+          2,
+          13
+        ],
+        "meanGap": 7.5
+      },
+      {
+        "number": 36,
+        "appearances": 3,
+        "drawsSinceLast": 9,
+        "observedGaps": [
+          11,
+          2
+        ],
+        "meanGap": 6.5
+      },
+      {
+        "number": 37,
+        "appearances": 3,
+        "drawsSinceLast": 4,
+        "observedGaps": [
+          14,
+          7
+        ],
+        "meanGap": 10.5
+      },
+      {
+        "number": 38,
+        "appearances": 4,
+        "drawsSinceLast": 10,
+        "observedGaps": [
+          1,
+          1,
+          11
+        ],
+        "meanGap": 4.333333333333333
+      },
+      {
+        "number": 39,
+        "appearances": 3,
+        "drawsSinceLast": 1,
+        "observedGaps": [
+          5,
+          13
+        ],
+        "meanGap": 9.0
+      },
+      {
+        "number": 40,
+        "appearances": 7,
+        "drawsSinceLast": 2,
+        "observedGaps": [
+          10,
+          4,
+          1,
+          2,
+          7,
+          3
+        ],
+        "meanGap": 4.5
+      },
+      {
+        "number": 41,
+        "appearances": 3,
+        "drawsSinceLast": 20,
+        "observedGaps": [
+          7,
+          1
+        ],
+        "meanGap": 4.0
+      },
+      {
+        "number": 42,
+        "appearances": 1,
+        "drawsSinceLast": 2,
+        "observedGaps": [],
+        "meanGap": null
+      },
+      {
+        "number": 43,
+        "appearances": 1,
+        "drawsSinceLast": 13,
+        "observedGaps": [],
+        "meanGap": null
+      },
+      {
+        "number": 44,
+        "appearances": 4,
+        "drawsSinceLast": 6,
+        "observedGaps": [
+          1,
+          3,
+          6
+        ],
+        "meanGap": 3.3333333333333335
+      },
+      {
+        "number": 45,
+        "appearances": 11,
+        "drawsSinceLast": 0,
+        "observedGaps": [
+          1,
+          6,
+          2,
+          4,
+          2,
+          1,
+          2,
+          1,
+          4,
+          2
+        ],
+        "meanGap": 2.5
+      },
+      {
+        "number": 46,
+        "appearances": 5,
+        "drawsSinceLast": 12,
+        "observedGaps": [
+          3,
+          9,
+          4,
+          1
+        ],
+        "meanGap": 4.25
+      },
+      {
+        "number": 47,
+        "appearances": 3,
+        "drawsSinceLast": 1,
+        "observedGaps": [
+          9,
+          17
+        ],
+        "meanGap": 13.0
+      },
+      {
+        "number": 48,
+        "appearances": 4,
+        "drawsSinceLast": 16,
+        "observedGaps": [
+          2,
+          9,
+          1
+        ],
+        "meanGap": 4.0
+      },
+      {
+        "number": 49,
+        "appearances": 4,
+        "drawsSinceLast": 5,
+        "observedGaps": [
+          4,
+          16,
+          3
+        ],
+        "meanGap": 7.666666666666667
+      }
+    ],
+    "pairs": [
+      {
+        "nums": [
+          9,
+          45
+        ],
+        "appearances": 4
+      },
+      {
+        "nums": [
+          17,
+          23
+        ],
+        "appearances": 3
+      },
+      {
+        "nums": [
+          22,
+          45
+        ],
+        "appearances": 3
+      },
+      {
+        "nums": [
+          20,
+          24
+        ],
+        "appearances": 3
+      },
+      {
+        "nums": [
+          20,
+          29
+        ],
+        "appearances": 3
+      },
+      {
+        "nums": [
+          20,
+          34
+        ],
+        "appearances": 3
+      },
+      {
+        "nums": [
+          44,
+          45
+        ],
+        "appearances": 3
+      },
+      {
+        "nums": [
+          10,
+          20
+        ],
+        "appearances": 3
+      },
+      {
+        "nums": [
+          34,
+          40
+        ],
+        "appearances": 2
+      },
+      {
+        "nums": [
+          40,
+          46
+        ],
+        "appearances": 2
+      }
+    ],
+    "shapes": [
+      {
+        "odd": 5,
+        "low": 4,
+        "sumBandFrom": 120,
+        "consecutivePairsCappedAt3": 0,
+        "appearances": 2
+      },
+      {
+        "odd": 3,
+        "low": 2,
+        "sumBandFrom": 160,
+        "consecutivePairsCappedAt3": 0,
+        "appearances": 2
+      },
+      {
+        "odd": 3,
+        "low": 3,
+        "sumBandFrom": 120,
+        "consecutivePairsCappedAt3": 1,
+        "appearances": 2
+      },
+      {
+        "odd": 2,
+        "low": 3,
+        "sumBandFrom": 120,
+        "consecutivePairsCappedAt3": 1,
+        "appearances": 2
+      },
+      {
+        "odd": 2,
+        "low": 3,
+        "sumBandFrom": 120,
+        "consecutivePairsCappedAt3": 0,
+        "appearances": 2
+      }
+    ]
+  },
+  "next": {
+    "target": "2026-10-19",
+    "nums": [
+      12,
+      22,
+      28,
+      38,
+      40,
+      43
+    ],
+    "reintegro": 2,
+    "registered": false
+  },
+  "numberEvidence": [
+    {
+      "number": 12,
+      "score": 0.19760335770097895,
+      "numberBias": 0.5049717420353815,
+      "signals": [
+        {
+          "feature": "frequency",
+          "label": "Frecuencia reciente",
+          "value": -0.37509688670876046,
+          "weight": -0.19112036705220653,
+          "contribution": 0.07168865466791823
+        },
+        {
+          "feature": "previous",
+          "label": "Presencia anterior",
+          "value": 1.0,
+          "weight": -0.020983211419702615,
+          "contribution": -0.020983211419702615
+        },
+        {
+          "feature": "gapShort",
+          "label": "Ausencia de 1–3 sorteos",
+          "value": 1.0,
+          "weight": 0.006164928120494218,
+          "contribution": 0.006164928120494218
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "score": 0.15973609974261854,
+      "numberBias": 0.5542509471720688,
+      "signals": [
+        {
+          "feature": "frequency",
+          "label": "Frecuencia reciente",
+          "value": 1.2957892449938997,
+          "weight": -0.19112036705220653,
+          "contribution": -0.2476517161255357
+        },
+        {
+          "feature": "gapMedium",
+          "label": "Ausencia de 4–8 sorteos",
+          "value": 1.0,
+          "weight": 0.029702031373322668,
+          "contribution": 0.029702031373322668
+        },
+        {
+          "feature": "intervalProximity",
+          "label": "Proximidad a intervalos anteriores",
+          "value": 0.46657510885382364,
+          "weight": -0.0310332935957364,
+          "contribution": -0.01447936233752338
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "score": 0.16805025364099996,
+      "numberBias": 0.3394212812443576,
+      "signals": [
+        {
+          "feature": "frequency",
+          "label": "Frecuencia reciente",
+          "value": -0.37509688670876046,
+          "weight": -0.19112036705220653,
+          "contribution": 0.07168865466791823
+        },
+        {
+          "feature": "gapLong",
+          "label": "Ausencia de 9 o más sorteos",
+          "value": 1.0,
+          "weight": -0.043621073618850835,
+          "contribution": -0.043621073618850835
+        },
+        {
+          "feature": "consecutiveShape",
+          "label": "Transición de consecutivos",
+          "value": -0.09183673469387754,
+          "weight": -0.0438997460582475,
+          "contribution": 0.004031609331879872
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "score": 0.1622996816130273,
+      "numberBias": 0.4264236927034841,
+      "signals": [
+        {
+          "feature": "gapLong",
+          "label": "Ausencia de 9 o más sorteos",
+          "value": 1.0,
+          "weight": -0.043621073618850835,
+          "contribution": -0.043621073618850835
+        },
+        {
+          "feature": "frequency",
+          "label": "Frecuencia reciente",
+          "value": 0.18186515719212623,
+          "weight": -0.19112036705220653,
+          "contribution": -0.0347581355965664
+        },
+        {
+          "feature": "intervalProximity",
+          "label": "Proximidad a intervalos anteriores",
+          "value": 0.3378252979993903,
+          "weight": -0.0310332935957364,
+          "contribution": -0.010483831656882221
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "score": 0.16671810710820265,
+      "numberBias": 0.7321256177671476,
+      "signals": [
+        {
+          "feature": "frequency",
+          "label": "Frecuencia reciente",
+          "value": 1.8527512888947864,
+          "weight": -0.19112036705220653,
+          "contribution": -0.35409850639002033
+        },
+        {
+          "feature": "intervalProximity",
+          "label": "Proximidad a intervalos anteriores",
+          "value": 0.45774557120927345,
+          "weight": -0.0310332935957364,
+          "contribution": -0.014205352703485446
+        },
+        {
+          "feature": "gapShort",
+          "label": "Ausencia de 1–3 sorteos",
+          "value": 1.0,
+          "weight": 0.006164928120494218,
+          "contribution": 0.006164928120494218
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "score": 0.19650039622453638,
+      "numberBias": 0.3143864346982631,
+      "signals": [
+        {
+          "feature": "frequency",
+          "label": "Frecuencia reciente",
+          "value": -1.4890209745105338,
+          "weight": -0.19112036705220653,
+          "contribution": 0.28458223519688747
+        },
+        {
+          "feature": "gapLong",
+          "label": "Ausencia de 9 o más sorteos",
+          "value": 1.0,
+          "weight": -0.043621073618850835,
+          "contribution": -0.043621073618850835
+        },
+        {
+          "feature": "transition",
+          "label": "Transiciones entre números",
+          "value": -0.1055594651653765,
+          "weight": -0.016269451690463874,
+          "contribution": 0.001717394618979297
+        }
+      ]
+    }
+  ],
+  "hasDemonstratedAdvantage": false,
+  "note": "Simulación histórica reproducible, no apuestas publicadas antes del sorteo. Las contribuciones explican la elección del modelo, no la causa del resultado. No se reintenta un sorteo conocido hasta acertarlo.",
+  "traceFile": "data/simulaciones-patrones.jsonl",
+  "registeredExperiment": {
+    "target": "2026-10-19",
+    "created": "2026-10-17T22:56:36.951319+02:00",
+    "historyUntil": "2026-10-17",
+    "modelId": "fb1fbef0161884fbeca7b0d73942b042715953d4beb10ef3cf036f14368bbfea",
+    "algorithm": "rolling-pattern-logistic-v1",
+    "parameters": {
+      "algorithm": "rolling-pattern-logistic-v1",
+      "window": 30,
+      "learningRate": 0.12,
+      "l2": 0.002,
+      "features": [
+        "frequency",
+        "previous",
+        "gapShort",
+        "gapMedium",
+        "gapLong",
+        "returnHazard",
+        "intervalProximity",
+        "partners",
+        "transition",
+        "oddShape",
+        "lowShape",
+        "sumShape",
+        "consecutiveShape"
+      ],
+      "validationFraction": 0.2,
+      "minimumValidation": 30
+    },
+    "nums": [
+      12,
+      22,
+      28,
+      38,
+      40,
+      43
+    ],
+    "reintegro": 2,
+    "productionPrediction": false
+  },
+  "prospective": {
+    "registered": 1,
+    "settled": 0,
+    "mainHits": 0,
+    "hitHistogram": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "refundDraws": 0,
+    "refundHits": 0
+  },
+  "candidateStatus": "queued"
+}
