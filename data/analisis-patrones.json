@@ -1,0 +1,500 @@
+{
+  "version": 1,
+  "status": "analyzed",
+  "checkedAt": "2026-10-17T22:31:49.650915+02:00",
+  "historyUntil": "2026-10-17",
+  "latestResult": {
+    "date": "2026-10-17",
+    "nums": [
+      8,
+      9,
+      12,
+      14,
+      29,
+      45
+    ],
+    "reintegro": 4,
+    "predictionAvailable": true,
+    "matched": [
+      45
+    ],
+    "refundHit": true,
+    "predictionVersion": 2,
+    "repeatedFromPrevious": [],
+    "consecutivePairs": [
+      [
+        8,
+        9
+      ]
+    ]
+  },
+  "recentScans": [
+    {
+      "window": 20,
+      "draws": 20,
+      "topNumbers": [
+        {
+          "value": 45,
+          "hits": 9,
+          "draws": 20,
+          "expected": 2.449,
+          "adjustedP": 0.717135589968148
+        },
+        {
+          "value": 20,
+          "hits": 7,
+          "draws": 20,
+          "expected": 2.449,
+          "adjustedP": 1.0
+        },
+        {
+          "value": 40,
+          "hits": 6,
+          "draws": 20,
+          "expected": 2.449,
+          "adjustedP": 1.0
+        },
+        {
+          "value": 10,
+          "hits": 5,
+          "draws": 20,
+          "expected": 2.449,
+          "adjustedP": 1.0
+        },
+        {
+          "value": 3,
+          "hits": 4,
+          "draws": 20,
+          "expected": 2.449,
+          "adjustedP": 1.0
+        }
+      ],
+      "topPairs": [
+        {
+          "value": [
+            9,
+            45
+          ],
+          "hits": 3,
+          "draws": 20,
+          "expected": 0.2551,
+          "adjustedP": 1.0
+        },
+        {
+          "value": [
+            10,
+            20
+          ],
+          "hits": 3,
+          "draws": 20,
+          "expected": 0.2551,
+          "adjustedP": 1.0
+        },
+        {
+          "value": [
+            20,
+            24
+          ],
+          "hits": 3,
+          "draws": 20,
+          "expected": 0.2551,
+          "adjustedP": 1.0
+        },
+        {
+          "value": [
+            20,
+            29
+          ],
+          "hits": 3,
+          "draws": 20,
+          "expected": 0.2551,
+          "adjustedP": 1.0
+        },
+        {
+          "value": [
+            20,
+            34
+          ],
+          "hits": 3,
+          "draws": 20,
+          "expected": 0.2551,
+          "adjustedP": 1.0
+        }
+      ],
+      "topRefunds": [
+        {
+          "value": 4,
+          "hits": 5,
+          "draws": 20,
+          "expected": 2.0,
+          "adjustedP": 1.0
+        },
+        {
+          "value": 3,
+          "hits": 3,
+          "draws": 20,
+          "expected": 2.0,
+          "adjustedP": 1.0
+        },
+        {
+          "value": 8,
+          "hits": 3,
+          "draws": 20,
+          "expected": 2.0,
+          "adjustedP": 1.0
+        }
+      ]
+    },
+    {
+      "window": 50,
+      "draws": 50,
+      "topNumbers": [
+        {
+          "value": 45,
+          "hits": 13,
+          "draws": 50,
+          "expected": 6.1224,
+          "adjustedP": 1.0
+        },
+        {
+          "value": 20,
+          "hits": 12,
+          "draws": 50,
+          "expected": 6.1224,
+          "adjustedP": 1.0
+        },
+        {
+          "value": 40,
+          "hits": 11,
+          "draws": 50,
+          "expected": 6.1224,
+          "adjustedP": 1.0
+        },
+        {
+          "value": 22,
+          "hits": 10,
+          "draws": 50,
+          "expected": 6.1224,
+          "adjustedP": 1.0
+        },
+        {
+          "value": 28,
+          "hits": 9,
+          "draws": 50,
+          "expected": 6.1224,
+          "adjustedP": 1.0
+        }
+      ],
+      "topPairs": [
+        {
+          "value": [
+            20,
+            34
+          ],
+          "hits": 5,
+          "draws": 50,
+          "expected": 0.6378,
+          "adjustedP": 1.0
+        },
+        {
+          "value": [
+            28,
+            48
+          ],
+          "hits": 5,
+          "draws": 50,
+          "expected": 0.6378,
+          "adjustedP": 1.0
+        },
+        {
+          "value": [
+            6,
+            45
+          ],
+          "hits": 4,
+          "draws": 50,
+          "expected": 0.6378,
+          "adjustedP": 1.0
+        },
+        {
+          "value": [
+            9,
+            45
+          ],
+          "hits": 4,
+          "draws": 50,
+          "expected": 0.6378,
+          "adjustedP": 1.0
+        },
+        {
+          "value": [
+            17,
+            47
+          ],
+          "hits": 4,
+          "draws": 50,
+          "expected": 0.6378,
+          "adjustedP": 1.0
+        }
+      ],
+      "topRefunds": [
+        {
+          "value": 8,
+          "hits": 8,
+          "draws": 50,
+          "expected": 5.0,
+          "adjustedP": 1.0
+        },
+        {
+          "value": 2,
+          "hits": 7,
+          "draws": 50,
+          "expected": 5.0,
+          "adjustedP": 1.0
+        },
+        {
+          "value": 4,
+          "hits": 6,
+          "draws": 50,
+          "expected": 5.0,
+          "adjustedP": 1.0
+        }
+      ]
+    }
+  ],
+  "scanComparisons": 2470,
+  "protocol": {
+    "selectionDraws": 100,
+    "validationDraws": 100,
+    "minimumTrainingDraws": 120,
+    "rules": [
+      "hot20",
+      "cold20",
+      "repeat",
+      "transitions100"
+    ],
+    "comparisons": 16,
+    "alpha": 0.05,
+    "note": "Reglas predefinidas. Selección en 100 sorteos y contraste en 100 posteriores; cada predicción solo usa resultados anteriores. Análisis histórico exploratorio."
+  },
+  "ruleEvaluation": {
+    "status": "evaluated",
+    "historicalSignal": false,
+    "channels": {
+      "main": {
+        "selectedUsingEarlierBlock": "repeat",
+        "label": "Repetición del último sorteo",
+        "selectionFrom": "2025-07-10",
+        "selectionThrough": "2026-02-26",
+        "validationFrom": "2026-02-28",
+        "validationThrough": "2026-10-17",
+        "selectedResult": {
+          "rule": "repeat",
+          "label": "Repetición del último sorteo",
+          "draws": 100,
+          "hits": 71,
+          "baselineHits": 77,
+          "expectedRandom": 73.4694,
+          "adjustedRandomP": 1.0,
+          "adjustedBaselineP": 1.0,
+          "historicalSignal": false
+        },
+        "allRules": [
+          {
+            "rule": "hot20",
+            "label": "Frecuentes en 20 sorteos",
+            "draws": 100,
+            "hits": 72,
+            "baselineHits": 77,
+            "expectedRandom": 73.4694,
+            "adjustedRandomP": 1.0,
+            "adjustedBaselineP": 1.0,
+            "historicalSignal": false
+          },
+          {
+            "rule": "cold20",
+            "label": "Menos frecuentes en 20 sorteos",
+            "draws": 100,
+            "hits": 75,
+            "baselineHits": 77,
+            "expectedRandom": 73.4694,
+            "adjustedRandomP": 1.0,
+            "adjustedBaselineP": 1.0,
+            "historicalSignal": false
+          },
+          {
+            "rule": "repeat",
+            "label": "Repetición del último sorteo",
+            "draws": 100,
+            "hits": 71,
+            "baselineHits": 77,
+            "expectedRandom": 73.4694,
+            "adjustedRandomP": 1.0,
+            "adjustedBaselineP": 1.0,
+            "historicalSignal": false
+          },
+          {
+            "rule": "transitions100",
+            "label": "Transiciones de los últimos 100 sorteos",
+            "draws": 100,
+            "hits": 73,
+            "baselineHits": 77,
+            "expectedRandom": 73.4694,
+            "adjustedRandomP": 1.0,
+            "adjustedBaselineP": 1.0,
+            "historicalSignal": false
+          }
+        ]
+      },
+      "refund": {
+        "selectedUsingEarlierBlock": "cold20",
+        "label": "Menos frecuentes en 20 sorteos",
+        "selectionFrom": "2025-07-10",
+        "selectionThrough": "2026-02-26",
+        "validationFrom": "2026-02-28",
+        "validationThrough": "2026-10-17",
+        "selectedResult": {
+          "rule": "cold20",
+          "label": "Menos frecuentes en 20 sorteos",
+          "draws": 100,
+          "hits": 7,
+          "baselineHits": 11,
+          "expectedRandom": 10.0,
+          "adjustedRandomP": 1.0,
+          "adjustedBaselineP": 1.0,
+          "historicalSignal": false
+        },
+        "allRules": [
+          {
+            "rule": "hot20",
+            "label": "Frecuentes en 20 sorteos",
+            "draws": 100,
+            "hits": 10,
+            "baselineHits": 11,
+            "expectedRandom": 10.0,
+            "adjustedRandomP": 1.0,
+            "adjustedBaselineP": 1.0,
+            "historicalSignal": false
+          },
+          {
+            "rule": "cold20",
+            "label": "Menos frecuentes en 20 sorteos",
+            "draws": 100,
+            "hits": 7,
+            "baselineHits": 11,
+            "expectedRandom": 10.0,
+            "adjustedRandomP": 1.0,
+            "adjustedBaselineP": 1.0,
+            "historicalSignal": false
+          },
+          {
+            "rule": "repeat",
+            "label": "Repetición del último sorteo",
+            "draws": 100,
+            "hits": 17,
+            "baselineHits": 11,
+            "expectedRandom": 10.0,
+            "adjustedRandomP": 0.32958096232480333,
+            "adjustedBaselineP": 1.0,
+            "historicalSignal": false
+          },
+          {
+            "rule": "transitions100",
+            "label": "Transiciones de los últimos 100 sorteos",
+            "draws": 100,
+            "hits": 13,
+            "baselineHits": 11,
+            "expectedRandom": 10.0,
+            "adjustedRandomP": 1.0,
+            "adjustedBaselineP": 1.0,
+            "historicalSignal": false
+          }
+        ]
+      }
+    },
+    "note": "Reglas predefinidas. Selección en 100 sorteos y contraste en 100 posteriores; cada predicción solo usa resultados anteriores. Análisis histórico exploratorio.",
+    "traceFile": "data/validacion-patrones.jsonl"
+  },
+  "patternProposals": [
+    {
+      "rule": "hot20",
+      "label": "Frecuentes en 20 sorteos",
+      "target": "2026-10-19",
+      "historyUntil": "2026-10-17",
+      "nums": [
+        3,
+        4,
+        10,
+        20,
+        40,
+        45
+      ],
+      "reintegro": 4,
+      "productionPrediction": false
+    },
+    {
+      "rule": "cold20",
+      "label": "Menos frecuentes en 20 sorteos",
+      "target": "2026-10-19",
+      "historyUntil": "2026-10-17",
+      "nums": [
+        1,
+        5,
+        11,
+        13,
+        23,
+        41
+      ],
+      "reintegro": 0,
+      "productionPrediction": false
+    },
+    {
+      "rule": "repeat",
+      "label": "Repetición del último sorteo",
+      "target": "2026-10-19",
+      "historyUntil": "2026-10-17",
+      "nums": [
+        8,
+        9,
+        12,
+        14,
+        29,
+        45
+      ],
+      "reintegro": 4,
+      "productionPrediction": false
+    },
+    {
+      "rule": "transitions100",
+      "label": "Transiciones de los últimos 100 sorteos",
+      "target": "2026-10-19",
+      "historyUntil": "2026-10-17",
+      "nums": [
+        4,
+        12,
+        30,
+        34,
+        40,
+        45
+      ],
+      "reintegro": 4,
+      "productionPrediction": false
+    }
+  ],
+  "hasDemonstratedPredictiveAdvantage": false,
+  "conclusion": "No se ha validado una señal que permita anticipar el siguiente sorteo. Las coincidencias recientes se muestran como observaciones, no como ventaja predictiva.",
+  "existingPrediction": {
+    "target": "2026-10-19",
+    "historyUntil": "2026-10-15",
+    "preserved": true,
+    "usesLatestResult": false
+  },
+  "pipeline": [
+    "latest-result-review",
+    "recent-pattern-scan",
+    "chronological-rule-test",
+    "candidate-training",
+    "prospective-control",
+    "register-next-if-absent"
+  ]
+}

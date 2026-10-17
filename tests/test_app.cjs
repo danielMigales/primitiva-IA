@@ -19,11 +19,11 @@ class Element {
 const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10-12',reintegro:8};
 const draw = {date:'2026-10-12',nums:[2,5,26,40,42,45],reintegro:9};
 const activeConfig=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-v2.json'),'utf8'));
-async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null,config=activeConfig,model=null,control=null,quality=null) {
- const elements=Object.fromEntries(['decision-history','data-quality','model-control','model-learning','learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
+async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null,config=activeConfig,model=null,control=null,quality=null,patterns=null) {
+ const elements=Object.fromEntries(['pattern-analysis','decision-history','data-quality','model-control','model-learning','learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
  class Clock extends Date { constructor(...args){super(...(args.length?args:[today]));} static now(){return Date.parse(today);} }
  const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,PrimitivaLive:live,PRIMITIVA_RESULTS_ENDPOINT:'https://results.example/api/resultados',
-  fetch:async url=>{const data=url.includes('calidad-datos')?quality:url.includes('control-modelo')?control:url.includes('modelo-adaptativo')?model:url.includes('estrategia-activa')?config:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
+  fetch:async url=>{const data=url.includes('analisis-patrones')?patterns:url.includes('calidad-datos')?quality:url.includes('control-modelo')?control:url.includes('modelo-adaptativo')?model:url.includes('estrategia-activa')?config:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
  vm.runInContext(source.replace('load().catch(', 'globalThis.loaded=load().catch('),context);
  await context.loaded;
  return {elements,context};
@@ -255,7 +255,7 @@ test('adaptive prediction explains model scores and safely handles missing repor
 
 test('promotion control shows prospective progress and preserves active weights',async()=>{
  const config=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json')));
- const control=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/control-modelo.json')));
+ const control={...JSON.parse(fs.readFileSync(path.join(__dirname,'../data/control-modelo.json'))),assessment:{status:'waiting',draws:0}};
  const {elements}=await render(undefined,undefined,undefined,undefined,undefined,null,config,null,control);
  assert.match(elements['model-control'].textContent,/Esperando un nuevo resultado/);
  assert.match(elements['model-control'].textContent,/no autorizan cambios/);
@@ -288,4 +288,21 @@ test('latest draw balance shows only the matching training adjustment',async()=>
  assert.match(elements['learning-review'].textContent,/0.10000/);
  assert.match(elements['learning-review'].textContent,/reproducción cronológica/);
  assert.match(elements['learning-review'].textContent,/sujetos al control/);
+});
+
+test('pattern analysis separates observations, later validation and a preserved prediction',async()=>{
+ const config=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-activa.json')));
+ const patterns={version:1,status:'analyzed',historyUntil:'2026-10-17',latestResult:{repeatedFromPrevious:[],consecutivePairs:[[8,9]]},recentScans:[{draws:20,topNumbers:[{value:8,hits:4}],topPairs:[{value:[8,9],hits:2}],topRefunds:[]}],conclusion:'No se ha validado una señal que permita anticipar.',ruleEvaluation:{status:'evaluated',channels:{main:{label:'Repetición del último sorteo',selectedResult:{draws:100,hits:71,baselineHits:77,expectedRandom:73.47}}}},existingPrediction:{target:'2026-10-19',historyUntil:'2026-10-15',usesLatestResult:false}};
+ const {elements}=await render(undefined,undefined,undefined,undefined,undefined,null,config,null,null,null,patterns);
+ assert.match(elements['pattern-analysis'].textContent,/100 siguientes/);
+ assert.match(elements['pattern-analysis'].textContent,/no se repite ningún número/);
+ assert.match(elements['pattern-analysis'].textContent,/8 y 9/);
+ assert.match(elements['pattern-analysis'].textContent,/no la sustituye/);
+ assert.match(elements['pattern-analysis'].textContent,/No se ha validado una señal/);
+});
+test('waiting for the latest result does not invent pattern findings',async()=>{
+ const patterns={version:1,status:'waiting-result',conclusion:'Se espera el último resultado antes de continuar.'};
+ const {elements}=await render(undefined,undefined,undefined,undefined,undefined,null,activeConfig,null,null,null,patterns);
+ assert.match(elements['pattern-analysis'].textContent,/Se espera el último resultado/);
+ assert.doesNotMatch(elements['pattern-analysis'].textContent,/Más frecuentes/);
 });

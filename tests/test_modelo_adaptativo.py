@@ -76,12 +76,15 @@ class ModelTests(unittest.TestCase):
             work=Path(temp);(work/'data').mkdir()
             (work/'data/reto-estrategia-activa.json').write_bytes((ROOT/'data/reto-estrategia-activa.json').read_bytes())
             (work/'data/sorteos.json').write_text(json.dumps({'draws':history()}))
+            (work/'data/verificacion-sorteos.json').write_text(json.dumps({'draws':[{**history()[-1],'source':'SELAE','url':'https://www.loteriasyapuestas.es/official.pdf'}]}))
             from control_modelo import update_control
             initial,_=update_control(train(history(),'2026-10-17'),history(),'2026-10-17',datetime(2026,10,16,tzinfo=timezone.utc))
             (work/'data/control-modelo.json').write_text(json.dumps(initial))
             registry=work/'data/reto-predictor.json'
             registry.write_text(json.dumps({'predictions':[],'revisions':[{'preserve':True}]}))
-            cmd=[sys.executable,str(ROOT/'scripts/generar_reto.py')]
+            script=str(ROOT/'scripts/generar_reto.py')
+            clock='from datetime import datetime,timezone; from unittest.mock import patch; import runpy,sys; sys.path.insert(0,'+repr(str(ROOT/'scripts'))+')\nclass Clock(datetime):\n @classmethod\n def now(cls,tz=None):return cls(2026,10,17,12,tzinfo=timezone.utc).astimezone(tz)\nwith patch("datetime.datetime",Clock):runpy.run_path('+repr(script)+',run_name="__main__")'
+            cmd=[sys.executable,'-c',clock]
             result=subprocess.run(cmd,cwd=work,capture_output=True,text=True)
             self.assertEqual(result.returncode,0,result.stderr)
             saved=registry.read_bytes()
