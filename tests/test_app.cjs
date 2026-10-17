@@ -19,11 +19,11 @@ class Element {
 const entry = {target:'2026-10-15',nums:[4,10,20,22,40,45],historyUntil:'2026-10-12',reintegro:8};
 const draw = {date:'2026-10-12',nums:[2,5,26,40,42,45],reintegro:9};
 const activeConfig=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/reto-estrategia-v2.json'),'utf8'));
-async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null,config=activeConfig,model=null,control=null,quality=null,patterns=null,patternLearning=null) {
+async function render(pred={predictions:[entry]}, history={draws:[draw]}, today='2026-10-13T20:00:00Z',proofs={draws:[]},report={status:'not-run'},live=null,config=activeConfig,model=null,control=null,quality=null,patterns=null,patternLearning=null,discovery=null) {
  const elements=Object.fromEntries(['pattern-learning','pattern-analysis','decision-history','data-quality','model-control','model-learning','learning-review','sync-status','prediction','prediction-status','reasoning','recent-draws','draws-status','tracking','active-strategy','incidents'].map(id=>[id,new Element('div')]));
  class Clock extends Date { constructor(...args){super(...(args.length?args:[today]));} static now(){return Date.parse(today);} }
  const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:tag=>new Element(tag)},Date:Clock,Intl,PrimitivaLive:live,PRIMITIVA_RESULTS_ENDPOINT:'https://results.example/api/resultados',
-  fetch:async url=>{const data=url.includes('aprendizaje-patrones')?patternLearning:url.includes('analisis-patrones')?patterns:url.includes('calidad-datos')?quality:url.includes('control-modelo')?control:url.includes('modelo-adaptativo')?model:url.includes('estrategia-activa')?config:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
+  fetch:async url=>{const data=url.includes('descubrimiento-hipotesis')?discovery:url.includes('aprendizaje-patrones')?patternLearning:url.includes('analisis-patrones')?patterns:url.includes('calidad-datos')?quality:url.includes('control-modelo')?control:url.includes('modelo-adaptativo')?model:url.includes('estrategia-activa')?config:url.includes('verificacion-sorteos')?proofs:url.includes('estado-actualizacion')?report:url.includes('sorteos')?history:pred; if(data instanceof Error)throw data; return {ok:true,json:async()=>data};}});
  vm.runInContext(source.replace('load().catch(', 'globalThis.loaded=load().catch('),context);
  await context.loaded;
  return {elements,context};
@@ -335,4 +335,28 @@ test('missing pattern learner report does not break registered predictions',asyn
  const {elements}=await render(...Array(11).fill(undefined),new Error('missing'));
  assert.match(elements['pattern-learning'].textContent,/aún no están disponibles/);
  assert.match(elements['prediction-status'].textContent,/2026-10-15/);
+});
+
+test('automatic discovery shows generated hypotheses and failed confirmation honestly',async()=>{
+ const patterns={version:1,status:'analyzed',historyUntil:'2026-10-17',latestResult:{repeatedFromPrevious:[],consecutivePairs:[]},recentScans:[],conclusion:'Sin señal validada.'};
+ const discovery={version:1,status:'searched',historyUntil:'2026-10-17',totalDraws:3002,search:{hypothesesEvaluated:317522,shortlisted:118,confirmed:0,survivedFinalAudit:0,maxConditionsPerRule:3},protocol:{discoveryThrough:'2021-01-01',confirmationFrom:'2021-01-02',confirmationThrough:'2024-01-01',auditFrom:'2024-01-02',auditThrough:'2026-10-17'},
+ conclusion:'Ninguna hipótesis ha superado ambos contrastes.',examples:[{channel:'main',number:12,text:'el 5 salió hace 4 sorteos Y el 38 se repitió',discovery:{support:50,hits:20,rate:.4},confirmation:{support:25,hits:2,rate:.08,passed:false,reason:'No conserva la dirección observada.'},audit:{passed:false,status:'not-tested'}}],finalEvaluation:{draws:601,mainHits:466,frequencyHits:471,expectedRandomHits:601*36/49},next:{target:'2026-10-19',nums:[16,20,40,41,43,45],reintegro:2},registeredExperiment:{target:'2026-10-19',algorithm:'rolling-pattern-logistic-v1'}};
+ const {elements}=await render(...Array(10).fill(undefined),patterns,undefined,discovery);
+ const text=elements['pattern-analysis'].textContent;
+ assert.match(text,/317.522 hipótesis evaluadas/);
+ assert.match(text,/118 seleccionadas · 0 confirmadas/);
+ assert.match(text,/el 5 salió hace 4 sorteos Y el 38 se repitió/);
+ assert.match(text,/No conserva la dirección/);
+ assert.match(text,/no se abre para rescatar/);
+ assert.match(text,/ya estaba registrado con el motor anterior y se conserva/);
+ assert.match(text,/experimental/);
+ assert.doesNotMatch(elements['prediction-status'].textContent,/Error/);
+});
+
+test('a pending result does not display a stale discovery as current',async()=>{
+ const patterns={version:1,status:'waiting-result',conclusion:'Falta incorporar el último resultado.'};
+ const discovery={status:'searched',historyUntil:'2026-10-15',totalDraws:3001};
+ const {elements}=await render(...Array(10).fill(undefined),patterns,undefined,discovery);
+ assert.match(elements['pattern-analysis'].textContent,/Falta incorporar/);
+ assert.doesNotMatch(elements['pattern-analysis'].textContent,/Búsqueda automática/);
 });

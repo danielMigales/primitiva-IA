@@ -19,6 +19,9 @@ def snapshot(report):
 
 def scores(model, rows, target):
     """Recompute prior-draw features while keeping all learned weights frozen."""
+    if model['parameters'].get('algorithm') == 'automatic-rule-search-v1':
+        from descubrir_hipotesis import score_model
+        return score_model(model, rows, target)
     if model['parameters'].get('algorithm') == 'rolling-pattern-logistic-v1':
         from aprender_patrones import score_snapshot
         return score_snapshot(model, rows, target)

@@ -28,7 +28,7 @@
   "evaluation": "prospective-only; historical replay exploratory",
   "minimumSettledDraws": 60,
   "previousStrategyFile": "data/reto-estrategia-v3.json",
-  "rule": "Entrenar con ventanas de 30 sorteos, predecir antes de revelar cada resultado y ajustar después. Conservar campeón y ensayo prospectivo actual; los siguientes candidatos usan patrones e intervalos y deben superar la política de promoción.",
+  "rule": "Generar y contrastar hipótesis automáticamente; conservar campeón, ensayo prospectivo y pronósticos registrados. Solo las hipótesis que superen confirmación y auditoría podrán alimentar candidatos y experimentos nuevos. No sustituir el modelo por reglas descartadas.",
   "historicalDataVerifiedOfficially": false,
   "promotionPolicy": {
     "minimumDraws": 60,
@@ -63,5 +63,35 @@
       "minimumValidation": 30
     },
     "status": "historical-training-and-prospective-gate"
+  },
+  "candidateDiscovery": {
+    "algorithm": "automatic-rule-search-v1",
+    "warmup": 100,
+    "windows": [
+      5,
+      10,
+      20,
+      30,
+      50,
+      100
+    ],
+    "maxLag": 20,
+    "beamWidth": 8,
+    "maxDepth": 3,
+    "rulesPerTarget": 2,
+    "minimumDiscoverySupport": 30,
+    "minimumTestSupport": 20,
+    "minimumHistory": 600,
+    "splitFractions": [
+      0.6,
+      0.8
+    ],
+    "alpha": 0.05,
+    "thresholdQuantiles": [
+      0.25,
+      0.5,
+      0.75,
+      0.9
+    ]
   }
 }
